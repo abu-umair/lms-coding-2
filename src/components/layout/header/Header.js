@@ -10,7 +10,7 @@ import stickyHeader from "@/libs/stickyHeader";
 import smoothScroll from "@/libs/smoothScroll";
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from "next/navigation";
-
+import { invalidateLaravelToken } from "@/libs/authOptions";
 
 const Header = () => {
   const router = useRouter(); // <-- Panggil useRouter
@@ -36,6 +36,20 @@ const Header = () => {
     // NAVIGASI LANGSUNG ke halaman kustom Anda
     router.push('/login');
   };
+
+  const handleLogout = async () => {
+    // 1. Panggil API Laravel untuk invalidasi Token (ASYNCHRONOUS)
+    await invalidateLaravelToken(); // Tunggu hingga token di backend dihapus/di-blacklist
+
+    // 2. Hapus sesi NextAuth (Hapus cookie)
+    signOut({
+      callbackUrl: '/login'
+    });
+
+    // CATATAN: Jika Anda menggunakan API Laravel untuk invalidasi token,
+    // Anda harus memanggil API tersebut DI SINI sebelum atau bersamaan dengan signOut().
+  };
+
   return (
     <header>
       <div>
@@ -47,7 +61,7 @@ const Header = () => {
           {loading ? (
             <span>Memuat Auth...</span>
           ) : session ? (
-            <button onClick={() => signOut()}>Logout ({session.user?.name})</button>
+            <button onClick={handleLogout}>Logout ({session.user?.name})</button>
           ) : (
             // GUNAKAN HANDLER NAVIGASI
             <button onClick={handleLoginClick}>Login</button>
