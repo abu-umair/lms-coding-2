@@ -1,9 +1,44 @@
-import React from "react";
+// components/layout/main/LoginForm.jsx
+
+"use client"; // <<< JADIKAN CLIENT COMPONENT
+
+import React, { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation"; // Gunakan next/navigation untuk App Router
 
 const LoginForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // State untuk loading
+  const router = useRouter();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Mencegah refresh halaman
+    setError(null);
+    setIsLoading(true);
+
+    // Panggil fungsi signIn dengan provider 'credentials'
+    const result = await signIn("credentials", {
+      redirect: false, // Penting: Tangani redirect secara manual
+      email,
+      password,
+    });
+
+    setIsLoading(false);
+
+    if (result?.error) {
+      // Jika authorize() di NextAuth mengembalikan null, error ini akan muncul
+      setError("Login gagal. Periksa kembali email atau kata sandi Anda.");
+    } else if (result?.ok) {
+      // Login sukses, redirect ke halaman utama atau dashboard
+      router.push("/");
+    }
+  };
+
   return (
-    <div className=" opacity-100 transition-opacity duration-150 ease-linear">
-      {/* heading   */}
+    <div className="opacity-100 transition-opacity duration-150 ease-linear">
+      {/* ... heading & sign up link ... */}
       <div className="text-center">
         <h3 className="text-size-32 font-bold text-blackColor dark:text-blackColor-dark mb-2 leading-normal">
           Login
@@ -19,15 +54,26 @@ const LoginForm = () => {
         </p>
       </div>
 
-      <form className="pt-25px" data-aos="fade-up">
+      {/* Tampilkan Pesan Error */}
+      {error && (
+        <div style={{ padding: '10px', backgroundColor: '#fdd', color: 'red', borderRadius: '5px', marginBottom: '15px' }}>
+          {error}
+        </div>
+      )}
+
+      {/* Ganti action dan tambahkan onSubmit handler */}
+      <form className="pt-25px" data-aos="fade-up" onSubmit={handleSubmit}>
         <div className="mb-25px">
           <label className="text-contentColor dark:text-contentColor-dark mb-10px block">
-            Username or email
+            Email
           </label>
           <input
-            type="text"
-            placeholder="Your username or email"
+            type="email" // Ganti type ke 'email' untuk validasi browser
+            placeholder="Your email address"
             className="w-full h-52px leading-52px pl-5 bg-transparent text-sm focus:outline-none text-contentColor dark:text-contentColor-dark border border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 font-medium rounded"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)} // Tambahkan onChange handler
+            required
           />
         </div>
 
@@ -39,9 +85,13 @@ const LoginForm = () => {
             type="password"
             placeholder="Password"
             className="w-full h-52px leading-52px pl-5 bg-transparent text-sm focus:outline-none text-contentColor dark:text-contentColor-dark border border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 font-medium rounded"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)} // Tambahkan onChange handler
+            required
           />
         </div>
 
+        {/* ... (Remember me & Forgot Password) ... */}
         <div className="text-contentColor dark:text-contentColor-dark flex items-center justify-between">
           <div className="flex items-center">
             <input
@@ -60,12 +110,14 @@ const LoginForm = () => {
             </a>
           </div>
         </div>
+
         <div className="my-25px text-center">
           <button
             type="submit"
+            disabled={isLoading} // Nonaktifkan tombol saat loading
             className="text-size-15 text-whiteColor bg-primaryColor px-25px py-10px w-full border border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark"
           >
-            Log in
+            {isLoading ? 'Sedang Memproses...' : 'Log in'}
           </button>
         </div>
         {/* other login */}

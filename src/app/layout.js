@@ -10,6 +10,7 @@ import "swiper/css/effect-cards";
 import "./globals.css";
 import FixedShadow from "@/components/shared/others/FixedShadow";
 import PreloaderPrimary from "@/components/shared/others/PreloaderPrimary";
+import NextAuthProvider from "@/components/shared/others/NextAuthProvider";
 
 export const inter = Inter({
   subsets: ["latin"],
@@ -35,14 +36,16 @@ export default function RootLayout({ children }) {
       <body
         className={`relative leading-[1.8] bg-bodyBg dark:bg-bodyBg-dark z-0  ${inter.className}`}
       >
-        <PreloaderPrimary />
-        {children}
+        <NextAuthProvider>
+          <PreloaderPrimary />
+          {children}
 
-        {/* theme fixed shadow */}
-        <div>
-          <FixedShadow />
-          <FixedShadow align={"right"} />
-        </div>
+          {/* theme fixed shadow */}
+          <div>
+            <FixedShadow />
+            <FixedShadow align={"right"} />
+          </div>
+        </NextAuthProvider>
       </body>
     </html>
   );
