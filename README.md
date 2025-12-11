@@ -16,3 +16,10 @@ kemudian bisa rename pada jsconfig.json
 ```bash 
 npm install next-auth
 ```
+
+
+## install zod validation input
+1. jalankan perintah
+```bash 
+npm install zod
+```
