@@ -9,3 +9,10 @@ npm install --save-dev typescript @types/react @types/node
 npm run dev
 ```
 kemudian bisa rename pada jsconfig.json 
+
+
+## install next-auth
+1. jalankan perintah
+```bash 
+npm install next-auth
+```
