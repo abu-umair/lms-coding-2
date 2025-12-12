@@ -15,8 +15,15 @@ import { invalidateLaravelToken } from "@/libs/authOptions";
 const Header = () => {
   const router = useRouter(); // <-- Panggil useRouter
   const { data: session, status } = useSession();
+  const isAuthenticated = status === 'authenticated';
+  const userRole = session?.user?.roles; //? Asumsi: session.user.roles adalah string, contoh: "ADMIN"
   const isHome2 = useIsTrue("/home-2");
   const isHome2Dark = useIsTrue("/home-2-dark");
+  // Perbandingan langsung
+  const isAdmin = userRole === 'ADMIN';
+  const isUser = userRole === 'USER'; // Jika Anda perlu memeriksa role lain
+
+
   useEffect(() => {
     stickyHeader();
     smoothScroll();
@@ -67,6 +74,15 @@ const Header = () => {
             <button onClick={handleLoginClick}>Login</button>
           )}
         </div>
+        <ul>
+          {isAuthenticated && isAdmin && (
+            <li><a href="/admin/dashboard">Admin Dashboard</a></li>
+          )}
+          {isAuthenticated && isUser && (
+            <li><a href="/user/dashboard">User Dashboard</a></li>
+          )}
+          {/* ... */}
+        </ul>
         {/* mobile menu */}
         <MobileMenu />
       </div>
