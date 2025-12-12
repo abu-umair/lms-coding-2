@@ -61,7 +61,7 @@ const Header = () => {
           {loading ? (
             <span>Memuat Auth...</span>
           ) : session ? (
-            <button onClick={handleLogout}>Logout ({session.user?.name})</button>
+            <button onClick={handleLogout}>Logout ({session.user?.name}) ({session.user?.roles})</button>
           ) : (
             // GUNAKAN HANDLER NAVIGASI
             <button onClick={handleLoginClick}>Login</button>
