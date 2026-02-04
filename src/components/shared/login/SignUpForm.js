@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { SignUpSchema } from "@/libs/validationSchema"; // <-- Import Schema Zod
+import { SignUpSchema } from "@/libs/validationSchemaSingUp"; // <-- Import Schema Zod
 
 
 const LARAVEL_REGISTER_URL = "http://127.0.0.1:8000/api/auth/register";
