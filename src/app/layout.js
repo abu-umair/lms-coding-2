@@ -11,6 +11,7 @@ import "./globals.css";
 import FixedShadow from "@/components/shared/others/FixedShadow";
 import PreloaderPrimary from "@/components/shared/others/PreloaderPrimary";
 import NextAuthProvider from "@/components/shared/others/NextAuthProvider";
+import { Toaster } from "react-hot-toast";
 
 export const inter = Inter({
   subsets: ["latin"],
@@ -38,6 +39,7 @@ export default function RootLayout({ children }) {
       >
         <NextAuthProvider>
           <PreloaderPrimary />
+          <Toaster position="bottom-right" />
           {children}
 
           {/* theme fixed shadow */}

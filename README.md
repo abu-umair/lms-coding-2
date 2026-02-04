@@ -29,3 +29,9 @@ npm install zod
 ```bash 
 npm install react-hook-form @hookform/resolvers
 ```
+
+## install react-hot-toast
+1. jalankan perintah
+```bash 
+npm install react-hot-toast
+```

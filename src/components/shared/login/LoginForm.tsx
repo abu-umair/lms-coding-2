@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"; // Gunakan next/navigation untuk Ap
 import { LoginSchema, LoginFormSchema } from "@/libs/validationSchemaLogin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "@/components/shared/form-input/FormInput";
+import toast from "react-hot-toast";
 
 
 
@@ -32,10 +33,18 @@ const LoginForm = () => {
 
   const onSubmit = async (values: LoginFormSchema) => {
     // Logika signIn kamu tetap sama
+    // 1. Tampilkan loading toast
+    const loadingToast = toast.loading("Waiting...");
     console.log("Data tervalidasi:", values);
     const result = await signIn("credentials", { ...values, redirect: false });
 
+    // 2. Hapus loading toast
+    toast.dismiss(loadingToast);
+
     if (result?.error) {
+      // 3. Jika gagal
+      toast.error("Login Gagal! Cek email atau password.");
+
       // Kita beri error ke field password agar input password jadi merah
       setError("email", {
         type: "manual", message: "Email salah"
@@ -44,6 +53,9 @@ const LoginForm = () => {
         type: "manual", message: "Password salah"
       });
     } else if (result?.ok) {
+      // 4. Jika sukses
+      toast.success("Berhasil Masuk!");
+
       // Login sukses, redirect ke halaman utama atau dashboard
       router.push("/");
       router.refresh(); // Opsional: Memastikan data session terbaru terambil
