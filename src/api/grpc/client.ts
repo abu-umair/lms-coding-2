@@ -18,7 +18,7 @@ const getWebTransport = () => {
 
 export const getAuthClient = () => {
     if (authClient === null) {
-        const client = new AuthServiceClient(getWebTransport());
+        authClient = new AuthServiceClient(getWebTransport());
     }
     return authClient
 }
