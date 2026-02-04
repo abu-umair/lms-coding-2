@@ -8,6 +8,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // Gunakan next/navigation untuk App Router
 import { LoginSchema, LoginFormSchema } from "@/libs/validationSchemaLogin";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FormInput from "@/components/shared/form-input/FormInput";
 
 
 
@@ -98,38 +99,23 @@ const LoginForm = () => {
 
       {/* Ganti action dan tambahkan onSubmit handler */}
       <form className="pt-25px" data-aos="fade-up" onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-25px">
-          <label className="text-contentColor dark:text-contentColor-dark mb-10px block">
-            Email
-          </label>
-          <input
-            type="text" // Ganti type ke 'email' untuk validasi browser
-            placeholder="Your email address"
-            className={`w-full h-52px leading-52px pl-5 bg-transparent text-sm focus:outline-none text-contentColor dark:text-contentColor-dark border ${errors.email ? 'border-secondaryColor dark:border-secondaryColor' : 'border-borderColor dark:border-borderColor-dark'}  placeholder:text-placeholder placeholder:opacity-80 font-medium rounded`}
-            {...register("email")}
-          />
-          <div className={`text-sm border-secondaryColor text-secondaryColor h-2 ${errors.email ? 'visible' : 'invisible '}`}>
-            <small>{errors.email && errors.email.message}</small>
-          </div>
+        <FormInput
+          label="Email Address"
+          name="email"  // Type-safe: akan error jika salah ketik
+          type="text"
+          placeholder="Enter your email"
+          register={register}
+          errors={errors}
+        />
 
-        </div>
-
-        <div className="mb-25px">
-          <label className="text-contentColor dark:text-contentColor-dark mb-10px block">
-            Password
-          </label>
-          <input
-            type="password"
-            placeholder="Password"
-            className={`w-full h-52px leading-52px pl-5 bg-transparent text-sm focus:outline-none text-contentColor dark:text-contentColor-dark border ${errors.password ? 'border-secondaryColor dark:border-secondaryColor' : 'border-borderColor dark:border-borderColor-dark'} placeholder:text-placeholder placeholder:opacity-80 font-medium rounded`}
-            {...register("password")}
-          />
-
-          <div className={`text-sm border-secondaryColor text-secondaryColor h-2 ${errors.password ? 'visible' : 'invisible'}`}>
-            <small>{errors.password && errors.password.message}</small>
-          </div>
-
-        </div>
+        <FormInput
+          label="Password"
+          name="password"  // Type-safe: akan error jika salah ketik
+          type="password"
+          placeholder="Password"
+          register={register}
+          errors={errors}
+        />
 
         {/* ... (Remember me & Forgot Password) ... */}
         <div className="text-contentColor dark:text-contentColor-dark flex items-center justify-between">
