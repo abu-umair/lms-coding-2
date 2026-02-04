@@ -23,3 +23,9 @@ npm install next-auth
 ```bash 
 npm install zod
 ```
+
+## install react-hook-form & @hookform/resolvers
+1. jalankan perintah
+```bash 
+npm install react-hook-form @hookform/resolvers
+```
