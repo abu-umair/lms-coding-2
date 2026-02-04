@@ -46,3 +46,19 @@ npm i @protobuf-ts/runtime @protobuf-ts/runtime-rpc @protobuf-ts/grpcweb-transpo
 ```bash 
 npm i -D @protobuf-ts/plugin
 ```
+
+## Generate auth dan base_response dari BE pada folder proto
+1  generate protonya lagi yang mengarah ke folder pb
+```bash
+npx protoc --ts_out ./pb --proto_path ./proto auth/auth.proto
+```
+
+2  generate common/base_response
+```bash
+npx protoc --ts_out ./pb --proto_path ./proto common/base_response.proto
+```
+
+## Install Library JWT Decoder
+```bash
+npm install jwt-decode
+```

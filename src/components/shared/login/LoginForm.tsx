@@ -42,6 +42,8 @@ const LoginForm = () => {
     toast.dismiss(loadingToast);
 
     if (result?.error) {
+      console.log(result);
+
       // 3. Jika gagal
       toast.error("Login Gagal! Cek email atau password.");
 
