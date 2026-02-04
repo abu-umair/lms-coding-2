@@ -3,11 +3,10 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getSession } from 'next-auth/react';
-import { GrpcWebFetchTransport } from "@protobuf-ts/grpcweb-transport";
-import { AuthServiceClient } from "./../../pb/auth/auth.client"; // Path hasil generate proto kamu
 import { RpcError } from "@protobuf-ts/runtime-rpc";
 import { jwtDecode } from "jwt-decode"; // Import decoder
 import toast from "react-hot-toast";
+import { getAuthClient } from "@/api/grpc/client";
 
 
 
@@ -20,7 +19,6 @@ interface MyJwtPayload {
 }
 
 // URL endpoint login Laravel Anda
-const GoGrpc_LOGIN_URL = 'http://localhost:8080';
 const LARAVEL_LOGOUT_URL = "http://127.0.0.1:8000/api/auth/logout";
 
 //* login / sign 
@@ -35,13 +33,12 @@ export const authOptions: NextAuthOptions = {
             async authorize(credentials) {
                 if (!credentials) return null;
 
-                // 1. Setup Transport gRPC
-                const transport = new GrpcWebFetchTransport({
-                    baseUrl: GoGrpc_LOGIN_URL, // URL Backend Go kamu
-                });
-                const client = new AuthServiceClient(transport);
+
 
                 try {
+                    // 1. Ambil client gRPC
+                    const client = getAuthClient();
+
                     // 2. Panggil service login gRPC
                     const res = await client.login({
                         email: credentials.email,
