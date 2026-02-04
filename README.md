@@ -35,3 +35,14 @@ npm install react-hook-form @hookform/resolvers
 ```bash 
 npm install react-hot-toast
 ```
+
+## install dependency untuk BE go+gRPC
+1. jalankan perintah
+```bash 
+npm i @protobuf-ts/runtime @protobuf-ts/runtime-rpc @protobuf-ts/grpcweb-transport
+```
+
+2. jalankan perintah
+```bash 
+npm i -D @protobuf-ts/plugin
+```
