@@ -3,38 +3,80 @@
 "use client"; // <<< JADIKAN CLIENT COMPONENT
 
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // Gunakan next/navigation untuk App Router
+import { LoginSchema, LoginFormSchema } from "@/libs/validationSchemaLogin";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // State untuk loading
+  // const [serverError, setServerError] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Mencegah refresh halaman
-    setError(null);
-    setIsLoading(true);
+  // Inisialisasi React Hook Form
+  const {
+    register,
+    handleSubmit,
+    setError,//?dari useForm
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormSchema>({
+    resolver: zodResolver(LoginSchema), // <--- Jembatan Zod & Hook Form
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-    // Panggil fungsi signIn dengan provider 'credentials'
-    const result = await signIn("credentials", {
-      redirect: false, // Penting: Tangani redirect secara manual
-      email,
-      password,
-    });
-
-    setIsLoading(false);
+  const onSubmit = async (values: LoginFormSchema) => {
+    // Logika signIn kamu tetap sama
+    console.log("Data tervalidasi:", values);
+    const result = await signIn("credentials", { ...values, redirect: false });
 
     if (result?.error) {
-      // Jika authorize() di NextAuth mengembalikan null, error ini akan muncul
-      setError("Login gagal. Periksa kembali email atau kata sandi Anda.");
+      // Kita beri error ke field password agar input password jadi merah
+      setError("email", {
+        type: "manual", message: "Email salah"
+      });
+      setError("password", {
+        type: "manual", message: "Password salah"
+      });
     } else if (result?.ok) {
       // Login sukses, redirect ke halaman utama atau dashboard
       router.push("/");
+      router.refresh(); // Opsional: Memastikan data session terbaru terambil
     }
   };
+
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [error, setError] = useState(null);
+  // const [isLoading, setIsLoading] = useState(false); // State untuk loading
+  // const router = useRouter();
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault(); // Mencegah refresh halaman
+  //   setError(null);
+  //   setIsLoading(true);
+
+  //   // Panggil fungsi signIn dengan provider 'credentials'
+  //   const result = await signIn("credentials", {
+  //     redirect: false, // Penting: Tangani redirect secara manual
+  //     email,
+  //     password,
+  //   });
+
+  //   setIsLoading(false);
+
+  //   if (result?.error) {
+  //     // Jika authorize() di NextAuth mengembalikan null, error ini akan muncul
+  //     setError("Login gagal. Periksa kembali email atau kata sandi Anda.");
+  //   } else if (result?.ok) {
+  //     // Login sukses, redirect ke halaman utama atau dashboard
+  //     router.push("/");
+  //   }
+  // };
 
   return (
     <div className="opacity-100 transition-opacity duration-150 ease-linear">
@@ -54,27 +96,22 @@ const LoginForm = () => {
         </p>
       </div>
 
-      {/* Tampilkan Pesan Error */}
-      {error && (
-        <div style={{ padding: '10px', backgroundColor: '#fdd', color: 'red', borderRadius: '5px', marginBottom: '15px' }}>
-          {error}
-        </div>
-      )}
-
       {/* Ganti action dan tambahkan onSubmit handler */}
-      <form className="pt-25px" data-aos="fade-up" onSubmit={handleSubmit}>
+      <form className="pt-25px" data-aos="fade-up" onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-25px">
           <label className="text-contentColor dark:text-contentColor-dark mb-10px block">
             Email
           </label>
           <input
-            type="email" // Ganti type ke 'email' untuk validasi browser
+            type="text" // Ganti type ke 'email' untuk validasi browser
             placeholder="Your email address"
-            className="w-full h-52px leading-52px pl-5 bg-transparent text-sm focus:outline-none text-contentColor dark:text-contentColor-dark border border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 font-medium rounded"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)} // Tambahkan onChange handler
-            required
+            className={`w-full h-52px leading-52px pl-5 bg-transparent text-sm focus:outline-none text-contentColor dark:text-contentColor-dark border ${errors.email ? 'border-secondaryColor dark:border-secondaryColor' : 'border-borderColor dark:border-borderColor-dark'}  placeholder:text-placeholder placeholder:opacity-80 font-medium rounded`}
+            {...register("email")}
           />
+          <div className={`text-sm border-secondaryColor text-secondaryColor h-2 ${errors.email ? 'visible' : 'invisible '}`}>
+            <small>{errors.email && errors.email.message}</small>
+          </div>
+
         </div>
 
         <div className="mb-25px">
@@ -84,11 +121,14 @@ const LoginForm = () => {
           <input
             type="password"
             placeholder="Password"
-            className="w-full h-52px leading-52px pl-5 bg-transparent text-sm focus:outline-none text-contentColor dark:text-contentColor-dark border border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 font-medium rounded"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)} // Tambahkan onChange handler
-            required
+            className={`w-full h-52px leading-52px pl-5 bg-transparent text-sm focus:outline-none text-contentColor dark:text-contentColor-dark border ${errors.password ? 'border-secondaryColor dark:border-secondaryColor' : 'border-borderColor dark:border-borderColor-dark'} placeholder:text-placeholder placeholder:opacity-80 font-medium rounded`}
+            {...register("password")}
           />
+
+          <div className={`text-sm border-secondaryColor text-secondaryColor h-2 ${errors.password ? 'visible' : 'invisible'}`}>
+            <small>{errors.password && errors.password.message}</small>
+          </div>
+
         </div>
 
         {/* ... (Remember me & Forgot Password) ... */}
@@ -114,10 +154,10 @@ const LoginForm = () => {
         <div className="my-25px text-center">
           <button
             type="submit"
-            disabled={isLoading} // Nonaktifkan tombol saat loading
+            disabled={isSubmitting} // Nonaktifkan tombol saat loading
             className="text-size-15 text-whiteColor bg-primaryColor px-25px py-10px w-full border border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark"
           >
-            {isLoading ? 'Sedang Memproses...' : 'Log in'}
+            {isSubmitting ? 'Sedang Memproses...' : 'Log in'}
           </button>
         </div>
         {/* other login */}
