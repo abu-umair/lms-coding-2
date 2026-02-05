@@ -18,7 +18,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`transition-all duration-500 sticky-header z-medium dark:bg-whiteColor-dark ${
+      className={`transition-all duration-500 sticky-header z-40 dark:bg-whiteColor-dark ${
         isHome2 || isHome2Dark
           ? "lg:border-b border-borderColor dark:border-borderColor-dark"
           : ""

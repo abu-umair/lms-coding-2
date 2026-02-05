@@ -39,7 +39,12 @@ export default function RootLayout({ children }) {
       >
         <NextAuthProvider>
           <PreloaderPrimary />
-          <Toaster position="bottom-right" />
+          <Toaster position="top-center"
+            reverseOrder={false} toastOptions={{
+              style: {
+                zIndex: 10000000, // Paksa z-index sangat tinggi
+              },
+            }} />
           {children}
 
           {/* theme fixed shadow */}
