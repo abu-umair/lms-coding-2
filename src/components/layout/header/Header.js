@@ -16,12 +16,13 @@ const Header = () => {
   const router = useRouter(); // <-- Panggil useRouter
   const { data: session, status } = useSession();
   const isAuthenticated = status === 'authenticated';
-  const userRole = session?.user?.roles; //? Asumsi: session.user.roles adalah string, contoh: "ADMIN"
+  const userRole = session?.user?.role; //? Asumsi: session.user.roles adalah string, contoh: "ADMIN"
   const isHome2 = useIsTrue("/home-2");
   const isHome2Dark = useIsTrue("/home-2-dark");
   // Perbandingan langsung
-  const isAdmin = userRole === 'ADMIN';
-  const isUser = userRole === 'USER'; // Jika Anda perlu memeriksa role lain
+  const isAdmin = userRole === 'admin';
+  const isInstructor = userRole === 'instructor'; // Jika Anda perlu memeriksa role lain
+  const isUser = userRole === 'user'; // Jika Anda perlu memeriksa role lain
 
 
   useEffect(() => {
@@ -68,7 +69,7 @@ const Header = () => {
           {loading ? (
             <span>Memuat Auth...</span>
           ) : session ? (
-            <button onClick={handleLogout}>Logout ({session.user?.name}) ({session.user?.roles})</button>
+            <button onClick={handleLogout}>Logout ({session.user?.name}) ({session.user?.role})</button>
           ) : (
             // GUNAKAN HANDLER NAVIGASI
             <button onClick={handleLoginClick}>Login</button>
@@ -77,6 +78,9 @@ const Header = () => {
         <ul>
           {isAuthenticated && isAdmin && (
             <li><a href="/admin/dashboard">Admin Dashboard</a></li>
+          )}
+          {isAuthenticated && isInstructor && (
+            <li><a href="/admin/dashboard">User user Dashboard</a></li>
           )}
           {isAuthenticated && isUser && (
             <li><a href="/user/dashboard">User Dashboard</a></li>

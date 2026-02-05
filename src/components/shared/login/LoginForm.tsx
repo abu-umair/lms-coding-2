@@ -4,7 +4,7 @@
 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // Gunakan next/navigation untuk App Router
 import { LoginSchema, LoginFormSchema } from "@/libs/validationSchemaLogin";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 
 
 const LoginForm = () => {
+  const isAuthenticated = status === 'authenticated';
   // const [serverError, setServerError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -55,11 +56,22 @@ const LoginForm = () => {
         type: "manual", message: "Password salah"
       });
     } else if (result?.ok) {
+      // Ambil data session terbaru secara paksa (AWAIT)
+      const currentSession = await getSession();
+      const role = (currentSession?.user as any)?.role;
+
       // 4. Jika sukses
       toast.success("Berhasil Masuk!");
 
       // Login sukses, redirect ke halaman utama atau dashboard
-      router.push("/");
+      if (role === "admin") {
+      toast.success("Admin Masuk!");
+      toast.success(role);
+
+        router.push("/dashboards/admin-dashboard");
+      } else {
+        router.push("/");
+      }
       router.refresh(); // Opsional: Memastikan data session terbaru terambil
     }
   };
