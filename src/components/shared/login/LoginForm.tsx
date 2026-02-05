@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 
 
 const LoginForm = () => {
-  const isAuthenticated = status === 'authenticated';
+  // const isAuthenticated = status === 'authenticated';
   // const [serverError, setServerError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -65,8 +65,8 @@ const LoginForm = () => {
 
       // Login sukses, redirect ke halaman utama atau dashboard
       if (role === "admin") {
-      toast.success("Admin Masuk!");
-      toast.success(role);
+        toast.success("Admin Masuk!");
+        toast.success(role);
 
         router.push("/dashboards/admin-dashboard");
       } else {

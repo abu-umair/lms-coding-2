@@ -1,6 +1,6 @@
 import ItemDashboard from "./ItemDashboard";
 
-const ItemsDashboard = ({ item }) => {
+const ItemsDashboard = ({ item, onLogoutClick }) => { // 1. Terima onLogoutClick
   const { title, items } = item;
   return (
     <>
@@ -9,7 +9,12 @@ const ItemsDashboard = ({ item }) => {
       </h5>
       <ul>
         {items?.map((item1, idx) => (
-          <ItemDashboard key={idx} item={item1} />
+          <ItemDashboard 
+            key={idx} 
+            item={item1} 
+            // 2. Jika namanya Logout, berikan fungsi onLogoutClick
+            onClick={item1.name === "Logout" ? onLogoutClick : undefined} 
+          />
         ))}
       </ul>
     </>

@@ -2,12 +2,38 @@
 
 import { usePathname } from "next/navigation";
 import ItemsDashboard from "./ItemsDashboard";
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+import { handleLogout } from "@/libs/logoutAction";
 
 const SidebarDashboard = () => {
   const pathname = usePathname();
   const partOfPathNaem = pathname.split("/")[2].split("-")[0];
   const isAdmin = partOfPathNaem === "admin" ? true : false;
   const isInstructor = partOfPathNaem === "instructor" ? true : false;
+
+  const { data: session, status } = useSession();
+
+  const onConfirmLogout = () => {
+    toast((t) => (
+      <div className="flex flex-col gap-3">
+        <p className="text-sm font-bold">Yakin ingin keluar?</p>
+        <div className="flex gap-2">
+          <button
+            className="bg-red-500 text-white px-3 py-1 rounded text-xs"
+            onClick={async () => {
+              toast.dismiss(t.id);
+              await handleLogout((session as any)?.accessToken);
+            }}
+          >
+            Logout
+          </button>
+          <button onClick={() => toast.dismiss(t.id)} className="text-xs">Batal</button>
+        </div>
+      </div>
+    ));
+  };
+
   const adminItems = [
     {
       title: " WELCOME, MICLE OBEMA",
@@ -459,6 +485,7 @@ const SidebarDashboard = () => {
         {
           name: "Logout",
           path: "#",
+          action: () => onConfirmLogout(),
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -700,14 +727,18 @@ const SidebarDashboard = () => {
   const items = isAdmin
     ? adminItems
     : isInstructor
-    ? instructorItems
-    : studentItems;
+      ? instructorItems
+      : studentItems;
   return (
     <div className="lg:col-start-1 lg:col-span-3">
       {/* navigation menu */}
       <div className="p-30px pt-5 lg:p-5 2xl:p-30px 2xl:pt-5 rounded-lg2 shadow-accordion dark:shadow-accordion-dark bg-whiteColor dark:bg-whiteColor-dark">
         {items?.map((item, idx) => (
-          <ItemsDashboard key={idx} item={item} />
+          <ItemsDashboard
+            key={idx}
+            item={item}
+            onLogoutClick={onConfirmLogout} // Kirim fungsi ke sini
+          />
         ))}
       </div>
     </div>

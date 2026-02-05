@@ -2,7 +2,7 @@
 
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { RpcError } from "@protobuf-ts/runtime-rpc";
 import { jwtDecode } from "jwt-decode"; // Import decoder
 import toast from "react-hot-toast";
@@ -110,29 +110,5 @@ export const authOptions: NextAuthOptions = {
     }
 };
 
-//* logout/signout
-export async function invalidateLaravelToken() {
-    const session = await getSession();
-    const token = (session as any)?.accessToken;
 
-    if (!token) {
-        console.warn("Mencoba logout, tetapi tidak ada token yang ditemukan.");
-        return;
-    }
-
-    // Panggil endpoint logout Laravel dengan token
-    const response = await fetch(LARAVEL_LOGOUT_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // Wajib kirim token yang akan di-invalidate
-        }
-    });
-
-    if (response.ok) {
-        console.log("Token JWT berhasil di-invalidate di sisi Laravel.");
-    } else {
-        console.error("Gagal invalidasi token di Laravel. Status:", response.status);
-    }
-}
 
