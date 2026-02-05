@@ -5,6 +5,8 @@ import Link from "next/link";
 import MobileMenuOpen from "@/components/shared/buttons/MobileMenuOpen";
 import useIsTrue from "@/hooks/useIsTrue";
 import LoginButton from "./LoginButton";
+import { useSession } from 'next-auth/react';
+
 const NavbarRight = () => {
   const isHome4 = useIsTrue("/home-4");
   const isHome4Dark = useIsTrue("/home-4-dark");
@@ -12,13 +14,19 @@ const NavbarRight = () => {
   const isHome5Dark = useIsTrue("/home-5-dark");
   const isHome2Dark = useIsTrue("/home-2-dark");
 
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === 'authenticated';
+  const userRole = session?.user?.role;
+  const isUser = userRole === 'user';
+
+
   return (
     <div className="lg:col-start-10 lg:col-span-3">
       <ul className="relative nav-list flex justify-end items-center">
         {!isHome2Dark && (
           <li className="px-5 lg:px-10px 2xl:px-5 lg:py-4 2xl:py-26px 3xl:py-9 group">
             {/* dropdown menu */}
-            <DropdownCart />
+            {isAuthenticated && isUser && <DropdownCart />}
           </li>
         )}
         {isHome4 || isHome4Dark || isHome5 || isHome5Dark ? (
@@ -36,8 +44,8 @@ const NavbarRight = () => {
             {isHome2Dark
               ? "Get Started Free"
               : isHome4 || isHome4Dark || isHome5 || isHome5Dark
-              ? "Get Start Here"
-              : "Get Start"}
+                ? "Get Start Here"
+                : "Get Start"}
           </Link>
         </li>
         <li className="block lg:hidden">
