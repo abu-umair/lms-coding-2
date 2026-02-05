@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 // Tentukan role yang diizinkan (misalnya: hanya ADMIN)
-const REQUIRED_ROLE_ADMIN = "ADMIN";
+const REQUIRED_ROLE_ADMIN = "admin";
 
 const AuthGuard = ({ children }) => {
 
@@ -17,7 +17,7 @@ const AuthGuard = ({ children }) => {
 
     useEffect(() => {
         if (!isLoading) {
-            const userRoles = session?.user?.roles || [];
+            const userRoles = session?.user?.role || [];
 
             // 1. Cek apakah sudah login (status 'unauthenticated')
             if (status === 'unauthenticated') {
@@ -39,7 +39,7 @@ const AuthGuard = ({ children }) => {
     }, [status, session, isLoading, router]);
 
 
-    if (isLoading || status === 'unauthenticated' || status === 'authenticated' && !session?.user?.roles?.includes(REQUIRED_ROLE_ADMIN)) {
+    if (isLoading || status === 'unauthenticated' || status === 'authenticated' && !session?.user?.role?.includes(REQUIRED_ROLE_ADMIN)) {
         // Tampilkan Loading atau Null hingga hasil akhir diketahui
         return <div>Loading... atau Sedang memeriksa izin...</div>;
     }
