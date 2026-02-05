@@ -10,18 +10,16 @@ export const metadata = {
 };
 const Admin_Dashboard = () => {
   return (
-    <AuthGuard>
-      <PageWrapper>
-        <main>
-          <DsahboardWrapper>
-            <DashboardContainer>
-              <AdminDashboardMain />
-            </DashboardContainer>
-          </DsahboardWrapper>
-          <ThemeController />
-        </main>
-      </PageWrapper>
-    </AuthGuard>
+    <PageWrapper>
+      <main>
+        <DsahboardWrapper>
+          <DashboardContainer>
+            <AdminDashboardMain />
+          </DashboardContainer>
+        </DsahboardWrapper>
+        <ThemeController />
+      </main>
+    </PageWrapper>
   );
 };
 
