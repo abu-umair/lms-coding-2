@@ -4,7 +4,7 @@ import { getAuthClient } from "@/api/grpc/client";
 
 
 //* logout/signout
-export const handleLogout = async (accessToken: string) => {
+export const handleLogout = async (accessToken: string, router: any) => {
     // 1. Tampilkan Loading
     const loadingToast = toast.loading("Sedang keluar...");
 
@@ -21,12 +21,16 @@ export const handleLogout = async (accessToken: string) => {
         toast.dismiss(loadingToast);
         toast.success("Berhasil keluar!");
 
-        await signOut({ callbackUrl: "/login" });
+        // 3. Navigasi SPA via Next.js Router
+        router.push("/login");
+        router.refresh(); // Opsional: Bersihkan cache route server-side
 
     } catch (error) {
         toast.dismiss(loadingToast);
         console.error("Gagal logout di server:", error);
         // Tetap logout di browser meskipun server gagal (opsional)
-        await signOut({ callbackUrl: "/login" });
+        // Tetap paksa logout di sisi klien jika server gagal
+        await signOut({ redirect: false });
+        router.push("/login");
     }
 };

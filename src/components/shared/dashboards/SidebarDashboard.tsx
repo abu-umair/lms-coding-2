@@ -5,6 +5,7 @@ import ItemsDashboard from "./ItemsDashboard";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { handleLogout } from "@/libs/logoutAction";
+import { useRouter } from "next/navigation";
 
 const SidebarDashboard = () => {
   const pathname = usePathname();
@@ -13,6 +14,7 @@ const SidebarDashboard = () => {
   const isInstructor = partOfPathNaem === "instructor" ? true : false;
 
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   const onConfirmLogout = () => {
     toast((t) => (
@@ -23,7 +25,8 @@ const SidebarDashboard = () => {
             className="bg-red-500 text-white px-3 py-1 rounded text-xs"
             onClick={async () => {
               toast.dismiss(t.id);
-              await handleLogout((session as any)?.accessToken);
+              // KIRIM ROUTER KE SINI
+              await handleLogout((session as any)?.accessToken, router);
             }}
           >
             Logout
