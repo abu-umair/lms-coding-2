@@ -39,36 +39,41 @@ const SignUpForm = () => {
 
       if (res.response.base?.isError) {
         // throw new Error(res.response.base.message || "Gagal mendaftar");
+        toast.dismiss(loadingToast);
+
         toast.error(res.response.base.message || "Sign Up Gagal!");
-      }
-
-      toast.success("Pendaftaran Berhasil! Mengalihkan...");
-
-      // 2. AUTO LOGIN (Agar user tidak perlu ketik email/pass lagi)
-      const result = await signIn("credentials", {
-        email: values.email,
-        password: values.password,
-        redirect: false,
-      });
-
-      toast.dismiss(loadingToast);
-
-      if (result?.ok) {
-        const currentSession = await getSession();
-        const role = (currentSession?.user as any)?.role;
-        router.push("/"); // Jika auto-login gagal, lempar ke login
-
-
-        if (role === "admin") {
-          toast.success("Admin Masuk!");
-          toast.success(role);
-
-          router.push("/dashboards/admin-dashboard");
-        }
 
       } else {
-        router.push("/"); // Jika auto-login gagal, lempar ke login
+
+        toast.success("Pendaftaran Berhasil! Mengalihkan...");
+
+        // 2. AUTO LOGIN (Agar user tidak perlu ketik email/pass lagi)
+        const result = await signIn("credentials", {
+          email: values.email,
+          password: values.password,
+          redirect: false,
+        });
+
+        toast.dismiss(loadingToast);
+
+        if (result?.ok) {
+          const currentSession = await getSession();
+          const role = (currentSession?.user as any)?.role;
+          router.push("/"); // Jika auto-login gagal, lempar ke login
+
+
+          if (role === "admin") {
+            toast.success("Admin Masuk!");
+            toast.success(role);
+
+            router.push("/dashboards/admin-dashboard");
+          }
+
+        }
       }
+
+      router.push("/"); // Jika auto-login gagal, lempar ke login
+
       router.refresh();
 
 
@@ -105,6 +110,7 @@ const SignUpForm = () => {
             placeholder="Enter your name"
             register={register}
             errors={errors}
+            disabled={isSubmitting}
           />
           <FormInput
             label="Email Address"
@@ -113,6 +119,7 @@ const SignUpForm = () => {
             placeholder="Enter your email"
             register={register}
             errors={errors}
+            disabled={isSubmitting}
           />
           <FormInput
             label="Password"
@@ -121,6 +128,7 @@ const SignUpForm = () => {
             placeholder="Password"
             register={register}
             errors={errors}
+            disabled={isSubmitting}
           // className='lg:!mb-0'
           />
           <FormInput
@@ -130,6 +138,7 @@ const SignUpForm = () => {
             placeholder="Password"
             register={register}
             errors={errors}
+            disabled={isSubmitting}
           // className='!mb-0'
 
           />
@@ -205,6 +214,7 @@ const SignUpForm = () => {
           type="checkbox"
           register={register}
           errors={errors}
+          disabled={isSubmitting}
           className='flex items-center'
         />
 
