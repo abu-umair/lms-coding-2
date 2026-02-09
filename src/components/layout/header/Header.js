@@ -8,23 +8,10 @@ import useIsTrue from "@/hooks/useIsTrue";
 import Aos from "aos";
 import stickyHeader from "@/libs/stickyHeader";
 import smoothScroll from "@/libs/smoothScroll";
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { useRouter } from "next/navigation";
-import { invalidateLaravelToken } from "@/libs/authOptions";
 
 const Header = () => {
-  const router = useRouter(); // <-- Panggil useRouter
-  const { data: session, status } = useSession();
-  const isAuthenticated = status === 'authenticated';
-  const userRole = session?.user?.role; //? Asumsi: session.user.roles adalah string, contoh: "ADMIN"
   const isHome2 = useIsTrue("/home-2");
   const isHome2Dark = useIsTrue("/home-2-dark");
-  // Perbandingan langsung
-  const isAdmin = userRole === 'admin';
-  const isInstructor = userRole === 'instructor'; // Jika Anda perlu memeriksa role lain
-  const isUser = userRole === 'user'; // Jika Anda perlu memeriksa role lain
-
-
   useEffect(() => {
     stickyHeader();
     smoothScroll();
@@ -36,28 +23,6 @@ const Header = () => {
       easing: "ease",
     });
   }, []);
-
-  const loading = status === 'loading';
-
-  // Handler untuk tombol Login
-  const handleLoginClick = () => {
-    // NAVIGASI LANGSUNG ke halaman kustom Anda
-    router.push('/login');
-  };
-
-  const handleLogout = async () => {
-    // 1. Panggil API Laravel untuk invalidasi Token (ASYNCHRONOUS)
-    await invalidateLaravelToken(); // Tunggu hingga token di backend dihapus/di-blacklist
-
-    // 2. Hapus sesi NextAuth (Hapus cookie)
-    signOut({
-      callbackUrl: '/login'
-    });
-
-    // CATATAN: Jika Anda menggunakan API Laravel untuk invalidasi token,
-    // Anda harus memanggil API tersebut DI SINI sebelum atau bersamaan dengan signOut().
-  };
-
   return (
     <header>
       <div>
@@ -65,28 +30,6 @@ const Header = () => {
         {isHome2Dark || isHome2 ? "" : <HeaderTop />}
         {/* navbar */}
         <Navbar />
-        <div>
-          {loading ? (
-            <span>Memuat Auth...</span>
-          ) : session ? (
-            <button onClick={handleLogout}>Logout ({session.user?.name}) ({session.user?.role})</button>
-          ) : (
-            // GUNAKAN HANDLER NAVIGASI
-            <button onClick={handleLoginClick}>Login</button>
-          )}
-        </div>
-        <ul>
-          {isAuthenticated && isAdmin && (
-            <li><a href="/admin/dashboard">Admin Dashboard</a></li>
-          )}
-          {isAuthenticated && isInstructor && (
-            <li><a href="/admin/dashboard">User user Dashboard</a></li>
-          )}
-          {isAuthenticated && isUser && (
-            <li><a href="/user/dashboard">User Dashboard</a></li>
-          )}
-          {/* ... */}
-        </ul>
         {/* mobile menu */}
         <MobileMenu />
       </div>
