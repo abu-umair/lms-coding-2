@@ -1,6 +1,15 @@
 import React from "react";
 
-const ProfileDetails = () => {
+interface UserProfile {
+  fullName: string;
+  email: string;
+  memberSince?: string;
+  role: string;
+  phoneNumber?: string;
+  biography?: string;
+}
+
+const ProfileDetails = ({ user }: { user: UserProfile }) => {
   return (
     <div className="p-10px md:px-10 md:py-50px mb-30px bg-whiteColor dark:bg-whiteColor-dark shadow-accordion dark:shadow-accordion-dark rounded-5">
       <div className="mb-6 pb-5 border-b-2 border-borderColor dark:border-borderColor-dark">
@@ -16,46 +25,46 @@ const ProfileDetails = () => {
               <span className="inline-block">Registration Date</span>
             </div>
             <div className="md:col-start-5 md:col-span-8">
-              <span className="inline-block">20, January 2024 9:00 PM</span>
+              <span className="inline-block">{user.memberSince}</span>
             </div>
           </li>
 
           <li className="text-lg text-contentColor dark:text-contentColor-dark leading-1.67 grid grid-cols-1 md:grid-cols-12 gap-x-30px mt-15px">
             <div className="md:col-start-1 md:col-span-4">
-              <span className="inline-block">First Name</span>
+              <span className="inline-block">Full Name</span>
             </div>
             <div className="md:col-start-5 md:col-span-8">
-              <span className="inline-block">Michle</span>
+              <span className="inline-block">{user.fullName}</span>
             </div>
           </li>
-          <li className="text-lg text-contentColor dark:text-contentColor-dark leading-1.67 grid grid-cols-1 md:grid-cols-12 gap-x-30px mt-15px">
+          {/* <li className="text-lg text-contentColor dark:text-contentColor-dark leading-1.67 grid grid-cols-1 md:grid-cols-12 gap-x-30px mt-15px">
             <div className="md:col-start-1 md:col-span-4">
               <span className="inline-block">Last Name</span>
             </div>
             <div className="md:col-start-5 md:col-span-8">
               <span className="inline-block">Obema</span>
             </div>
-          </li>
+          </li> */}
 
-          <li className="text-lg text-contentColor dark:text-contentColor-dark leading-1.67 grid grid-cols-1 md:grid-cols-12 gap-x-30px mt-15px">
+          {/* <li className="text-lg text-contentColor dark:text-contentColor-dark leading-1.67 grid grid-cols-1 md:grid-cols-12 gap-x-30px mt-15px">
             <div className="md:col-start-1 md:col-span-4">
               <span className="inline-block">Username</span>
             </div>
             <div className="md:col-start-5 md:col-span-8">
               <span className="inline-block"> obema007</span>
             </div>
-          </li>
+          </li> */}
 
           <li className="text-lg text-contentColor dark:text-contentColor-dark leading-1.67 grid grid-cols-1 md:grid-cols-12 gap-x-30px mt-15px">
             <div className="md:col-start-1 md:col-span-4">
               <span className="inline-block">Email</span>
             </div>
             <div className="md:col-start-5 md:col-span-8">
-              <span className="inline-block"> obema@example.com</span>
+              <span className="inline-block">{user.email}</span>
             </div>
           </li>
 
-          <li className="text-lg text-contentColor dark:text-contentColor-dark leading-1.67 grid grid-cols-1 md:grid-cols-12 gap-x-30px mt-15px">
+          {/* <li className="text-lg text-contentColor dark:text-contentColor-dark leading-1.67 grid grid-cols-1 md:grid-cols-12 gap-x-30px mt-15px">
             <div className="md:col-start-1 md:col-span-4">
               <span className="inline-block">Phone Number</span>
             </div>
@@ -86,7 +95,7 @@ const ProfileDetails = () => {
                 nulla, corporis impedit quasi alias est!
               </span>
             </div>
-          </li>
+          </li> */}
         </ul>
       </div>
     </div>
