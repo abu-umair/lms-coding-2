@@ -21,8 +21,8 @@ const PopularSubjects = () => {
         isHome9 || isHome9Dark
           ? "Daily Routnies"
           : isHome10 || isHome10Dark
-          ? "AI Automation"
-          : "Business Studies",
+            ? "AI Automation"
+            : "Business Studies",
       desc: "Construction is a general term the art and science to form",
       navButton: true,
       image: isHome10 || isHome10Dark ? chatImage : null,
@@ -32,8 +32,8 @@ const PopularSubjects = () => {
         isHome9 || isHome9Dark
           ? "Lifestyle"
           : isHome10 || isHome10Dark
-          ? "Development"
-          : "Business",
+            ? "Development"
+            : "Business",
 
       svg: (
         <div className="relative w-20 h-[60px]">
@@ -103,8 +103,8 @@ const PopularSubjects = () => {
         isHome9 || isHome9Dark
           ? "Activity Room"
           : isHome10 || isHome10Dark
-          ? "Virtual Reality"
-          : "Artist & Design",
+            ? "Virtual Reality"
+            : "Artist & Design",
       desc: " Construction is a general term the art and science to form",
       navButton: true,
       id: 2,
@@ -113,8 +113,8 @@ const PopularSubjects = () => {
         isHome9 || isHome9Dark
           ? "Personal Development"
           : isHome10 || isHome10Dark
-          ? "Photography"
-          : "Art & Design",
+            ? "Photography"
+            : "Art & Design",
       translate: true,
       image: isHome10 || isHome10Dark ? virtualRealityImage : null,
       svg: (
@@ -180,8 +180,8 @@ const PopularSubjects = () => {
         isHome9 || isHome9Dark
           ? "Toy & Games"
           : isHome10 || isHome10Dark
-          ? "Machine Learning"
-          : "Machine Learning",
+            ? "Machine Learning"
+            : "Machine Learning",
       desc: "Construction is a general term the art and science to form",
       navButton: true,
       id: 3,
@@ -190,8 +190,8 @@ const PopularSubjects = () => {
         isHome9 || isHome9Dark
           ? "Health & Fitness"
           : isHome10 || isHome10Dark
-          ? "Development"
-          : "Development",
+            ? "Development"
+            : "Development",
       image: isHome10 || isHome10Dark ? machineLearningImage : null,
       svg: (
         <div className="relative w-20 h-[60px]">
@@ -259,8 +259,8 @@ const PopularSubjects = () => {
         isHome9 || isHome9Dark
           ? "Summer Champ"
           : isHome10 || isHome10Dark
-          ? "Ai Cloud Services"
-          : "Artist & Design",
+            ? "Ai Cloud Services"
+            : "Artist & Design",
       desc: "Construction is a general term the art and science to form",
       navButton: true,
       id: 4,
@@ -269,8 +269,8 @@ const PopularSubjects = () => {
         isHome9 || isHome9Dark
           ? "Health & Fitness"
           : isHome10 || isHome10Dark
-          ? "Development"
-          : "Development",
+            ? "Development"
+            : "Development",
       translate: true,
       image: isHome10 || isHome10Dark ? artifitialImage : null,
       svg: (
@@ -339,11 +339,10 @@ const PopularSubjects = () => {
   ];
   return (
     <section
-      className={`${
-        isHome9 || isHome9Dark
-          ? "bg-[url(../assets/images/about/about_bg_1.jpg)] bg-cover"
-          : "bg-lightGrey10 dark:bg-lightGrey10-dark"
-      } pt-50px pb-110px`}
+      className={`${isHome9 || isHome9Dark
+        ? "bg-[url(../assets/images/about/about_bg_1.jpg)] bg-cover"
+        : "bg-lightGrey10 dark:bg-lightGrey10-dark"
+        } pt-50px pb-110px`}
     >
       <div className="container">
         {/* about section  */}
