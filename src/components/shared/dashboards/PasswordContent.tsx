@@ -1,23 +1,19 @@
 import React from "react";
 import ButtonPrimary from "../buttons/ButtonPrimary";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import FormInput from "@/components/shared/form-input/FormInput";
-import { getSession } from "next-auth/react";
 import { getAuthClient } from "@/api/grpc/client";
 import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PasswordSchema, PasswordFormData } from "@/libs/validationSchemaPassword";
-import { useSession } from "next-auth/react";
-import { RpcError } from "@protobuf-ts/runtime-rpc";
+import useGrpcApi from "@/components/shared/others/useGrpcApi";
 
 
 const PasswordContent = () => {
-  const { data: session } = useSession();
-  const router = useRouter();
 
+  const { callApi, isLoading } = useGrpcApi();
 
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<PasswordFormData>({
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<PasswordFormData>({
     resolver: zodResolver(PasswordSchema),
     defaultValues: {
       current_password: "",
@@ -28,64 +24,27 @@ const PasswordContent = () => {
 
 
   const onSubmit = async (values: PasswordFormData) => {
-    const loadingToast = toast.loading("sedang proses...");
-    const accessToken = (session as any)?.accessToken;
-
-    try {
-
-      console.log(accessToken);
-
-
-      const client = getAuthClient();
-      const res = await client.changePassword({
+    await callApi(
+      getAuthClient().changePassword({
         oldPassword: values.current_password,
         newPassword: values.new_password,
         newPasswordConfirmation: values.password_confirmation,
-      });
-      console.log(res.response.base?.isError);
-
-
-      if (res.response.base?.isError) {
-        // throw new Error(res.response.base.message || "Gagal mendaftar");
-        toast.dismiss(loadingToast);
-
-        toast.error(res.response.base.message || "Ganti password Gagal!");
-
-      } else {
-        toast.dismiss(loadingToast);
-
-        toast.success("Ganti password Berhasil!");
-        reset();
-        // reset({ current_password: "" }) spesifik
-      }
-
-
-    } catch (e: any) {
-      toast.dismiss(loadingToast);
-
-      if (e instanceof RpcError) {
-        // Menangani error spesifik dari gRPC
-        console.log("gRPC Error Code:", e.code);
-
-        if (e.code === 'UNAUTHENTICATED') {
-          toast.error("Sesi telah berakhir, silakan login kembali.");
-          router.push("/login");
-          router.refresh();
-
-        } else if (e.code === 'INTERNAL') {
-          toast.error("Terjadi kesalahan.");
-          router.push("/login");
-          router.refresh();
-
-        } else {
-          toast.error(`Error: ${e.message}`);
+      }),
+      {
+        loadingMessage: "Memperbarui kata sandi...",
+        successMessage: "Kata sandi berhasil diperbarui!", // Otomatis muncul toast success
+        onSuccess: () => reset(),
+        useDefaultError: false,
+        defaultError: (res) => {
+          if (res.response.base?.message === "Old password is not matched") {
+            toast.error("Kata sandi lama salah!");
+          } else {
+            toast.error("Gagal memperbarui password.");
+          }
         }
-      } else {
-        // Menangani error JavaScript umum (misal: network error, bug kode)
-        toast.error(e.message || "Terjadi kesalahan sistem.");
       }
-    }
-  }
+    );
+  };
 
   return (
     <form
@@ -100,7 +59,7 @@ const PasswordContent = () => {
         placeholder="Password"
         register={register}
         errors={errors}
-        disabled={isSubmitting}
+        disabled={isLoading}
       // className='lg:!mb-0'
       />
       <FormInput
@@ -110,7 +69,7 @@ const PasswordContent = () => {
         placeholder="Password"
         register={register}
         errors={errors}
-        disabled={isSubmitting}
+        disabled={isLoading}
       // className='lg:!mb-0'
       />
       <FormInput
@@ -120,7 +79,7 @@ const PasswordContent = () => {
         placeholder="Password"
         register={register}
         errors={errors}
-        disabled={isSubmitting}
+        disabled={isLoading}
       // className='!mb-0'
 
       />
@@ -128,9 +87,9 @@ const PasswordContent = () => {
       <div className="mt-15px">
         <ButtonPrimary
           type={"submit"}
-          disabled={isSubmitting}
+          disabled={isLoading}
         >
-          {isSubmitting ? 'Sedang Memproses...' : 'Update Password'}
+          {isLoading ? 'Sedang Memproses..' : 'Update Password'}
         </ButtonPrimary>
       </div>
     </form>
