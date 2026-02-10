@@ -39,8 +39,8 @@ export default function RootLayout({ children }) {
         className={`relative leading-[1.8] bg-bodyBg dark:bg-bodyBg-dark z-0  ${inter.className}`}
       >
         <NextAuthProvider>
+          <PreloaderPrimary />
           <GrpcSyncProvider>
-            <PreloaderPrimary />
             <Toaster position="top-center"
               reverseOrder={false} toastOptions={{
                 style: {

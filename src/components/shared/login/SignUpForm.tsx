@@ -7,11 +7,14 @@ import toast from "react-hot-toast";
 import { getAuthClient } from "@/api/grpc/client";
 import { getSession, signIn } from "next-auth/react";
 import FormInput from "@/components/shared/form-input/FormInput";
+import useGrpcApi from "@/components/shared/others/useGrpcApi";
+
 
 
 
 const SignUpForm = () => {
   const router = useRouter();
+  const { callApi, isLoading } = useGrpcApi();
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignUpFormData>({
     resolver: zodResolver(SignUpSchema),
@@ -23,64 +26,52 @@ const SignUpForm = () => {
       isAccepted: false, // WAJIB ADA
     }
   });
-
   const onSubmit = async (values: SignUpFormData) => {
-    const loadingToast = toast.loading("Mendaftarkan akun...");
-
-    try {
-      // 1. Panggil gRPC Register
-      const client = getAuthClient();
-      const res = await client.register({
+    // Kita panggil callApi. Hook akan otomatis mengurus toast.loading("Mendaftarkan akun...")
+    await callApi(
+      getAuthClient().register({
         fullName: values.name,
         email: values.email,
         password: values.password,
         passwordConfirmation: values.password_confirmation,
-      });
+      }),
+      {
+        loadingMessage: "Mendaftarkan akun...",
+        // Kita tidak perlu successMessage di sini karena kita ingin melakukan 
+        // proses tambahan (Auto Login) sebelum menunjukkan toast sukses final.
+        onSuccess: async (res) => {
+          toast.success("Pendaftaran Berhasil! Menyiapkan sesi...");
 
-      if (res.response.base?.isError) {
-        // throw new Error(res.response.base.message || "Gagal mendaftar");
-        toast.dismiss(loadingToast);
+          // 2. AUTO LOGIN
+          const result = await signIn("credentials", {
+            email: values.email,
+            password: values.password,
+            redirect: false,
+          });
 
-        toast.error(res.response.base.message || "Sign Up Gagal!");
+          if (result?.ok) {
+            const currentSession = await getSession();
+            const role = (currentSession?.user as any)?.role;
 
-      } else {
+            // Logika Pengalihan Role
+            if (role === "admin") {
+              toast.success("Selamat datang, Admin!");
+              router.push("/dashboards/admin-dashboard");
+            } else {
+              router.push("/");
+            }
 
-        toast.success("Pendaftaran Berhasil! Mengalihkan...");
-
-        // 2. AUTO LOGIN (Agar user tidak perlu ketik email/pass lagi)
-        const result = await signIn("credentials", {
-          email: values.email,
-          password: values.password,
-          redirect: false,
-        });
-
-        toast.dismiss(loadingToast);
-
-        if (result?.ok) {
-          const currentSession = await getSession();
-          const role = (currentSession?.user as any)?.role;
-          router.push("/"); // Jika auto-login gagal, lempar ke login
-
-
-          if (role === "admin") {
-            toast.success("Admin Masuk!");
-            toast.success(role);
-
-            router.push("/dashboards/admin-dashboard");
+            router.refresh();
+          } else {
+            // Jika auto-login gagal (jarang terjadi tapi mungkin), arahkan ke login manual
+            toast.error("Gagal masuk otomatis. Silakan login manual.");
+            router.push("/login");
           }
-
-        }
+        },
+        // Jika ada error spesifik dari gRPC backend (misal email duplikat)
+        useDefaultError: true,
       }
-
-      router.push("/"); // Jika auto-login gagal, lempar ke login
-
-      router.refresh();
-
-
-    } catch (error: any) {
-      toast.dismiss(loadingToast);
-      toast.error(error.message || "Terjadi kesalahan sistem.");
-    }
+    );
   };
 
   return (
@@ -110,7 +101,7 @@ const SignUpForm = () => {
             placeholder="Enter your name"
             register={register}
             errors={errors}
-            disabled={isSubmitting}
+            disabled={isLoading}
           />
           <FormInput
             label="Email Address"
@@ -119,7 +110,7 @@ const SignUpForm = () => {
             placeholder="Enter your email"
             register={register}
             errors={errors}
-            disabled={isSubmitting}
+            disabled={isLoading}
           />
           <FormInput
             label="Password"
@@ -128,7 +119,7 @@ const SignUpForm = () => {
             placeholder="Password"
             register={register}
             errors={errors}
-            disabled={isSubmitting}
+            disabled={isLoading}
           // className='lg:!mb-0'
           />
           <FormInput
@@ -138,7 +129,7 @@ const SignUpForm = () => {
             placeholder="Password"
             register={register}
             errors={errors}
-            disabled={isSubmitting}
+            disabled={isLoading}
           // className='!mb-0'
 
           />
@@ -214,7 +205,7 @@ const SignUpForm = () => {
           type="checkbox"
           register={register}
           errors={errors}
-          disabled={isSubmitting}
+          disabled={isLoading}
           className='flex items-center'
         />
 
@@ -222,10 +213,10 @@ const SignUpForm = () => {
         <div className="mt-25px text-center">
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isLoading}
             className="text-size-15 text-whiteColor bg-primaryColor px-25px py-10px w-full border border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark"
           >
-            {isSubmitting ? 'Sedang Memproses...' : 'Sign Up'}
+            {isLoading ? 'Sedang Memproses...' : 'Sign Up'}
           </button>
         </div>
       </form>
