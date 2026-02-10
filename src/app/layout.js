@@ -12,6 +12,7 @@ import FixedShadow from "@/components/shared/others/FixedShadow";
 import PreloaderPrimary from "@/components/shared/others/PreloaderPrimary";
 import NextAuthProvider from "@/components/shared/others/NextAuthProvider";
 import { Toaster } from "react-hot-toast";
+import GrpcSyncProvider from "@/components/shared/others/GrpcSyncProvider";
 
 export const inter = Inter({
   subsets: ["latin"],
@@ -38,20 +39,22 @@ export default function RootLayout({ children }) {
         className={`relative leading-[1.8] bg-bodyBg dark:bg-bodyBg-dark z-0  ${inter.className}`}
       >
         <NextAuthProvider>
-          <PreloaderPrimary />
-          <Toaster position="top-center"
-            reverseOrder={false} toastOptions={{
-              style: {
-                zIndex: 10000000, // Paksa z-index sangat tinggi
-              },
-            }} />
-          {children}
+          <GrpcSyncProvider>
+            <PreloaderPrimary />
+            <Toaster position="top-center"
+              reverseOrder={false} toastOptions={{
+                style: {
+                  zIndex: 10000000, // Paksa z-index sangat tinggi
+                },
+              }} />
+            {children}
 
-          {/* theme fixed shadow */}
-          <div>
-            <FixedShadow />
-            <FixedShadow align={"right"} />
-          </div>
+            {/* theme fixed shadow */}
+            <div>
+              <FixedShadow />
+              <FixedShadow align={"right"} />
+            </div>
+          </GrpcSyncProvider>
         </NextAuthProvider>
       </body>
     </html>

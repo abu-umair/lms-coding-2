@@ -41,10 +41,6 @@ const PasswordContent = () => {
         oldPassword: values.current_password,
         newPassword: values.new_password,
         newPasswordConfirmation: values.password_confirmation,
-      }, {
-        meta: { // Gunakan 'meta', bukan 'metadata' untuk protobuf-ts
-          "authorization": accessToken ? `Bearer ${accessToken}` : ''
-        }
       });
       console.log(res.response.base?.isError);
 
