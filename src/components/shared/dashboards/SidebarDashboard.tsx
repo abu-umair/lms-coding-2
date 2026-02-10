@@ -6,8 +6,11 @@ import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { handleLogout } from "@/libs/logoutAction";
 import { useRouter } from "next/navigation";
+import useGrpcApi from "@/components/shared/others/useGrpcApi";
+
 
 const SidebarDashboard = () => {
+  const { callApi, isLoading } = useGrpcApi();
   const pathname = usePathname();
   const partOfPathNaem = pathname.split("/")[2].split("-")[0];
   const isAdmin = partOfPathNaem === "admin" ? true : false;
@@ -23,13 +26,14 @@ const SidebarDashboard = () => {
         <div className="flex gap-2">
           <button
             className="bg-red-500 text-white px-3 py-1 rounded text-xs"
+            disabled={isLoading}
             onClick={async () => {
               toast.dismiss(t.id);
               // KIRIM ROUTER KE SINI
-              await handleLogout((session as any)?.accessToken, router);
+              await handleLogout(router, callApi);
             }}
           >
-            Logout
+            {isLoading ? "Logging out..." : "Logout"}
           </button>
           <button onClick={() => toast.dismiss(t.id)} className="text-xs">Batal</button>
         </div>
