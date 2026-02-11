@@ -62,3 +62,15 @@ npx protoc --ts_out ./pb --proto_path ./proto common/base_response.proto
 ```bash
 npm install jwt-decode
 ```
+
+## Generate course
+1. generate protonya lagi yang mengarah ke folder pb
+```bash
+npx protoc --ts_out ./pb --proto_path ./proto course/course.proto
+```
+
+## install axios
+``` bash
+npm install axios
+
+```
