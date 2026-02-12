@@ -76,34 +76,6 @@ const LoginForm = () => {
     }
   };
 
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [error, setError] = useState(null);
-  // const [isLoading, setIsLoading] = useState(false); // State untuk loading
-  // const router = useRouter();
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault(); // Mencegah refresh halaman
-  //   setError(null);
-  //   setIsLoading(true);
-
-  //   // Panggil fungsi signIn dengan provider 'credentials'
-  //   const result = await signIn("credentials", {
-  //     redirect: false, // Penting: Tangani redirect secara manual
-  //     email,
-  //     password,
-  //   });
-
-  //   setIsLoading(false);
-
-  //   if (result?.error) {
-  //     // Jika authorize() di NextAuth mengembalikan null, error ini akan muncul
-  //     setError("Login gagal. Periksa kembali email atau kata sandi Anda.");
-  //   } else if (result?.ok) {
-  //     // Login sukses, redirect ke halaman utama atau dashboard
-  //     router.push("/");
-  //   }
-  // };
 
   return (
     <div className="opacity-100 transition-opacity duration-150 ease-linear">

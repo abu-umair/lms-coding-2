@@ -73,7 +73,7 @@ const useGrpcApi = () => {
 
             // A. Handle jika ini adalah RpcError (Masalah Network/Auth)
             if (e instanceof RpcError) {
-                if (e.code === 'UNAUTHENTICATED' || e.code === 'INTERNAL') {
+                if (e.code === 'UNAUTHENTICATED') {
                     toast.error("Sesi berakhir, silakan login ulang.");
                     signOut({ callbackUrl: '/login' });
                 } else if (useDefaultError) {

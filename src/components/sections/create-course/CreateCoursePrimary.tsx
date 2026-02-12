@@ -1,3 +1,4 @@
+'use client';
 import dashboardImage4 from "@/assets/images/dashbord/dashbord__4.jpg";
 import dashboardImage5 from "@/assets/images/dashbord/dashbord__5.jpg";
 import dashboardImage7 from "@/assets/images/dashbord/dashbord__7.jpg";
@@ -5,7 +6,117 @@ import dashboardImage8 from "@/assets/images/dashbord/dashbord__8.jpg";
 import dashboardImage9 from "@/assets/images/dashbord/dashbord__9.jpg";
 import ButtonPrimary from "@/components/shared/buttons/ButtonPrimary";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
+import FormInput from "@/components/shared/form-input/FormInput";
+import { getCourseClient } from "@/api/grpc/client";
+import toast from "react-hot-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CourseSchema, CourseFormData } from "@/libs/validationSchemaCourse";
+import useGrpcApi from "@/components/shared/others/useGrpcApi";
+import axios from "axios";
+
+
+interface uploadImageResponse {
+  course_id?: string;
+  file_name: string;
+  message: string;
+  success: boolean;
+}
+
 const CreateCoursePrimary = () => {
+  const { callApi, isLoading } = useGrpcApi();
+
+  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm<CourseFormData>({
+    resolver: zodResolver(CourseSchema),
+    defaultValues: {
+
+      name: "",
+      image: "",
+      slug: "",
+      title: "",
+      description: "",
+      category_id: "",
+      course_level_id: "",
+      course_language_id: "",
+      duration: "",
+      timezone: "",
+      thumbnail: "",
+      demo_video_storage: "",
+      demo_video_source: "",
+      price: "",
+      discount: "",
+      capacity: 0,
+      address: "",
+      seo_description: "",
+      certificate: "",
+      message_for_reviewer: "",
+      instructor_id: "",
+      status: "",
+      is_approved: "",
+    }
+  });
+
+  // Pantau field image
+  const imageValue = watch("image");
+
+
+  const onSubmit = async (values: CourseFormData) => {
+
+    const formData = new FormData();
+    formData.append('image', values.image[0]);
+    console.log(formData);
+
+    const toastId = toast.loading("wait...");
+    const uploadResponse = await axios.post<uploadImageResponse>('http://127.0.0.1:3000/course/upload', formData);
+    toast.dismiss(toastId);
+
+    if (uploadResponse.status !== 200) {
+      toast.error("Upload Gambar Gagal");
+
+      return
+    }
+
+    console.log(uploadResponse);
+    console.log(typeof values.discount);
+
+
+
+    await callApi(
+      getCourseClient().createCourse({
+        id: uploadResponse.data.course_id,
+        name: values.name,
+        imageFileName: uploadResponse.data.file_name,
+        slug: values.slug,
+        title: values.title,
+        description: values.description,
+        categoryId: values.category_id,
+        courseLevelId: values.course_level_id,
+        courseLanguageId: values.course_language_id,
+        duration: values.duration,
+        timezone: values.timezone,
+        thumbnail: values.thumbnail,
+        demoVideoStorage: values.demo_video_storage,
+        demoVideoSource: values.demo_video_source,
+        price: values.price || "0",
+        discount: values.discount || '0',
+        capacity: Number(values.capacity) || 0,
+        address: values.address,
+        seoDescription: values.seo_description,
+        certificate: values.certificate,
+        messageForReviewer: values.message_for_reviewer,
+        instructorId: values.instructor_id,
+        status: values.status,
+        isApproved: values.is_approved,
+      }),
+      {
+        loadingMessage: "Memperbarui Course",
+        successMessage: "Course berhasil diperbarui!", // Otomatis muncul toast success
+        // onSuccess: () => reset(),
+        useDefaultError: true,
+      }
+    );
+  };
+
   return (
     <div>
       <div className="container pt-100px pb-100px" data-aos="fade-up">
@@ -41,41 +152,48 @@ const CreateCoursePrimary = () => {
                     <div className="content-wrapper py-4 px-5">
                       <div>
                         <form
+                          onSubmit={handleSubmit(onSubmit, (err) => console.log("Validasi Gagal:", err))}
                           className="p-10px md:p-10 lg:p-5 2xl:p-10 bg-darkdeep3 dark:bg-transparent text-sm text-blackColor dark:text-blackColor-dark leading-1.8"
                           data-aos="fade-up"
                         >
                           <div className="grid grid-cols-1 mb-15px gap-15px">
-                            <div>
-                              <label className="mb-3 block font-semibold">
-                                Course Title
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Course Title"
-                                className="w-full py-10px px-5 text-sm focus:outline-none text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md font-no"
-                              />
-                            </div>
-                            <div>
-                              <label className="mb-3 block font-semibold">
-                                Course Slug
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Course Slug"
-                                className="w-full py-10px px-5 text-sm focus:outline-none text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md font-no"
-                              />
-                            </div>
-                            <div>
-                              <label className="mb-3 block font-semibold">
-                                Free Regular Price ($)
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Free Regular Price ($)"
-                                className="w-full py-10px px-5 text-sm focus:outline-none text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md font-no"
-                              />
-                            </div>
-                            <div>
+                            <FormInput
+                              label="Course Title"
+                              name="name"
+                              type="text"
+                              placeholder="Course Title"
+                              register={register}
+                              errors={errors}
+                              disabled={isLoading}
+                              isInputCourse={true}
+                              lableRequired={true}
+                            />
+
+                            <FormInput
+                              label="Course Slug"
+                              name="slug"
+                              type="text"
+                              placeholder="Course Slug"
+                              register={register}
+                              errors={errors}
+                              disabled={isLoading}
+                              isInputCourse={true}
+                              lableRequired={true}
+                            />
+
+                            <FormInput
+                              label="Course Image"
+                              name="image"
+                              type="image"
+                              // placeholder=""
+                              register={register}
+                              errors={errors}
+                              disabled={isLoading}
+                              isInputCourse={true}
+                              lableRequired={true}
+                              watchValueImg={imageValue}
+                            />
+                            {/* <div>
                               <p className="flex items-center gap-0.5">
                                 <svg
                                   className="feather feather-info w-14px h-14px"
@@ -103,8 +221,8 @@ const CreateCoursePrimary = () => {
                                 placeholder="Discounted Price ($)"
                                 className="w-full py-10px px-5 text-sm focus:outline-none text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md"
                               />
-                            </div>
-                            <div>
+                            </div> */}
+                            {/* <div>
                               <p className="flex items-center gap-0.5">
                                 <svg
                                   className="feather feather-info w-14px h-14px"
@@ -171,22 +289,26 @@ const CreateCoursePrimary = () => {
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            </div> */}
                           </div>
-                          <div className="mb-15px">
-                            <label className="mb-3 block font-semibold">
-                              About Course
-                            </label>
-                            <textarea
-                              className="w-full py-10px px-5 text-sm text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md"
-                              cols="30"
-                              rows="10"
-                            />
-                          </div>
+                          <FormInput
+                            label="Course Description"
+                            name="description"
+                            type="textarea"
+                            // placeholder=""
+                            register={register}
+                            errors={errors}
+                            disabled={isLoading}
+                            isInputCourse={true}
+                          />
 
                           <div className="mt-15px">
-                            <ButtonPrimary type={"submit"}>
-                              Update Info
+                            <ButtonPrimary
+                              type={"submit"}
+                              disabled={isLoading}
+
+                            >
+                              {isLoading ? 'Sedang Memproses..' : 'Update Info'}
                             </ButtonPrimary>
                           </div>
                         </form>
@@ -364,8 +486,8 @@ const CreateCoursePrimary = () => {
                               <textarea
                                 defaultValue={"Add your course benefits here."}
                                 className="w-full py-10px px-5 mb-15px text-sm text-contentColor dark:text-contentColor-dark text-start bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md"
-                                cols="30"
-                                rows="10"
+                                cols={30}
+                                rows={10}
                               />
 
                               <p className="flex items-center gap-0.5">
@@ -395,8 +517,8 @@ const CreateCoursePrimary = () => {
                               <textarea
                                 className="w-full py-10px px-5 mb-15px text-sm text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md"
                                 defaultValue={"Add your course benefits here."}
-                                cols="30"
-                                rows="10"
+                                cols={30}
+                                rows={10}
                               />
 
                               <p className="flex items-center gap-0.5">
@@ -426,8 +548,8 @@ const CreateCoursePrimary = () => {
                             </label>
                             <textarea
                               className="w-full py-10px px-5 text-sm text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md"
-                              cols="30"
-                              rows="10"
+                              cols={30}
+                              rows={10}
                             />
                           </div>
 

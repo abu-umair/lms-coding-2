@@ -1,6 +1,7 @@
 // 1. Setup Transport gRPC
 import { GrpcWebFetchTransport } from "@protobuf-ts/grpcweb-transport";
 import { AuthServiceClient, IAuthServiceClient } from "@/../../pb/auth/auth.client"; // Path hasil generate proto kamu
+import { CourseServiceClient, ICourseServiceClient } from "@/../../pb/course/course.client"; // Path hasil generate proto kamu
 import { authInterceptor } from "@/api/grpc/auth-interceptor";
 
 
@@ -8,6 +9,7 @@ import { authInterceptor } from "@/api/grpc/auth-interceptor";
 const GoGrpc_LOGIN_URL = 'http://localhost:8080';
 let webTransport: GrpcWebFetchTransport | null = null;
 let authClient: IAuthServiceClient | null = null;
+let courseClient: ICourseServiceClient | null = null;
 
 const getWebTransport = () => {
     if (webTransport === null) {
@@ -24,4 +26,11 @@ export const getAuthClient = () => {
         authClient = new AuthServiceClient(getWebTransport());
     }
     return authClient
+}
+
+export const getCourseClient = () => {
+    if (courseClient === null) {
+        courseClient = new CourseServiceClient(getWebTransport());
+    }
+    return courseClient
 }
