@@ -32,6 +32,7 @@ const CreateCoursePrimary = () => {
   const [courseId, setCourseId] = useState<string | null>(null);
   const [courseData, setCourseData] = useState<string | null>(null);
   const { data: session, status: authStatus } = useSession();
+  const [existingImageUrl, setExistingImageUrl] = useState<string | null>(null);
 
   // 1. Cek localStorage saat pertama kali halaman dibuka (Refresh)
   useEffect(() => {
@@ -95,6 +96,7 @@ const CreateCoursePrimary = () => {
           fieldMask: {
             paths: [
               "name",
+              "image_file_name",
               "slug",
               "title",
               "description",
@@ -142,6 +144,9 @@ const CreateCoursePrimary = () => {
                 // Untuk status, pastikan tidak mengambil status dari metadata gRPC
                 status: data.status || "",
               });
+              if (data.imageFileName) {
+                setExistingImageUrl(data.imageFileName);
+              }
             },
           }
         );
@@ -156,62 +161,124 @@ const CreateCoursePrimary = () => {
 
 
   const onSubmit = async (values: CourseFormData) => {
+    let finalImageFileName = "";
+    let currentCourseId = courseId; // Menggunakan state courseId yang ada
 
-    const formData = new FormData();
-    formData.append('image', values.image[0]);
-    console.log(formData);
+    if (values.image && values.image[0] instanceof File) {
+      // ADA FILE BARU: Upload ke server
+      const formData = new FormData();
+      formData.append('image', values.image[0]);
+      if (courseId) {
+        formData.append('course_id', courseId);
+      }
 
-    const toastId = toast.loading("wait...");
-    const uploadResponse = await axios.post<uploadImageResponse>('http://127.0.0.1:3000/course/upload', formData);
-    toast.dismiss(toastId);
+      console.log(formData);
 
-    if (uploadResponse.status !== 200) {
-      toast.error("Upload Gambar Gagal");
+      const toastId = toast.loading("wait...");
+      const uploadResponse = await axios.post<uploadImageResponse>('http://127.0.0.1:3000/course/upload', formData);
+      toast.dismiss(toastId);
 
-      return
+      if (uploadResponse.status !== 200) {
+        toast.error("Upload Gambar Gagal");
+
+        return
+      }
+
+      finalImageFileName = uploadResponse.data.file_name;
+      currentCourseId = uploadResponse.data.course_id || courseId;
+    } else {
+      if (existingImageUrl) {
+        // menghapus bagian "http://localhost:3000/storage/58f983da-6160-48bf-ad0a-8699c6c97de9/course/"
+        // split('/') akan memecah string berdasarkan karakter "/"
+        // pop() akan mengambil elemen paling terakhir dari hasil pecahan tersebut
+        finalImageFileName = existingImageUrl.split('/').pop() || "";
+        console.log(finalImageFileName);
+      } else {
+        finalImageFileName = "";
+      }
+
     }
 
-    console.log(uploadResponse);
-    console.log(typeof values.discount);
+    if (courseId) { //?jika edit course
+      console.log(courseId);
+
+
+      await callApi(
+        getCourseClient().editCourse({
+          id: courseId, // Pakai ID yang ada atau dari upload
+          name: values.name,
+          imageFileName: finalImageFileName,
+          slug: values.slug,
+          title: values.title,
+          description: values.description,
+          categoryId: values.category_id || undefined,
+          courseLevelId: values.course_level_id || undefined,
+          courseLanguageId: values.course_language_id || undefined,
+          duration: values.duration,
+          timezone: values.timezone,
+          thumbnail: values.thumbnail,
+          demoVideoStorage: values.demo_video_storage,
+          demoVideoSource: values.demo_video_source,
+          price: values.price,
+          discount: values.discount,
+          capacity: Number(values.capacity),
+          address: values.address,
+          seoDescription: values.seo_description,
+          certificate: values.certificate,
+          messageForReviewer: values.message_for_reviewer,
+          instructorId: values.instructor_id || undefined,
+          status: values.status,
+          isApproved: values.is_approved,
+        }),
+        {
+          loadingMessage: "Memperbarui Course",
+          successMessage: "Course berhasil diupdate!", // Otomatis muncul toast success
+          // onSuccess: () => reset(),
+          useDefaultError: true,
+        }
+      );
+
+    } else {
+
+      await callApi(
+        getCourseClient().createCourse({
+          id: currentCourseId || "", // Pakai ID yang ada atau dari upload
+          name: values.name,
+          imageFileName: finalImageFileName,
+          slug: values.slug,
+          title: values.title,
+          description: values.description,
+          categoryId: values.category_id || undefined,
+          courseLevelId: values.course_level_id || undefined,
+          courseLanguageId: values.course_language_id || undefined,
+          duration: values.duration,
+          timezone: values.timezone,
+          thumbnail: values.thumbnail,
+          demoVideoStorage: values.demo_video_storage,
+          demoVideoSource: values.demo_video_source,
+          price: values.price || undefined,
+          discount: values.discount || undefined,
+          capacity: Number(values.capacity) || undefined,
+          address: values.address,
+          seoDescription: values.seo_description,
+          certificate: values.certificate,
+          messageForReviewer: values.message_for_reviewer,
+          instructorId: values.instructor_id || undefined,
+          status: values.status,
+          isApproved: values.is_approved,
+        }),
+        {
+          loadingMessage: "Memperbarui Course",
+          successMessage: "Course berhasil diperbarui!", // Otomatis muncul toast success
+          // onSuccess: () => reset(),
+          useDefaultError: true,
+        }
+      );
+    }
 
 
 
-    await callApi(
-      getCourseClient().createCourse({
-        id: uploadResponse.data.course_id,
-        name: values.name,
-        imageFileName: uploadResponse.data.file_name,
-        slug: values.slug,
-        title: values.title,
-        description: values.description,
-        categoryId: values.category_id,
-        courseLevelId: values.course_level_id,
-        courseLanguageId: values.course_language_id,
-        duration: values.duration,
-        timezone: values.timezone,
-        thumbnail: values.thumbnail,
-        demoVideoStorage: values.demo_video_storage,
-        demoVideoSource: values.demo_video_source,
-        price: values.price || "0",
-        discount: values.discount || '0',
-        capacity: Number(values.capacity) || 0,
-        address: values.address,
-        seoDescription: values.seo_description,
-        certificate: values.certificate,
-        messageForReviewer: values.message_for_reviewer,
-        instructorId: values.instructor_id,
-        status: values.status,
-        isApproved: values.is_approved,
-      }),
-      {
-        loadingMessage: "Memperbarui Course",
-        successMessage: "Course berhasil diperbarui!", // Otomatis muncul toast success
-        // onSuccess: () => reset(),
-        useDefaultError: true,
-      }
-    );
-
-    saveCourseId(uploadResponse.data.course_id);
+    saveCourseId(currentCourseId);
 
   };
 
@@ -290,6 +357,7 @@ const CreateCoursePrimary = () => {
                               isInputCourse={true}
                               lableRequired={true}
                               watchValueImg={imageValue}
+                              initialImageUrl={existingImageUrl}
                             />
                             {/* <div>
                               <p className="flex items-center gap-0.5">

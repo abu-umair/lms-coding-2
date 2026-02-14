@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { UseFormRegister, FieldErrors, Path } from 'react-hook-form';
 
 
@@ -14,6 +14,7 @@ interface FormInputProps<T extends Record<string, any>> {
     isInputCourse?: boolean;
     lableRequired?: boolean;
     watchValueImg?: any;
+    initialImageUrl?: string | null;
 }
 
 function FormInput<T extends Record<string, any>>({
@@ -28,6 +29,7 @@ function FormInput<T extends Record<string, any>>({
     isInputCourse,
     lableRequired,
     watchValueImg,
+    initialImageUrl
 }: FormInputProps<T>) {
 
     // Ambil error spesifik untuk field ini
@@ -71,12 +73,25 @@ function FormInput<T extends Record<string, any>>({
 
         // 3. Tipe Image/File
         if (type === "image" && isInputCourse) {
+            const [previewUrl, setPreviewUrl] = useState<string | null>(null);
             // imageFile biasanya berupa FileList, jadi kita ambil index ke-0
             const file = watchValueImg && watchValueImg[0] instanceof File ? watchValueImg[0] : null;
-
+            useEffect(() => {
+                if (file) {
+                    // Jika user memilih file baru, buat preview dari local file
+                    const objectUrl = URL.createObjectURL(file);
+                    setPreviewUrl(objectUrl);
+                    return () => URL.revokeObjectURL(objectUrl);
+                } else if (initialImageUrl) {
+                    // Jika tidak ada file baru tapi ada URL dari server (saat edit)
+                    setPreviewUrl(initialImageUrl);
+                } else {
+                    setPreviewUrl(null);
+                }
+            }, [file, initialImageUrl]);
             // Gunakan useMemo atau pastikan previewUrl tidak menyebabkan memory leak jika ini komponen besar
             // Tapi untuk penggunaan standar, cara ini sudah cukup:
-            const previewUrl = file ? URL.createObjectURL(file) : null;
+            // const previewUrl = file ? URL.createObjectURL(file) : null;
 
             return (
                 <div className="flex flex-col items-center justify-center w-full">
