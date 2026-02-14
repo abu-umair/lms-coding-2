@@ -14,6 +14,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CourseSchema, CourseFormData } from "@/libs/validationSchemaCourse";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { getCourseId, saveCourseId } from "@/libs/courseStorage";
+import { useSession } from "next-auth/react";
+import { setGrpcCache } from "@/api/grpc/auth-interceptor";
 
 
 interface uploadImageResponse {
@@ -25,6 +29,19 @@ interface uploadImageResponse {
 
 const CreateCoursePrimary = () => {
   const { callApi, isLoading } = useGrpcApi();
+  const [courseId, setCourseId] = useState<string | null>(null);
+  const [courseData, setCourseData] = useState<string | null>(null);
+  const { data: session, status: authStatus } = useSession();
+
+  // 1. Cek localStorage saat pertama kali halaman dibuka (Refresh)
+  useEffect(() => {
+    const savedId = getCourseId();
+    if (savedId) {
+      setCourseId(savedId);
+    }
+  }, []);
+
+
 
   const { register, handleSubmit, reset, watch, formState: { errors } } = useForm<CourseFormData>({
     resolver: zodResolver(CourseSchema),
@@ -58,6 +75,84 @@ const CreateCoursePrimary = () => {
 
   // Pantau field image
   const imageValue = watch("image");
+
+  // Jika ada courseId, panggil fungsi GetCourse (gRPC/API)
+  useEffect(() => {
+    const fetchDetail = async () => {
+      const accessToken = (session as any)?.accessToken;
+
+      if (!courseId && authStatus !== "authenticated" && !accessToken) {
+        return;
+      }
+
+
+      if (courseId && authStatus == "authenticated" && accessToken) {
+        setGrpcCache(accessToken);//?mengupdate token lebih cepat, menghindari race condition
+
+        await callApi(getCourseClient().detailCourse({
+          id: courseId,
+          // Implementasi field_mask sesuai input Postman Anda
+          fieldMask: {
+            paths: [
+              "name",
+              "slug",
+              "title",
+              "description",
+              "category_id",
+              "course_level_id",
+              "course_language_id",
+              "duration",
+              "timezone",
+              "instructor_id",
+              "price",
+              "discount",
+              "capacity",
+              "address",
+              "seo_description",
+              "is_approved",
+              "status",
+            ]
+          }
+        }),
+          {
+            loadingMessage: "Mengambil data detail...",
+            onSuccess: (res) => {
+              const data = res.response;
+              // Gunakan reset() dari react-hook-form untuk mengisi form otomatis
+              reset({
+                name: data.name || "",
+                slug: data.slug || "",
+                title: data.title || "",
+                description: data.description || "",
+                category_id: data.categoryId || "",
+                course_level_id: data.courseLevelId || "",
+                course_language_id: data.courseLanguageId || "",
+                duration: data.duration || "",
+                timezone: data.timezone || "",
+                instructor_id: data.instructorId || "", // camelCase dari gRPC ke snake_case Form
+
+                // Pastikan field lain juga dipetakan
+                price: data.price || "0",
+                discount: data.discount || "0",
+                capacity: Number(data.capacity) || 0,
+                address: data.address || "",
+                seo_description: data.seoDescription || "",
+                is_approved: data.isApproved || "",
+
+                // Untuk status, pastikan tidak mengambil status dari metadata gRPC
+                status: data.status || "",
+              });
+            },
+          }
+        );
+      }
+
+
+
+    };
+
+    fetchDetail();
+  }, [courseId, authStatus, session]); // Tambahkan reset ke dependency agar sinkron
 
 
   const onSubmit = async (values: CourseFormData) => {
@@ -115,6 +210,9 @@ const CreateCoursePrimary = () => {
         useDefaultError: true,
       }
     );
+
+    saveCourseId(uploadResponse.data.course_id);
+
   };
 
   return (

@@ -75,7 +75,7 @@ const useGrpcApi = () => {
             if (e instanceof RpcError) {
                 if (e.code === 'UNAUTHENTICATED') {
                     toast.error("Sesi berakhir, silakan login ulang.");
-                    signOut({ callbackUrl: '/login' });
+                    // signOut({ callbackUrl: '/login' });
                 } else if (useDefaultError) {
                     toast.error(`Error: ${e.message}`);
                 }

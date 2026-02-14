@@ -5,6 +5,7 @@ import { signOut } from "next-auth/react";
 let cachedToken: string | null = null;
 
 export const setGrpcCache = (token: string) => {
+    console.log("CACHE SET: Token masuk ke interseptor");
     cachedToken = token;
 };
 
@@ -23,21 +24,24 @@ export const authInterceptor: RpcInterceptor = {
                 ...options.meta,
                 authorization: `Bearer ${cachedToken}`
             };
+        } else {
+            // Ini yang menyebabkan error Unauthenticated di Go
+            console.error("INTERCEPTOR ERROR: cachedToken masih KOSONG saat request dikirim!");
         }
 
         // 2. Jalankan Request
         const call = next(method, input, options);
 
         // 3. Logic Response: Cek Error (menggunakan .then untuk menghindari async/await)
-        call.response.catch((error) => {
-            if (error.code === "UNAUTHENTICATED") {
-                console.warn("Sesi berakhir, mengarahkan ke login...");
-                clearGrpcCache();
-                if (typeof window !== "undefined") {
-                    signOut({ callbackUrl: "/login" });
-                }
-            }
-        });
+        // call.response.catch((error) => {
+        //     if (error.code === "UNAUTHENTICATED") {
+        //         console.warn("Sesi berakhir, mengarahkan ke login...");
+        //         clearGrpcCache();
+        //         if (typeof window !== "undefined") {
+        //             signOut({ callbackUrl: "/login" });
+        //         }
+        //     }
+        // });
 
         return call;
     },
