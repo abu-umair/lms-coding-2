@@ -200,37 +200,39 @@ const CreateCoursePrimary = () => {
 
     }
 
+    // Persiapkan Payload (Agar tidak nulis berulang kali)
+    const coursePayload = {
+      id: currentCourseId || "", // Pakai ID yang ada atau dari upload
+      name: values.name,
+      imageFileName: finalImageFileName,
+      slug: values.slug,
+      title: values.title,
+      description: values.description,
+      categoryId: values.category_id || undefined,
+      courseLevelId: values.course_level_id || undefined,
+      courseLanguageId: values.course_language_id || undefined,
+      duration: values.duration,
+      timezone: values.timezone,
+      thumbnail: values.thumbnail,
+      demoVideoStorage: values.demo_video_storage,
+      demoVideoSource: values.demo_video_source,
+      price: values.price || undefined,
+      discount: values.discount || undefined,
+      capacity: Number(values.capacity) || undefined,
+      address: values.address,
+      seoDescription: values.seo_description,
+      certificate: values.certificate,
+      messageForReviewer: values.message_for_reviewer,
+      instructorId: values.instructor_id || undefined,
+      status: values.status,
+      isApproved: values.is_approved,
+    };
+
     if (courseId) { //?jika edit course
       console.log(courseId);
 
-
       await callApi(
-        getCourseClient().editCourse({
-          id: courseId, // Pakai ID yang ada atau dari upload
-          name: values.name,
-          imageFileName: finalImageFileName,
-          slug: values.slug,
-          title: values.title,
-          description: values.description,
-          categoryId: values.category_id || undefined,
-          courseLevelId: values.course_level_id || undefined,
-          courseLanguageId: values.course_language_id || undefined,
-          duration: values.duration,
-          timezone: values.timezone,
-          thumbnail: values.thumbnail,
-          demoVideoStorage: values.demo_video_storage,
-          demoVideoSource: values.demo_video_source,
-          price: values.price,
-          discount: values.discount,
-          capacity: Number(values.capacity),
-          address: values.address,
-          seoDescription: values.seo_description,
-          certificate: values.certificate,
-          messageForReviewer: values.message_for_reviewer,
-          instructorId: values.instructor_id || undefined,
-          status: values.status,
-          isApproved: values.is_approved,
-        }),
+        getCourseClient().editCourse(coursePayload),
         {
           loadingMessage: "Memperbarui Course",
           successMessage: "Course berhasil diupdate!", // Otomatis muncul toast success
@@ -242,32 +244,7 @@ const CreateCoursePrimary = () => {
     } else {
 
       await callApi(
-        getCourseClient().createCourse({
-          id: currentCourseId || "", // Pakai ID yang ada atau dari upload
-          name: values.name,
-          imageFileName: finalImageFileName,
-          slug: values.slug,
-          title: values.title,
-          description: values.description,
-          categoryId: values.category_id || undefined,
-          courseLevelId: values.course_level_id || undefined,
-          courseLanguageId: values.course_language_id || undefined,
-          duration: values.duration,
-          timezone: values.timezone,
-          thumbnail: values.thumbnail,
-          demoVideoStorage: values.demo_video_storage,
-          demoVideoSource: values.demo_video_source,
-          price: values.price || undefined,
-          discount: values.discount || undefined,
-          capacity: Number(values.capacity) || undefined,
-          address: values.address,
-          seoDescription: values.seo_description,
-          certificate: values.certificate,
-          messageForReviewer: values.message_for_reviewer,
-          instructorId: values.instructor_id || undefined,
-          status: values.status,
-          isApproved: values.is_approved,
-        }),
+        getCourseClient().createCourse(coursePayload),
         {
           loadingMessage: "Memperbarui Course",
           successMessage: "Course berhasil diperbarui!", // Otomatis muncul toast success
