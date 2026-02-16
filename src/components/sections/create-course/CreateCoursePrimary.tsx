@@ -11,7 +11,7 @@ import FormInput from "@/components/shared/form-input/FormInput";
 import { getCourseClient } from "@/api/grpc/client";
 import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CourseSchema, CourseFormData } from "@/libs/validationSchemaCourse";
+import { getCourseSchema, CourseFormData } from "@/libs/validationSchemaCourse";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -33,6 +33,7 @@ const CreateCoursePrimary = () => {
   const [courseData, setCourseData] = useState<string | null>(null);
   const { data: session, status: authStatus } = useSession();
   const [existingImageUrl, setExistingImageUrl] = useState<string | null>(null);
+  const isEditMode = !!courseId;
 
   // 1. Cek localStorage saat pertama kali halaman dibuka (Refresh)
   useEffect(() => {
@@ -45,11 +46,11 @@ const CreateCoursePrimary = () => {
 
 
   const { register, handleSubmit, reset, watch, formState: { errors } } = useForm<CourseFormData>({
-    resolver: zodResolver(CourseSchema),
+    resolver: zodResolver(getCourseSchema(isEditMode)) as any,
     defaultValues: {
 
       name: "",
-      image: "",
+      image: undefined,
       slug: "",
       title: "",
       description: "",
