@@ -20,6 +20,25 @@ import { useSession } from "next-auth/react";
 import { setGrpcCache } from "@/api/grpc/auth-interceptor";
 
 
+const categoryOptions = [
+  { value: "cat-2", label: "Design" },
+  { value: "cat-3", label: "Marketing" },
+  { value: "1db02880-fae4-4f4e-815b-58b39b84d635", label: "Programming" },
+];
+
+const languageOptions = [
+  { value: "en", label: "English" },
+  { value: "2db02880-fae4-4f4e-815b-58b39b84d635", label: "Bahasa Indonesia" },
+];
+
+const levelOptions = [
+  { value: "1", label: "1" },
+  { value: "2", label: "2" },
+  { value: "3", label: "3" },
+  { value: "4db02880-fae4-4f4e-815b-58b39b84d635", label: "4" },
+  { value: "5", label: "5" },
+];
+
 interface uploadImageResponse {
   course_id?: string;
   file_name: string;
@@ -106,6 +125,9 @@ const CreateCoursePrimary = () => {
               "course_language_id",
               "duration",
               "timezone",
+              "thumbnail",
+              "demo_video_storage",
+              "demo_video_source",
               "instructor_id",
               "price",
               "discount",
@@ -132,6 +154,9 @@ const CreateCoursePrimary = () => {
                 course_language_id: data.courseLanguageId || "",
                 duration: data.duration || "",
                 timezone: data.timezone || "",
+                thumbnail: data.thumbnail || "",
+                demo_video_source: data.demoVideoSource || "",
+                demo_video_storage: data.demoVideoStorage || "",
                 instructor_id: data.instructorId || "", // camelCase dari gRPC ke snake_case Form
 
                 // Pastikan field lain juga dipetakan
@@ -468,7 +493,7 @@ const CreateCoursePrimary = () => {
                   <div className="py-5 px-30px">
                     <div className="cursor-pointer accordion-controller flex justify-between items-center text-lg text-headingColor font-semibold w-full dark:text-headingColor-dark font-hind leading-27px">
                       <div>
-                        <span>Course Intro Video</span>
+                        <span>Course Details & Media</span>
                       </div>
                       <svg
                         className="transition-all duration-500 rotate-0"
@@ -484,30 +509,78 @@ const CreateCoursePrimary = () => {
                       </svg>
                     </div>
                   </div>
+
+
                   {/*  content */}
                   <div className="accordion-content transition-all duration-500 overflow-hidden h-0">
                     <div className="content-wrapper py-4 px-5">
                       <div>
                         <form
+                          onSubmit={handleSubmit(onSubmit, (err) => console.log("Validasi Gagal:", err))}
                           className="p-10px md:p-10 lg:p-5 2xl:p-10 bg-darkdeep3 dark:bg-transparent text-sm text-blackColor dark:text-blackColor-dark leading-1.8"
-                          data-aos="fade-up"
+                        // data-aos="fade-up"
                         >
                           <div className="grid grid-cols-1 mb-15px gap-15px">
-                            <div>
-                              <input
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3">
+                              <FormInput
+                                label="Kategori"
+                                name="category_id"
+                                type="select"
+                                placeholder="Pilih Kategori Kursus"
+                                options={categoryOptions}
+                                register={register}
+                                errors={errors}
+                                disabled={isLoading}
+                                isInputCourse={true}
+                              />
+
+                              <FormInput
+                                label="Bahasa"
+                                name="course_language_id"
+                                type="select"
+                                placeholder="Pilih Bahasa"
+                                options={languageOptions}
+                                register={register}
+                                errors={errors}
+                                disabled={isLoading}
+                                isInputCourse={true}
+                              />
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3">
+                              <FormInput
+                                label="Level Kursus"
+                                name="course_level_id"
+                                type="select"
+                                placeholder="Pilih Level Kursus"
+                                options={levelOptions}
+                                register={register}
+                                errors={errors}
+                                disabled={isLoading}
+                                isInputCourse={true}
+                              />
+                              <FormInput
+                                label="Durasi Kursus (menit)"
+                                name="duration"
                                 type="text"
-                                placeholder="Select Video searche"
-                                className="w-full py-10px px-5 text-sm focus:outline-none text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md font-no"
+                                placeholder="Masukkan Durasi Kursus"
+                                register={register}
+                                errors={errors}
+                                disabled={isLoading}
+                                isInputCourse={true}
+                              // lableRequired={true}
                               />
                             </div>
                             <div>
-                              <label className="mb-3 block font-semibold">
-                                Add Your Video URL
-                              </label>
-                              <input
+                              <FormInput
+                                label="Demo Video URL"
+                                name="demo_video_source"
                                 type="text"
-                                placeholder="Add your Video URL here"
-                                className="w-full py-10px px-5 text-sm focus:outline-none text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md font-no"
+                                placeholder="Masukkan Demo Video URL"
+                                register={register}
+                                errors={errors}
+                                disabled={isLoading}
+                                isInputCourse={true}
+                              // lableRequired={true}
                               />
                             </div>
                             <div>
@@ -521,6 +594,15 @@ const CreateCoursePrimary = () => {
                                 </a>
                               </div>
                             </div>
+                          </div>
+                          <div className="mt-15px">
+                            <ButtonPrimary
+                              type={"submit"}
+                              disabled={isLoading}
+
+                            >
+                              {isLoading ? 'Sedang Memproses..' : 'Update Details'}
+                            </ButtonPrimary>
                           </div>
                         </form>
                       </div>

@@ -4,7 +4,7 @@ import { UseFormRegister, FieldErrors, Path } from 'react-hook-form';
 
 interface FormInputProps<T extends Record<string, any>> {
     label: string;
-    type: "text" | "password" | "checkbox" | "textarea" | "image" //? type nya bisa text atau password
+    type: "text" | "password" | "checkbox" | "textarea" | "image" | "select"; //? type nya bisa text atau password
     placeholder?: string //?tidak wajib, (bisa dibuat optional)
     register: UseFormRegister<T>;
     name: Path<T>;
@@ -15,6 +15,7 @@ interface FormInputProps<T extends Record<string, any>> {
     lableRequired?: boolean;
     watchValueImg?: any;
     initialImageUrl?: string | null;
+    options?: { value: string; label: string }[];
 }
 
 function FormInput<T extends Record<string, any>>({
@@ -29,7 +30,8 @@ function FormInput<T extends Record<string, any>>({
     isInputCourse,
     lableRequired,
     watchValueImg,
-    initialImageUrl
+    initialImageUrl,
+    options,
 }: FormInputProps<T>) {
 
     // Ambil error spesifik untuk field ini
@@ -176,6 +178,31 @@ function FormInput<T extends Record<string, any>>({
                     {...register(name)}
                 />
             )
+        }
+
+        // 5. Tipe Select (Tambahkan di dalam renderInput)
+        if (type === "select" && isInputCourse) {
+            return (
+                <select
+                    disabled={disabled}
+                    className={`
+                w-full py-10px px-5 text-sm text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 focus:outline-none leading-23px rounded-md appearance-none cursor-pointer
+                ${errorField ? 'border-secondaryColor' : 'border-borderColor dark:border-borderColor-dark'} 
+            `}
+                    style={{
+                        backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23666%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E")',
+                        backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1em'
+                    }}
+                    {...register(name)}
+                >
+                    <option value="">{placeholder || "Pilih Opsi"}</option>
+                    {options?.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                        </option>
+                    ))}
+                </select>
+            );
         }
 
         // 4. Default (Text, Password, dll - Label di atas)
