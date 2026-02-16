@@ -521,7 +521,7 @@ const CreateCoursePrimary = () => {
                         // data-aos="fade-up"
                         >
                           <div className="grid grid-cols-1 mb-15px gap-15px">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3">
+                            <div className="grid grid-cols-1 xl:grid-cols-2 mb-15px gap-y-15px gap-x-30px">
                               <FormInput
                                 label="Kategori"
                                 name="category_id"
@@ -546,7 +546,7 @@ const CreateCoursePrimary = () => {
                                 isInputCourse={true}
                               />
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3">
+                            <div className="grid grid-cols-1 xl:grid-cols-2 mb-15px gap-y-15px gap-x-30px">
                               <FormInput
                                 label="Level Kursus"
                                 name="course_level_id"
