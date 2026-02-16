@@ -657,6 +657,90 @@ const CreateCoursePrimary = () => {
                   <div className="py-5 px-30px">
                     <div className="cursor-pointer accordion-controller flex justify-between items-center text-lg text-headingColor font-semibold w-full dark:text-headingColor-dark font-hind leading-27px">
                       <div>
+                        <span>Course Price & Capacity</span>
+                      </div>
+                      <svg
+                        className="transition-all duration-500 rotate-0"
+                        width="20"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 16 16"
+                        fill="#212529"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                  {/*  content */}
+                  <div className="accordion-content transition-all duration-500 overflow-hidden h-0">
+                    <div className="content-wrapper py-4 px-5">
+                      <div>
+                        <form
+                          onSubmit={handleSubmit(onSubmit, (err) => console.log("Validasi Gagal:", err))}
+                          className="p-10px md:p-10 lg:p-5 2xl:p-10 bg-darkdeep3 dark:bg-transparent text-sm text-blackColor dark:text-blackColor-dark leading-1.8"
+                        // data-aos="fade-up"
+                        >
+                          <div className="grid grid-cols-1 xl:grid-cols-2 mb-15px gap-y-15px gap-x-30px">
+                            <FormInput
+                              label="Price (Rp)"
+                              name="price"
+                              type="text"
+                              placeholder="Masukkan Harga Kursus"
+                              register={register}
+                              errors={errors}
+                              disabled={isLoading}
+                              isInputCourse={true}
+                            />
+                            <FormInput
+                              label="Discount (Rp)"
+                              name="discount"
+                              type="text"
+                              placeholder="Masukkan Discount Kursus"
+                              register={register}
+                              errors={errors}
+                              disabled={isLoading}
+                              isInputCourse={true}
+                            // lableRequired={true}
+                            />
+                          </div>
+                          <div className="grid grid-cols-1 xl:grid-cols-2 mb-15px gap-y-15px gap-x-30px">
+                            <FormInput
+                              label="Capacity (Orang)"
+                              name="capacity"
+                              type="text"
+                              placeholder="Masukkan Kapasitas Kursus"
+                              register={register}
+                              errors={errors}
+                              disabled={isLoading}
+                              isInputCourse={true}
+                            />
+
+                          </div>
+
+                          <div className="mt-15px">
+                            <ButtonPrimary
+                              type={"submit"}
+                              disabled={isLoading}
+
+                            >
+                              {isLoading ? 'Sedang Memproses..' : 'Update Course'}
+                            </ButtonPrimary>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {/*  accordion */}
+              <li className="accordion mb-5">
+                <div className="bg-whiteColor dark:bg-whiteColor-dark shadow-accordion dark:shadow-accordion-dark">
+                  {/*  controller */}
+                  <div className="py-5 px-30px">
+                    <div className="cursor-pointer accordion-controller flex justify-between items-center text-lg text-headingColor font-semibold w-full dark:text-headingColor-dark font-hind leading-27px">
+                      <div>
                         <span>Additional Information</span>
                       </div>
                       <svg
@@ -679,7 +763,7 @@ const CreateCoursePrimary = () => {
                       <div>
                         <form
                           className="p-10px md:p-10 lg:p-5 2xl:p-10 bg-darkdeep3 dark:bg-transparent text-sm text-blackColor dark:text-blackColor-dark leading-1.8"
-                          data-aos="fade-up"
+                        // data-aos="fade-up"
                         >
                           <div className="grid grid-cols-1 xl:grid-cols-2 mb-15px gap-y-15px gap-x-30px">
                             <div>
@@ -793,94 +877,18 @@ const CreateCoursePrimary = () => {
                   </div>
                 </div>
               </li>
-              {/*  accordion */}
-              <li className="accordion mb-5">
-                <div className="bg-whiteColor dark:bg-whiteColor-dark shadow-accordion dark:shadow-accordion-dark rounded-b-md">
-                  {/*  controller */}
-                  <div className="cursor-pointer py-5 px-30px">
-                    <div className="accordion-controller flex justify-between items-center text-lg text-headingColor font-semibold w-full dark:text-headingColor-dark font-hind leading-27px rounded-b-md">
-                      <div>
-                        <span>Certificate Template</span>
-                      </div>
-                      <svg
-                        className="transition-all duration-500 rotate-0"
-                        width="20"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        fill="#212529"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                        ></path>
-                      </svg>
-                    </div>
-                  </div>
-                  {/*  content */}
-                  <div className="accordion-content transition-all duration-500 overflow-hidden h-0">
-                    <div className="content-wrapper py-4 px-5">
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-30px gap-y-5">
-                        <div>
-                          <Image
-                            src={dashboardImage8}
-                            className="w-full"
-                            alt=""
-                          />
-                        </div>
 
-                        <div>
-                          <Image
-                            src={dashboardImage4}
-                            className="w-full"
-                            alt=""
-                          />
-                        </div>
-
-                        <div>
-                          <Image
-                            src={dashboardImage5}
-                            className="w-full"
-                            alt=""
-                          />
-                        </div>
-
-                        <div>
-                          <Image
-                            src={dashboardImage9}
-                            className="w-full"
-                            alt=""
-                          />
-                        </div>
-                        <div>
-                          <Image
-                            src={dashboardImage7}
-                            className="w-full"
-                            alt=""
-                          />
-                        </div>
-                        <div>
-                          <Image
-                            src={dashboardImage8}
-                            className="w-full"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
             </ul>
 
             <div className="mt-10 leading-1.8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-30px gap-y-5">
-              <div data-aos="fade-up" className="lg:col-start-1 lg:col-span-4">
+              {/* <div data-aos="fade-up" className="lg:col-start-1 lg:col-span-4">
                 <a
                   href="#"
                   className="text-whiteColor bg-primaryColor w-full p-13px hover:text-whiteColor hover:bg-secondaryColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-secondaryColor text-center"
                 >
                   Preview
                 </a>
-              </div>
+              </div> */}
 
               <div data-aos="fade-up" className="lg:col-start-5 lg:col-span-8">
                 <a

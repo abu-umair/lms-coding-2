@@ -25,12 +25,12 @@ export const baseCourseSchema = z.object({
     demo_video_storage: z.string().optional().or(z.literal("")),
     demo_video_source: z.string().optional().or(z.literal("")),
 
-    // --- BAB 3: HARGA & KAPASITAS ---
+    // --- BAB 4: HARGA & KAPASITAS ---
     price: z.string().optional().or(z.literal("")),
     discount: z.string().optional().or(z.literal("")),
     capacity: z.any().optional().or(z.literal("")),
 
-    // --- BAB 4: PENGATURAN & REVIEW ---
+    // --- BAB 5: PENGATURAN & REVIEW ---
     address: z.string().optional().or(z.literal("")),
     seo_description: z.string().optional().or(z.literal("")),
     certificate: z.string().optional().or(z.literal("")),
