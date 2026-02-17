@@ -39,6 +39,16 @@ const levelOptions = [
   { value: "5", label: "5" },
 ];
 
+const certificateOptions = [
+  { value: "no", label: "No" },
+  { value: "yes", label: "Yes" },
+];
+
+const statusOptions = [
+  { value: "draft", label: "Course Draft" },
+  { value: "completed", label: "Course Completed" },
+];
+
 interface uploadImageResponse {
   course_id?: string;
   file_name: string;
@@ -64,7 +74,7 @@ const CreateCoursePrimary = () => {
 
 
 
-  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm<CourseFormData>({
+  const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<CourseFormData>({
     resolver: zodResolver(getCourseSchema(isEditMode)) as any,
     defaultValues: {
 
@@ -86,13 +96,26 @@ const CreateCoursePrimary = () => {
       capacity: 0,
       address: "",
       seo_description: "",
-      certificate: "",
+      certificate: "no",
       message_for_reviewer: "",
       instructor_id: "",
-      status: "",
-      is_approved: "",
+      status: "draft",
+      is_approved: "pending",
     }
   });
+
+  useEffect(() => {
+    const savedId = getCourseId();
+    if (savedId) setCourseId(savedId);
+
+    // Ambil instructor_id dari session
+
+    if (session?.user) {
+      const insId = (session?.user as any).id;
+      // Set nilai ke dalam form secara manual
+      setValue("instructor_id", insId);
+    }
+  }, [session, setValue]);
 
   // Pantau field image
   const imageValue = watch("image");
@@ -101,6 +124,7 @@ const CreateCoursePrimary = () => {
   useEffect(() => {
     const fetchDetail = async () => {
       const accessToken = (session as any)?.accessToken;
+      const instructorId = (session?.user as any)?.id;
 
       if (!courseId && authStatus !== "authenticated" && !accessToken) {
         return;
@@ -134,6 +158,8 @@ const CreateCoursePrimary = () => {
               "capacity",
               "address",
               "seo_description",
+              "certificate",
+              "message_for_reviewer",
               "is_approved",
               "status",
             ]
@@ -165,6 +191,8 @@ const CreateCoursePrimary = () => {
                 capacity: Number(data.capacity) || 0,
                 address: data.address || "",
                 seo_description: data.seoDescription || "",
+                certificate: data.certificate || "",
+                message_for_reviewer: data.messageForReviewer || "",
                 is_approved: data.isApproved || "",
 
                 // Untuk status, pastikan tidak mengambil status dari metadata gRPC
@@ -741,7 +769,7 @@ const CreateCoursePrimary = () => {
                   <div className="py-5 px-30px">
                     <div className="cursor-pointer accordion-controller flex justify-between items-center text-lg text-headingColor font-semibold w-full dark:text-headingColor-dark font-hind leading-27px">
                       <div>
-                        <span>Additional Information</span>
+                        <span>Course Setting & Review</span>
                       </div>
                       <svg
                         className="transition-all duration-500 rotate-0"
@@ -762,113 +790,79 @@ const CreateCoursePrimary = () => {
                     <div className="content-wrapper py-4 px-5">
                       <div>
                         <form
+                          onSubmit={handleSubmit(onSubmit, (err) => console.log("Validasi Gagal:", err))}
                           className="p-10px md:p-10 lg:p-5 2xl:p-10 bg-darkdeep3 dark:bg-transparent text-sm text-blackColor dark:text-blackColor-dark leading-1.8"
                         // data-aos="fade-up"
                         >
                           <div className="grid grid-cols-1 xl:grid-cols-2 mb-15px gap-y-15px gap-x-30px">
-                            <div>
-                              <label className="mb-3 block font-semibold">
-                                Start Date
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="mm/dd/yyy"
-                                className="w-full py-10px px-5 text-sm focus:outline-none text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md font-no"
-                              />
-                            </div>
-                            <div>
-                              <label className="mb-3 block font-semibold">
-                                Language
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="English"
-                                className="w-full py-10px px-5 text-sm focus:outline-none text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md font-no"
-                              />
-                            </div>
+                            <FormInput
+                              label="Course Address"
+                              name="address"
+                              type="textarea"
+                              // placeholder=""
+                              register={register}
+                              errors={errors}
+                              disabled={isLoading}
+                              isInputCourse={true}
+                            />
+                            <FormInput
+                              label="Course Seo Description"
+                              name="seo_description"
+                              type="textarea"
+                              // placeholder=""
+                              register={register}
+                              errors={errors}
+                              disabled={isLoading}
+                              isInputCourse={true}
+                            />
                           </div>
 
-                          <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-30px">
-                            <div>
-                              <label className="mb-3 block font-semibold">
-                                Requirements
-                              </label>
-                              <textarea
-                                defaultValue={"Add your course benefits here."}
-                                className="w-full py-10px px-5 mb-15px text-sm text-contentColor dark:text-contentColor-dark text-start bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md"
-                                cols={30}
-                                rows={10}
-                              />
 
-                              <p className="flex items-center gap-0.5">
-                                <svg
-                                  className="feather feather-info w-14px h-14px"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                >
-                                  <circle cx="12" cy="12" r="10"></circle>
-                                  <line x1="12" y1="16" x2="12" y2="12"></line>
-                                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                                </svg>
-                                Enter for per line.
-                              </p>
-                            </div>
-                            <div>
-                              <label className="mb-3 block font-semibold">
-                                Description
-                              </label>
-                              <textarea
-                                className="w-full py-10px px-5 mb-15px text-sm text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md"
-                                defaultValue={"Add your course benefits here."}
-                                cols={30}
-                                rows={10}
-                              />
-
-                              <p className="flex items-center gap-0.5">
-                                <svg
-                                  className="feather feather-info w-14px h-14px"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                >
-                                  <circle cx="12" cy="12" r="10"></circle>
-                                  <line x1="12" y1="16" x2="12" y2="12"></line>
-                                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                                </svg>
-                                Enter for per line.
-                              </p>
-                            </div>
-                          </div>
                           <div className="mb-15px">
-                            <label className="mb-3 block font-semibold">
-                              Course Tags
-                            </label>
-                            <textarea
-                              className="w-full py-10px px-5 text-sm text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md"
-                              cols={30}
-                              rows={10}
+                            <FormInput
+                              label="Message for Review"
+                              name="message_for_reviewer"
+                              type="textarea"
+                              // placeholder=""
+                              register={register}
+                              errors={errors}
+                              disabled={isLoading}
+                              isInputCourse={true}
+                            />
+                          </div>
+
+                          <div className="grid grid-cols-1 xl:grid-cols-2 mb-15px gap-y-15px gap-x-30px">
+                            <FormInput
+                              label="Certificate"
+                              name="certificate"
+                              type="select"
+                              placeholder="Pilih Sertifikat"
+                              options={certificateOptions}
+                              register={register}
+                              errors={errors}
+                              disabled={isLoading}
+                              isInputCourse={true}
+                            />
+                            <FormInput
+                              label="Course Status"
+                              name="status"
+                              type="select"
+                              placeholder="Masukkan Status Kursus"
+                              options={statusOptions}
+                              register={register}
+                              errors={errors}
+                              disabled={isLoading}
+                              isInputCourse={true}
+                            // lableRequired={true}
                             />
                           </div>
 
                           <div className="mt-15px">
                             <button
-                              type="submit"
-                              className="text-size-15 text-whiteColor bg-primaryColor px-25px py-10px border border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark"
+                              disabled={isLoading}
+                              className="text-whiteColor bg-primaryColor w-full p-13px hover:text-whiteColor hover:bg-secondaryColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-secondaryColor text-center"
                             >
-                              Update Info
+                              {isLoading ? 'Sedang Memproses..' : 'Create Course'}
                             </button>
                           </div>
                         </form>
@@ -880,25 +874,7 @@ const CreateCoursePrimary = () => {
 
             </ul>
 
-            <div className="mt-10 leading-1.8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-30px gap-y-5">
-              {/* <div data-aos="fade-up" className="lg:col-start-1 lg:col-span-4">
-                <a
-                  href="#"
-                  className="text-whiteColor bg-primaryColor w-full p-13px hover:text-whiteColor hover:bg-secondaryColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-secondaryColor text-center"
-                >
-                  Preview
-                </a>
-              </div> */}
 
-              <div data-aos="fade-up" className="lg:col-start-5 lg:col-span-8">
-                <a
-                  href="#"
-                  className="text-whiteColor bg-primaryColor w-full p-13px hover:text-whiteColor hover:bg-secondaryColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-secondaryColor text-center"
-                >
-                  Create Course
-                </a>
-              </div>
-            </div>
           </div>
           {/*  create course righ */}
           <div data-aos="fade-up" className="lg:col-start-9 lg:col-span-4">

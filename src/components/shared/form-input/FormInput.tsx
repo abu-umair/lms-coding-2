@@ -3,8 +3,8 @@ import { UseFormRegister, FieldErrors, Path } from 'react-hook-form';
 
 
 interface FormInputProps<T extends Record<string, any>> {
-    label: string;
-    type: "text" | "password" | "checkbox" | "textarea" | "image" | "select"; //? type nya bisa text atau password
+    label?: string;
+    type: "text" | "password" | "checkbox" | "textarea" | "image" | "select" | 'hidden' | 'number'; //? type nya bisa text atau password
     placeholder?: string //?tidak wajib, (bisa dibuat optional)
     register: UseFormRegister<T>;
     name: Path<T>;
