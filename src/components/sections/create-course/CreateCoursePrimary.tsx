@@ -18,6 +18,10 @@ import { useEffect, useState } from "react";
 import { getCourseId, saveCourseId } from "@/libs/courseStorage";
 import { useSession } from "next-auth/react";
 import { setGrpcCache } from "@/api/grpc/auth-interceptor";
+import { CourseDialog } from "@/components/shared/course-dialog/CourseDialog";
+import LessonAccordion from "@/components/shared/lessons/LessonAccordion";
+import { LayersPlus, PlusCircle, PlusCircleIcon } from "lucide-react";
+
 
 
 const categoryOptions = [
@@ -664,15 +668,23 @@ const CreateCoursePrimary = () => {
                   {/*  content */}
                   <div className="accordion-content transition-all duration-500 overflow-hidden h-0">
                     <div className="content-wrapper py-4 px-5">
-                      <div>
-                        <div className="mt-15px">
-                          <a
+                      <div className="space-y-3 px-10 py-10 bg-darkdeep3 dark:bg-transparent text-blackColor dark:text-blackColor-dark leading-1.8">
+                        <CourseDialog
+                          id={1}//?bisa dengan param
+                          title="Tambah Data Baru"
+                          trigger={
+                            <button className="flex ms-auto items-center space-x-1 text-size-15 text-whiteColor bg-primaryColor px-15px py-5px border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark">
+                              <LayersPlus size={18} strokeWidth={2.5} className="group-hover:text-primaryColor" /> <span>New Topic</span>
+                            </button>
+                          }
+                        />
+                        <LessonAccordion id={1} isInputCourse={true} />
+                        {/* <a
                             href="#"
                             className="text-size-15 text-whiteColor bg-primaryColor px-25px py-10px border border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark"
                           >
                             Add New Topic
-                          </a>
-                        </div>
+                          </a> */}
                       </div>
                     </div>
                   </div>

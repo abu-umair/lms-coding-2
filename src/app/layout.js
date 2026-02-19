@@ -54,7 +54,7 @@ export default function RootLayout({ children }) {
             */}
             {mounted ? (
               <>
-                <PreloaderPrimary />
+                {/* <PreloaderPrimary /> */}
                 <Toaster
                   position="top-center"
                   reverseOrder={false}

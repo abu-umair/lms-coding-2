@@ -32,7 +32,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/components/auth/AuthGuard.tsx", "src/components/shared/buttons/ButtonPrimary.tsx", "src/components/shared/dashboards/PasswordContent.tsx"  ],
+, "src/components/auth/AuthGuard.tsx", "src/components/shared/buttons/ButtonPrimary.tsx", "src/components/shared/dashboards/PasswordContent.tsx", "src/components/shared/lessons/LessonAccordion.js"  ],
   "exclude": [
     "node_modules"
   ]
