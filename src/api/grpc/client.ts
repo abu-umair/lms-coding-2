@@ -3,6 +3,7 @@ import { GrpcWebFetchTransport } from "@protobuf-ts/grpcweb-transport";
 import { AuthServiceClient, IAuthServiceClient } from "@/../../pb/auth/auth.client"; // Path hasil generate proto kamu
 import { CourseServiceClient, ICourseServiceClient } from "@/../../pb/course/course.client"; // Path hasil generate proto kamu
 import { authInterceptor } from "@/api/grpc/auth-interceptor";
+import { CourseChapterServiceClient, ICourseChapterServiceClient } from "@/../../pb/course_chapter/course_chapter.client";
 
 
 
@@ -10,6 +11,7 @@ const GoGrpc_LOGIN_URL = 'http://localhost:8080';
 let webTransport: GrpcWebFetchTransport | null = null;
 let authClient: IAuthServiceClient | null = null;
 let courseClient: ICourseServiceClient | null = null;
+let courseChapterClient: ICourseChapterServiceClient | null = null;
 
 const getWebTransport = () => {
     if (webTransport === null) {
@@ -33,4 +35,11 @@ export const getCourseClient = () => {
         courseClient = new CourseServiceClient(getWebTransport());
     }
     return courseClient
+}
+
+export const getCourseChapterClient = () => {
+    if (courseChapterClient === null) {
+        courseChapterClient = new CourseChapterServiceClient(getWebTransport());
+    }
+    return courseChapterClient
 }

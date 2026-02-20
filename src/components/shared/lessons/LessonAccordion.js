@@ -21,7 +21,7 @@ const LessonAccordion = ({ id, isInputCourse = false }) => {
         <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark rounded-t-md">
           {/* controller  */}
           <div>
-            <button className="accordion-controller flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px]">
+            <div className="accordion-controller flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px]">
               <span>Lesson #01</span>
 
               {isInputCourse ?
@@ -72,7 +72,7 @@ const LessonAccordion = ({ id, isInputCourse = false }) => {
 
               }
 
-            </button>
+            </div>
           </div>
           {/* content  */}
           <div className="accordion-content transition-all duration-500">

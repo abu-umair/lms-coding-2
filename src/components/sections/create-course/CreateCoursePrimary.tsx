@@ -63,6 +63,7 @@ interface uploadImageResponse {
 const CreateCoursePrimary = () => {
   const { callApi, isLoading } = useGrpcApi();
   const [courseId, setCourseId] = useState<string | null>(null);
+  const [instructorId, setInstructorId] = useState<string | null>(null);
   const [courseData, setCourseData] = useState<string | null>(null);
   const { data: session, status: authStatus } = useSession();
   const [existingImageUrl, setExistingImageUrl] = useState<string | null>(null);
@@ -118,6 +119,7 @@ const CreateCoursePrimary = () => {
       const insId = (session?.user as any).id;
       // Set nilai ke dalam form secara manual
       setValue("instructor_id", insId);
+      setInstructorId(insId);
     }
   }, [session, setValue]);
 
@@ -671,11 +673,13 @@ const CreateCoursePrimary = () => {
                       <div className="space-y-3 px-10 py-10 bg-darkdeep3 dark:bg-transparent text-blackColor dark:text-blackColor-dark leading-1.8">
                         <CourseDialog
                           id={1}//?bisa dengan param
-                          title="Tambah Data Baru"
+                          instructorId={instructorId}
+                          courseId={courseId}
+                          title="Tambah Topik Baru"
                           trigger={
-                            <button className="flex ms-auto items-center space-x-1 text-size-15 text-whiteColor bg-primaryColor px-15px py-5px border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark">
+                            <span className=" max-w-max cursor-pointer flex ms-auto items-center space-x-1 text-size-15 text-whiteColor bg-primaryColor px-15px py-5px border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark">
                               <LayersPlus size={18} strokeWidth={2.5} className="group-hover:text-primaryColor" /> <span>New Topic</span>
-                            </button>
+                            </span>
                           }
                         />
                         <LessonAccordion id={1} isInputCourse={true} />
