@@ -110,8 +110,8 @@ const CreateCoursePrimary = () => {
   });
 
   useEffect(() => {
-    const savedId = getCourseId();
-    if (savedId) setCourseId(savedId);
+    // const savedId = getCourseId();
+    // if (savedId) setCourseId(savedId);
 
     // Ambil instructor_id dari session
 
