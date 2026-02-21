@@ -76,6 +76,11 @@ const CreateCoursePrimary = () => {
       setCourseId(savedId);
     }
   }, []);
+  //TODO: sekarang courseId didpat jika user sudah input di form pertama (course info)
+  //TODO:  1. get data chapter
+  //TODO:  2. tampilkan data chapter di form course builder
+  //TODO:  3. seting ke dialog
+  //TODO:   get data lesson (nanti)
 
 
 
@@ -128,18 +133,16 @@ const CreateCoursePrimary = () => {
 
   // Jika ada courseId, panggil fungsi GetCourse (gRPC/API)
   useEffect(() => {
-    const fetchDetail = async () => {
-      const accessToken = (session as any)?.accessToken;
-      const instructorId = (session?.user as any)?.id;
+    const accessToken = (session as any)?.accessToken;
 
-      if (!courseId && authStatus !== "authenticated" && !accessToken) {
-        return;
-      }
+    if (!courseId && authStatus !== "authenticated" && !accessToken) {
+      return;
+    }
 
+    else if (courseId && authStatus == "authenticated" && accessToken) {
+      setGrpcCache(accessToken);//?mengupdate token lebih cepat, menghindari race condition
 
-      if (courseId && authStatus == "authenticated" && accessToken) {
-        setGrpcCache(accessToken);//?mengupdate token lebih cepat, menghindari race condition
-
+      const fetchDetail = async () => {
         await callApi(getCourseClient().detailCourse({
           id: courseId,
           // Implementasi field_mask sesuai input Postman Anda
@@ -210,13 +213,14 @@ const CreateCoursePrimary = () => {
             },
           }
         );
-      }
+      };
+      fetchDetail();
+    }
 
+    // const fetchDetailChapter = async () =>{
+    //   if (courseId && authStatus == "authenticated" && accessToken) {
+    // }
 
-
-    };
-
-    fetchDetail();
   }, [courseId, authStatus, session]); // Tambahkan reset ke dependency agar sinkron
 
 
