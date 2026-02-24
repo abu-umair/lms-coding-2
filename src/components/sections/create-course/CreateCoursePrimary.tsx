@@ -747,7 +747,7 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
                             </span>
                           }
                         />
-                        <LessonAccordion id={1} isInputCourse={true} />
+                        <LessonAccordion id={1} isInputCourse={true} chapters={chapters} />
                         {/* <a
                             href="#"
                             className="text-size-15 text-whiteColor bg-primaryColor px-25px py-10px border border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark"

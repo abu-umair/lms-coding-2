@@ -4,8 +4,8 @@ import { CopyPlus, Grab, Grip, PencilLine, SquarePen, Trash } from "lucide-react
 import Link from "next/link";
 import React, { useEffect } from "react";
 
-const LessonAccordion = ({ id, isInputCourse = false }) => {
-  const [openIndex, setOpenIndex] = React.useState(0); // 0 berarti Lesson #01 terbuka default
+const LessonAccordion = ({ id, isInputCourse = false, chapters = [] }) => {
+  const [openIndex, setOpenIndex] = React.useState<number | null>(0);
 
   useEffect(() => {
     accordions();
@@ -17,46 +17,117 @@ const LessonAccordion = ({ id, isInputCourse = false }) => {
   return (
     <ul className="accordion-container curriculum">
       {/* accordion  */}
-      <li className="accordion mb-25px overflow-hidden active">
-        <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark rounded-t-md">
-          {/* controller  */}
-          <div>
-            <div className="accordion-controller flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px]">
-              <span>Lesson #01</span>
+      {chapters.length > 0 ? (
+        chapters.map((chapter, index) => {
+          const isOpen = openIndex === index;
 
-              {isInputCourse ?
-                <div className="flex space-x-3">
-                  <div className="flex space-x-3 bg-primaryColor text-whiteColor text-sm ml-5 rounded py-0.5 px-0.5">
-                    <button className="rotate-0 flex ms-auto items-center text-size-15 text-whiteColor bg-primaryColor px-10px py-0.5 border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark">
-                      <Grip size={14} strokeWidth={2.5} className="!rotate-0 !fill-none group-hover:text-primaryColor" />
-                    </button>
+          return (
+            <li key={index} className={`accordion mb-25px overflow-hidden ${isOpen ? "active" : ""}`}>
+              <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark rounded-t-md">
 
-                    <button className="rotate-0 flex ms-auto items-center text-size-15 text-whiteColor bg-primaryColor px-10px py-0.5 border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark">
-                      <PencilLine size={14} strokeWidth={2.5} className="!rotate-0 !fill-none group-hover:text-primaryColor" />
-                    </button>
+                {/* CONTROLLER */}
+                <div
+                  onClick={() => toggleAccordion(index)}
+                  className="accordion-controller cursor-pointer flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px]"
+                >
+                  <span>{chapter.title || `Lesson #${index + 1}`}</span>
 
-                    <button className=" me-2 rotate-0 flex ms-auto items-center text-size-15 text-whiteColor bg-primaryColor px-10px py-0.5 border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark">
-                      <Trash size={14} strokeWidth={2.5} fill="!transparent" className="!rotate-0 !fill-none group-hover:text-primaryColor" />
-                    </button>
+                  <div className="flex items-center space-x-3">
+                    {isInputCourse && (
+                      <div
+                        className="flex space-x-2 bg-primaryColor text-whiteColor text-sm rounded py-0.5 px-0.5"
+                        onClick={(e) => e.stopPropagation()} // Mencegah accordion tertutup saat klik tombol aksi
+                      >
+                        <button className="flex items-center px-2 py-0.5 border border-primaryColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
+                          <Grip size={14} strokeWidth={2.5} />
+                        </button>
+                        <button className="flex items-center px-2 py-0.5 border border-primaryColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
+                          <PencilLine size={14} strokeWidth={2.5} />
+                        </button>
+                        <button className="flex items-center px-2 py-0.5 border border-primaryColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
+                          <Trash size={14} strokeWidth={2.5} />
+                        </button>
+                      </div>
+                    )}
+
+                    {/* SVG Icon dengan Rotasi & Warna Dinamis */}
+                    <span className={`transition-all duration-500 transform ${isOpen ? "rotate-180" : "rotate-0"}`}>
+                      <svg
+                        width="20"
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                        style={{
+                          fill: isOpen ? "#0c63e4" : "#212529",
+                          transition: "fill 0.5s ease"
+                        }}
+                      >
+                        <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                      </svg>
+                    </span>
                   </div>
-
-                  <span className="transition-all duration-500 inline-block">
-                    <svg
-                      className="transition-all duration-500 rotate-0"
-                      width="20"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 16 16"
-                      fill="#212529"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                      ></path>
-                    </svg>
-                  </span>
                 </div>
 
-                :
+                {/* CONTENT - Menggunakan Teknik Grid Rows (Anti Jeda & Anti Terpotong) */}
+                <div
+                  className={`grid transition-all duration-500 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="content-wrapper p-10px md:px-30px border-t border-borderColor dark:border-borderColor-dark">
+
+                      {isInputCourse && (
+                        <div className="mb-4 flex justify-end">
+                          <button className="flex items-center space-x-2 text-size-15 text-whiteColor bg-primaryColor px-3 py-1 border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded transition-all">
+                            <CopyPlus size={14} strokeWidth={2.5} />
+                            <span>New Lesson</span>
+                          </button>
+                        </div>
+                      )}
+
+                      <ul className="list-none p-0">
+                        <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark last:border-b-0">
+                          <div className="flex items-center">
+                            <i className="icofont-video-alt mr-10px text-primaryColor"></i>
+                            <Link href="/lessons/1" className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor">
+                              Course Intro
+                            </Link>
+                          </div>
+
+                          <div className="flex items-center space-x-3">
+                            {!isInputCourse && <span className="font-semibold text-sm">3.27</span>}
+
+                            <div className="flex space-x-2">
+                              {isInputCourse ? (
+                                <div className="flex space-x-1 bg-primaryColor p-0.5 rounded">
+                                  <button className="p-1 text-whiteColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all"><Grip size={12} /></button>
+                                  <button className="p-1 text-whiteColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all"><PencilLine size={12} /></button>
+                                  <button className="p-1 text-whiteColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all"><Trash size={12} /></button>
+                                </div>
+                              ) : (
+                                <Link href="/lessons/1" className="bg-primaryColor text-whiteColor text-xs px-3 py-1 rounded border border-primaryColor hover:bg-whiteColor hover:text-primaryColor transition-all">
+                                  <i className="icofont-eye mr-1"></i> Preview
+                                </Link>
+                              )}
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </li>
+          );
+        })
+      ) : (
+
+        <li className="accordion mb-25px overflow-hidden">
+          <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark">
+            <div>
+              <button className="accordion-controller flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px]">
+                <span>Lesson #02</span>
+
                 <svg
                   className="transition-all duration-500 rotate-0"
                   width="20"
@@ -69,28 +140,17 @@ const LessonAccordion = ({ id, isInputCourse = false }) => {
                     d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
                   ></path>
                 </svg>
-
-              }
-
+              </button>
             </div>
-          </div>
-          {/* content  */}
-          <div className="accordion-content transition-all duration-500">
-            <div className="content-wrapper p-10px md:px-30px">
-              <div className="leading-1.8">
-                {isInputCourse && <button className="space-x-2 rotate-0 flex ms-auto items-center text-size-15 text-whiteColor bg-primaryColor px-10px py-0.5 border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark">
-                  <CopyPlus size={14} strokeWidth={2.5} className="!rotate-0 group-hover:text-primaryColor" /><span>New Lesson</span>
-                </button>
-                }
-              </div>
-              <ul>
-                {isInputCourse ?
+            <div className="accordion-content transition-all duration-500 h-0">
+              <div className="content-wrapper p-10px md:px-30px">
+                <ul>
                   <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
                     <div>
                       <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
                         <i className="icofont-video-alt mr-10px"></i>
                         <Link
-                          href={`/lessons/1`}
+                          href="/lessons/1"
                           className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
                         >
                           Course Intro
@@ -98,31 +158,24 @@ const LessonAccordion = ({ id, isInputCourse = false }) => {
                       </h4>
                     </div>
                     <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center">
-                      <div className="bg-primaryColor text-whiteColor text-sm ml-5 rounded py-0.5"
+                      <p className="font-semibold">3.27</p>
+                      <Link
+                        href="/lessons/1"
+                        className="bg-primaryColor text-whiteColor text-sm ml-5 rounded py-0.5"
                       >
-                        <div className="flex space-x-3 px-0.5">
-                          <button className="rotate-0 flex ms-auto items-center text-size-15 text-whiteColor bg-primaryColor px-10px py-0.5 border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark">
-                            <Grip size={14} strokeWidth={2.5} className="!rotate-0 group-hover:text-primaryColor" />
-                          </button>
-
-                          <button className="rotate-0 flex ms-auto items-center text-size-15 text-whiteColor bg-primaryColor px-10px py-0.5 border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark">
-                            <PencilLine size={14} strokeWidth={2.5} className="!rotate-0 group-hover:text-primaryColor" />
-                          </button>
-
-                          <button className=" me-2 rotate-0 flex ms-auto items-center text-size-15 text-whiteColor bg-primaryColor px-10px py-0.5 border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark">
-                            <Trash size={14} strokeWidth={2.5} className="!rotate-0 group-hover:text-primaryColor" />
-                          </button>
-                        </div>
-                      </div>
+                        <p className="px-10px">
+                          <i className="icofont-eye"></i> Preview
+                        </p>
+                      </Link>
                     </div>
                   </li>
-                  :
+
                   <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
                     <div>
                       <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
                         <i className="icofont-video-alt mr-10px"></i>
                         <Link
-                          href={`/lessons/2`}
+                          href="/lessons/2"
                           className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
                         >
                           Course Outline
@@ -132,7 +185,7 @@ const LessonAccordion = ({ id, isInputCourse = false }) => {
                     <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center">
                       <p className="font-semibold">5.00</p>
                       <Link
-                        href={`/lessons/2`}
+                        href="/lessons/2"
                         className="bg-primaryColor text-whiteColor text-sm ml-5 rounded py-0.5"
                       >
                         <p className="px-10px">
@@ -141,194 +194,78 @@ const LessonAccordion = ({ id, isInputCourse = false }) => {
                       </Link>
                     </div>
                   </li>
-                }
 
-
-                {/*<li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                  <div>
-                    <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                      <i className="icofont-file-text mr-10px"></i>
-                      <Link
-                        href="/lesson-course-materials"
-                        className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
-                      >
-                        Course Materials
-                      </Link>
-                    </h4>
-                  </div>
-                </li>
-                <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                  <div>
-                    <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                      <i className="icofont-audio mr-10px"></i>
-                      <Link
-                        href="/lesson-quiz"
-                        className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
-                      >
-                        Summer Quiz
-                      </Link>
-                    </h4>
-                  </div>
-                </li>
-                <li className="py-4 flex items-center justify-between flex-wrap">
-                  <div>
-                    <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                      <i className="icofont-file-text mr-10px"></i>
-                      <Link
-                        href="/lesson-assignment"
-                        className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
-                      >
-                        Assignment
-                      </Link>
-                    </h4>
-                  </div>
-                </li> */}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </li>
-      {/* <li className="accordion mb-25px overflow-hidden">
-        <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark">
-          <div>
-            <button className="accordion-controller flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px]">
-              <span>Lesson #02</span>
-
-              <svg
-                className="transition-all duration-500 rotate-0"
-                width="20"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 16 16"
-                fill="#212529"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                ></path>
-              </svg>
-            </button>
-          </div>
-          <div className="accordion-content transition-all duration-500 h-0">
-            <div className="content-wrapper p-10px md:px-30px">
-              <ul>
-                <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                  <div>
-                    <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                      <i className="icofont-video-alt mr-10px"></i>
-                      <Link
-                        href="/lessons/1"
-                        className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
-                      >
-                        Course Intro
-                      </Link>
-                    </h4>
-                  </div>
-                  <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center">
-                    <p className="font-semibold">3.27</p>
-                    <Link
-                      href="/lessons/1"
-                      className="bg-primaryColor text-whiteColor text-sm ml-5 rounded py-0.5"
-                    >
-                      <p className="px-10px">
-                        <i className="icofont-eye"></i> Preview
-                      </p>
-                    </Link>
-                  </div>
-                </li>
-
-                <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                  <div>
-                    <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                      <i className="icofont-video-alt mr-10px"></i>
-                      <Link
-                        href="/lessons/2"
-                        className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
-                      >
-                        Course Outline
-                      </Link>
-                    </h4>
-                  </div>
-                  <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center">
-                    <p className="font-semibold">5.00</p>
-                    <Link
-                      href="/lessons/2"
-                      className="bg-primaryColor text-whiteColor text-sm ml-5 rounded py-0.5"
-                    >
-                      <p className="px-10px">
-                        <i className="icofont-eye"></i> Preview
-                      </p>
-                    </Link>
-                  </div>
-                </li>
-
-                <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                  <div>
-                    <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                      <i className="icofont-video-alt mr-10px"></i>
+                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
+                    <div>
+                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
+                        <i className="icofont-video-alt mr-10px"></i>
+                        <Link
+                          href="/lessons/3"
+                          className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
+                        >
+                          Course Outline
+                        </Link>
+                      </h4>
+                    </div>
+                    <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center">
+                      <p className="font-semibold">7.00</p>
                       <Link
                         href="/lessons/3"
-                        className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
+                        className="bg-primaryColor text-whiteColor text-sm ml-5 rounded py-0.5"
                       >
-                        Course Outline
+                        <p className="px-10px">
+                          <i className="icofont-eye"></i> Preview
+                        </p>
                       </Link>
-                    </h4>
-                  </div>
-                  <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center">
-                    <p className="font-semibold">7.00</p>
-                    <Link
-                      href="/lessons/3"
-                      className="bg-primaryColor text-whiteColor text-sm ml-5 rounded py-0.5"
-                    >
-                      <p className="px-10px">
-                        <i className="icofont-eye"></i> Preview
-                      </p>
-                    </Link>
-                  </div>
-                </li>
-                <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                  <div>
-                    <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                      <i className="icofont-file-text mr-10px"></i>
-                      <Link
-                        href="/lesson-course-materials"
-                        className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
-                      >
-                        Course Materials
-                      </Link>
-                    </h4>
-                  </div>
-                </li>
-                <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                  <div>
-                    <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                      <i className="icofont-audio mr-10px"></i>
-                      <Link
-                        href="/lesson-quiz"
-                        className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
-                      >
-                        Summer Quiz
-                      </Link>
-                    </h4>
-                  </div>
-                </li>
-                <li className="py-4 flex items-center justify-between flex-wrap">
-                  <div>
-                    <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                      <i className="icofont-file-text mr-10px"></i>
-                      <Link
-                        href="/lesson-assignment"
-                        className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
-                      >
-                        Assignment
-                      </Link>
-                    </h4>
-                  </div>
-                </li>
-              </ul>
+                    </div>
+                  </li>
+                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
+                    <div>
+                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
+                        <i className="icofont-file-text mr-10px"></i>
+                        <Link
+                          href="/lesson-course-materials"
+                          className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
+                        >
+                          Course Materials
+                        </Link>
+                      </h4>
+                    </div>
+                  </li>
+                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
+                    <div>
+                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
+                        <i className="icofont-audio mr-10px"></i>
+                        <Link
+                          href="/lesson-quiz"
+                          className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
+                        >
+                          Summer Quiz
+                        </Link>
+                      </h4>
+                    </div>
+                  </li>
+                  <li className="py-4 flex items-center justify-between flex-wrap">
+                    <div>
+                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
+                        <i className="icofont-file-text mr-10px"></i>
+                        <Link
+                          href="/lesson-assignment"
+                          className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor dark:hover;text-primaryColor"
+                        >
+                          Assignment
+                        </Link>
+                      </h4>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
-      </li> */}
+        </li>
+      )}
+
+
       {/* <li className="accordion mb-25px overflow-hidden">
         <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark">
           <div>
