@@ -7,9 +7,7 @@ import React, { useEffect } from "react";
 const LessonAccordion = ({ id, isInputCourse = false, chapters = [] }) => {
   const [openIndex, setOpenIndex] = React.useState<number | null>(0);
 
-  useEffect(() => {
-    accordions();
-  }, []);
+  const sortedChapters = [...chapters].sort((a, b) => a.order_chapter - b.order_chapter);
 
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? -1 : index);
@@ -17,8 +15,8 @@ const LessonAccordion = ({ id, isInputCourse = false, chapters = [] }) => {
   return (
     <ul className="accordion-container curriculum">
       {/* accordion  */}
-      {chapters.length > 0 ? (
-        chapters.map((chapter, index) => {
+      {sortedChapters.length > 0 ? (
+        sortedChapters.map((chapter, index) => {
           const isOpen = openIndex === index;
 
           return (
