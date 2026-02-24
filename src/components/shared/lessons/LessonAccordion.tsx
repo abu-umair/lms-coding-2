@@ -39,13 +39,13 @@ const LessonAccordion = ({ id, isInputCourse = false, chapters = [] }) => {
                         onClick={(e) => e.stopPropagation()} // Mencegah accordion tertutup saat klik tombol aksi
                       >
                         <button className="flex items-center px-2 py-0.5 border border-primaryColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
-                          <Grip size={14} strokeWidth={2.5} />
+                          <Grip size={14} strokeWidth={2.5} className="!rotate-0 group-hover:text-primaryColor !fill-none" />
                         </button>
                         <button className="flex items-center px-2 py-0.5 border border-primaryColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
-                          <PencilLine size={14} strokeWidth={2.5} />
+                          <PencilLine size={14} strokeWidth={2.5} className="!rotate-0 group-hover:text-primaryColor !fill-none" />
                         </button>
                         <button className="flex items-center px-2 py-0.5 border border-primaryColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
-                          <Trash size={14} strokeWidth={2.5} />
+                          <Trash size={14} strokeWidth={2.5} className="!rotate-0 group-hover:text-primaryColor !fill-none" />
                         </button>
                       </div>
                     )}
