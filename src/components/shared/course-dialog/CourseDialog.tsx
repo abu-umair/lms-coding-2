@@ -24,11 +24,12 @@ interface CourseDialogProps {
     courseId: string;
     trigger: ReactNode; // Untuk menerima button dari luar
     title: string;
+    onSuccessAdd?: () => void;
 }
 
 
 
-export const CourseDialog = ({ trigger, title, id: id1, instructorId, courseId }: CourseDialogProps) => {
+export const CourseDialog = ({ trigger, title, id: id1, instructorId, courseId, onSuccessAdd }: CourseDialogProps) => {
     const [open, setOpen] = useState<boolean>(false);
     const { callApi, isLoading } = useGrpcApi();
 
@@ -65,6 +66,7 @@ export const CourseDialog = ({ trigger, title, id: id1, instructorId, courseId }
                 onSuccess: () => {
                     reset(),
                         setOpen(false); // Menutup Dialog
+                    if (onSuccessAdd) onSuccessAdd(); // 2. Trigger auto-update di parent
                 },
                 useDefaultError: false,
                 defaultError: (res) => {

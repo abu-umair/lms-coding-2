@@ -230,6 +230,31 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
   }, [courseId, authStatus, session]); // Tambahkan reset ke dependency agar sinkron
 
   //get chapters 
+
+  const fetchChapter = async () => {
+    await callApi(getCourseChapterClient().getAllCourseChapter({
+      courseId: courseId,
+      // Implementasi field_mask sesuai input Postman Anda
+      fieldMask: {
+        paths: [
+          "title",
+          "order_chapter",
+        ]
+      }
+    }),
+      {
+        loadingMessage: "Mengambil data chapter...",
+        onSuccess: (res) => {
+          const data = res.response.chapters || [];
+          setChapters(data as getChapters[]);
+          console.log(res);
+
+        },
+        useDefaultError: true,
+      }
+    );
+  };
+
   useEffect(() => {
     const accessToken = (session as any)?.accessToken;
 
@@ -240,29 +265,6 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
     else if (courseId && authStatus == "authenticated" && accessToken) {
       console.log(courseId);
 
-      const fetchChapter = async () => {
-        await callApi(getCourseChapterClient().getAllCourseChapter({
-          courseId: courseId,
-          // Implementasi field_mask sesuai input Postman Anda
-          fieldMask: {
-            paths: [
-              "title",
-              "order_chapter",
-            ]
-          }
-        }),
-          {
-            loadingMessage: "Mengambil data chapter...",
-            onSuccess: (res) => {
-              const data = res.response.chapters || [];
-              setChapters(data as getChapters[]);
-              console.log(res);
-
-            },
-            useDefaultError: true,
-          }
-        );
-      };
       fetchChapter();
     }
 
@@ -741,6 +743,7 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
                           instructorId={instructorId}
                           courseId={courseId}
                           title="Tambah Topik Baru"
+                          onSuccessAdd={fetchChapter} // fungsi refresh ke sini
                           trigger={
                             <span className=" max-w-max cursor-pointer flex ms-auto items-center space-x-1 text-size-15 text-whiteColor bg-primaryColor px-15px py-5px border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark">
                               <LayersPlus size={18} strokeWidth={2.5} className="group-hover:text-primaryColor" /> <span>New Topic</span>
