@@ -47,6 +47,8 @@ export const CourseDialog = ({ trigger, title, id: id1, instructorId, courseId }
 
     const onSubmit = async (values: ChapterFormData) => {
         console.log(values);
+        console.log(instructorId);
+        console.log(courseId);
         const chapterPayload = {
             id: "",
             instructorId: instructorId,

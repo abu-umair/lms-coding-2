@@ -8,7 +8,7 @@ import ButtonPrimary from "@/components/shared/buttons/ButtonPrimary";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import FormInput from "@/components/shared/form-input/FormInput";
-import { getCourseClient } from "@/api/grpc/client";
+import { getCourseChapterClient, getCourseClient } from "@/api/grpc/client";
 import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getCourseSchema, CourseFormData } from "@/libs/validationSchemaCourse";
@@ -60,14 +60,23 @@ interface uploadImageResponse {
   success: boolean;
 }
 
-const CreateCoursePrimary = () => {
+interface getChapters {
+  id?: string;
+  title?: string;
+  orderChapter?: number;
+}
+
+
+const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[] }) => {
   const { callApi, isLoading } = useGrpcApi();
   const [courseId, setCourseId] = useState<string | null>(null);
   const [instructorId, setInstructorId] = useState<string | null>(null);
-  const [courseData, setCourseData] = useState<string | null>(null);
+  const [chapters, setChapters] = useState<getChapters[]>([]);
   const { data: session, status: authStatus } = useSession();
   const [existingImageUrl, setExistingImageUrl] = useState<string | null>(null);
   const isEditMode = !!courseId;
+  console.log(getAllChapters);
+
 
   // 1. Cek localStorage saat pertama kali halaman dibuka (Refresh)
   useEffect(() => {
@@ -217,11 +226,61 @@ const CreateCoursePrimary = () => {
       fetchDetail();
     }
 
-    // const fetchDetailChapter = async () =>{
-    //   if (courseId && authStatus == "authenticated" && accessToken) {
-    // }
 
   }, [courseId, authStatus, session]); // Tambahkan reset ke dependency agar sinkron
+
+  //get chapters 
+  useEffect(() => {
+    const accessToken = (session as any)?.accessToken;
+
+    if (!courseId && authStatus !== "authenticated" && !accessToken) {
+      return;
+    }
+
+    else if (courseId && authStatus == "authenticated" && accessToken) {
+      console.log(courseId);
+
+      const fetchChapter = async () => {
+        await callApi(getCourseChapterClient().getAllCourseChapter({
+          courseId: courseId,
+          // Implementasi field_mask sesuai input Postman Anda
+          fieldMask: {
+            paths: [
+              "title",
+              "order_chapter",
+            ]
+          }
+        }),
+          {
+            loadingMessage: "Mengambil data chapter...",
+            onSuccess: (res) => {
+              const data = res.response.chapters || [];
+              setChapters(data as getChapters[]);
+              console.log(res);
+
+            },
+            useDefaultError: true,
+          }
+        );
+      };
+      fetchChapter();
+    }
+
+
+  }, [courseId, authStatus, session]);
+
+  //* fetch detail chapter
+  // useEffect(() => {
+
+  //   if (courseId) {
+  //     const fetchDetailChapter = async () => {
+  //       await callApi(getCourseChapterClient().getAllCourseChapter({
+
+  //       }))
+  //     }
+  //     fetchDetailChapter();
+  //   }
+  // }, [courseId])
 
 
   const onSubmit = async (values: CourseFormData) => {
@@ -319,7 +378,9 @@ const CreateCoursePrimary = () => {
 
 
 
+    setCourseId(currentCourseId);
     saveCourseId(currentCourseId);
+
 
   };
 

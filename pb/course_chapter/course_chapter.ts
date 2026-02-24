@@ -11,8 +11,59 @@ import { UnknownFieldHandler } from "@protobuf-ts/runtime";
 import type { PartialMessage } from "@protobuf-ts/runtime";
 import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
-import { FieldMask } from "../google/protobuf/field_mask";
 import { BaseResponse } from "../common/base_response";
+import { FieldMask } from "../google/protobuf/field_mask";
+/**
+ * @generated from protobuf message course_chapter.GetAllCourseChapterRequest
+ */
+export interface GetAllCourseChapterRequest {
+    /**
+     * @generated from protobuf field: string course_id = 1
+     */
+    courseId: string;
+    /**
+     * @generated from protobuf field: google.protobuf.FieldMask field_mask = 2
+     */
+    fieldMask?: FieldMask;
+}
+/**
+ * @generated from protobuf message course_chapter.GetAllCourseChapterResponse
+ */
+export interface GetAllCourseChapterResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse;
+    /**
+     * @generated from protobuf field: repeated course_chapter.ChapterInfo chapters = 2
+     */
+    chapters: ChapterInfo[]; // 'repeated' untuk array/slice
+}
+/**
+ * @generated from protobuf message course_chapter.ChapterInfo
+ */
+export interface ChapterInfo {
+    /**
+     * @generated from protobuf field: string id = 1
+     */
+    id: string;
+    /**
+     * @generated from protobuf field: optional string title = 2
+     */
+    title?: string;
+    /**
+     * @generated from protobuf field: optional string course_id = 3
+     */
+    courseId?: string;
+    /**
+     * @generated from protobuf field: optional int32 order_chapter = 4
+     */
+    orderChapter?: number;
+    /**
+     * @generated from protobuf field: optional string status = 5
+     */
+    status?: string;
+}
 /**
  * @generated from protobuf message course_chapter.CreateCourseChapterRequest
  */
@@ -30,7 +81,7 @@ export interface CreateCourseChapterRequest {
      */
     title: string;
     /**
-     * @generated from protobuf field: int`32` order_chapter = 4
+     * @generated from protobuf field: int32 order_chapter = 4
      */
     orderChapter: number;
     /**
@@ -181,6 +232,189 @@ export interface DeleteCourseChapterResponse {
      */
     base?: BaseResponse;
 }
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAllCourseChapterRequest$Type extends MessageType<GetAllCourseChapterRequest> {
+    constructor() {
+        super("course_chapter.GetAllCourseChapterRequest", [
+            { no: 1, name: "course_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "field_mask", kind: "message", T: () => FieldMask }
+        ]);
+    }
+    create(value?: PartialMessage<GetAllCourseChapterRequest>): GetAllCourseChapterRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.courseId = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetAllCourseChapterRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAllCourseChapterRequest): GetAllCourseChapterRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string course_id */ 1:
+                    message.courseId = reader.string();
+                    break;
+                case /* google.protobuf.FieldMask field_mask */ 2:
+                    message.fieldMask = FieldMask.internalBinaryRead(reader, reader.uint32(), options, message.fieldMask);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAllCourseChapterRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string course_id = 1; */
+        if (message.courseId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.courseId);
+        /* google.protobuf.FieldMask field_mask = 2; */
+        if (message.fieldMask)
+            FieldMask.internalBinaryWrite(message.fieldMask, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course_chapter.GetAllCourseChapterRequest
+ */
+export const GetAllCourseChapterRequest = new GetAllCourseChapterRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAllCourseChapterResponse$Type extends MessageType<GetAllCourseChapterResponse> {
+    constructor() {
+        super("course_chapter.GetAllCourseChapterResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse },
+            { no: 2, name: "chapters", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ChapterInfo }
+        ]);
+    }
+    create(value?: PartialMessage<GetAllCourseChapterResponse>): GetAllCourseChapterResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.chapters = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetAllCourseChapterResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAllCourseChapterResponse): GetAllCourseChapterResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                case /* repeated course_chapter.ChapterInfo chapters */ 2:
+                    message.chapters.push(ChapterInfo.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAllCourseChapterResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* repeated course_chapter.ChapterInfo chapters = 2; */
+        for (let i = 0; i < message.chapters.length; i++)
+            ChapterInfo.internalBinaryWrite(message.chapters[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course_chapter.GetAllCourseChapterResponse
+ */
+export const GetAllCourseChapterResponse = new GetAllCourseChapterResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ChapterInfo$Type extends MessageType<ChapterInfo> {
+    constructor() {
+        super("course_chapter.ChapterInfo", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "title", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "course_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "order_chapter", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/ },
+            { no: 5, name: "status", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ChapterInfo>): ChapterInfo {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = "";
+        if (value !== undefined)
+            reflectionMergePartial<ChapterInfo>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ChapterInfo): ChapterInfo {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* optional string title */ 2:
+                    message.title = reader.string();
+                    break;
+                case /* optional string course_id */ 3:
+                    message.courseId = reader.string();
+                    break;
+                case /* optional int32 order_chapter */ 4:
+                    message.orderChapter = reader.int32();
+                    break;
+                case /* optional string status */ 5:
+                    message.status = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ChapterInfo, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* optional string title = 2; */
+        if (message.title !== undefined)
+            writer.tag(2, WireType.LengthDelimited).string(message.title);
+        /* optional string course_id = 3; */
+        if (message.courseId !== undefined)
+            writer.tag(3, WireType.LengthDelimited).string(message.courseId);
+        /* optional int32 order_chapter = 4; */
+        if (message.orderChapter !== undefined)
+            writer.tag(4, WireType.Varint).int32(message.orderChapter);
+        /* optional string status = 5; */
+        if (message.status !== undefined)
+            writer.tag(5, WireType.LengthDelimited).string(message.status);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course_chapter.ChapterInfo
+ */
+export const ChapterInfo = new ChapterInfo$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class CreateCourseChapterRequest$Type extends MessageType<CreateCourseChapterRequest> {
     constructor() {
@@ -737,6 +971,7 @@ export const DeleteCourseChapterResponse = new DeleteCourseChapterResponse$Type(
  * @generated ServiceType for protobuf service course_chapter.CourseChapterService
  */
 export const CourseChapterService = new ServiceType("course_chapter.CourseChapterService", [
+    { name: "GetAllCourseChapter", options: {}, I: GetAllCourseChapterRequest, O: GetAllCourseChapterResponse },
     { name: "CreateCourseChapter", options: {}, I: CreateCourseChapterRequest, O: CreateCourseChapterResponse },
     { name: "DetailCourseChapter", options: {}, I: DetailCourseChapterRequest, O: DetailCourseChapterResponse },
     { name: "EditCourseChapter", options: {}, I: EditCourseChapterRequest, O: EditCourseChapterResponse },
