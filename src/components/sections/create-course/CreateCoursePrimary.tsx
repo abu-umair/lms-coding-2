@@ -74,6 +74,7 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
   const [chapters, setChapters] = useState<getChapters[]>([]);
   const { data: session, status: authStatus } = useSession();
   const [existingImageUrl, setExistingImageUrl] = useState<string | null>(null);
+  const [lastOrder, setLastOrder] = useState(0);
   const isEditMode = !!courseId;
   console.log(getAllChapters);
 
@@ -85,12 +86,6 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
       setCourseId(savedId);
     }
   }, []);
-  //TODO: sekarang courseId didpat jika user sudah input di form pertama (course info)
-  //TODO:  1. get data chapter
-  //TODO:  2. tampilkan data chapter di form course builder
-  //TODO:  3. seting ke dialog
-  //TODO:   get data lesson (nanti)
-
 
 
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<CourseFormData>({
@@ -247,7 +242,21 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
         onSuccess: (res) => {
           const data = res.response.chapters || [];
           setChapters(data as getChapters[]);
-          console.log(res);
+          // MENCARI ORDER TERTINGGI
+          if (data.length > 0) {
+            const orders = data.map((c: any) => {
+              // Coba ambil dari order_chapter atau orderChapter (tergantung respons gRPC)
+              const val = c.order_chapter || c.orderChapter || 0;
+              return Number(val);
+            });
+
+            const maxOrder = Math.max(...orders);
+            console.log(maxOrder);
+
+            setLastOrder(maxOrder);
+          } else {
+            setLastOrder(10);
+          }
 
         },
         useDefaultError: true,
@@ -744,6 +753,7 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
                           courseId={courseId}
                           title="Tambah Topik Baru"
                           onSuccessAdd={fetchChapter} // fungsi refresh ke sini
+                          nextOrder={lastOrder + 1}
                           trigger={
                             <span className=" max-w-max cursor-pointer flex ms-auto items-center space-x-1 text-size-15 text-whiteColor bg-primaryColor px-15px py-5px border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark">
                               <LayersPlus size={18} strokeWidth={2.5} className="group-hover:text-primaryColor" /> <span>New Topic</span>

@@ -26,11 +26,12 @@ interface CourseDialogProps {
     title: string;
     onSuccessAdd?: () => void;
     initialData?: any; // Gunakan objek chapter jika ada
+    nextOrder?: number;
 }
 
 
 
-export const CourseDialog = ({ trigger, title, id: id1, instructorId, courseId, onSuccessAdd, initialData }: CourseDialogProps) => {
+export const CourseDialog = ({ trigger, title, id: id1, instructorId, courseId, onSuccessAdd, initialData, nextOrder }: CourseDialogProps) => {
     const [open, setOpen] = useState<boolean>(false);
     const { callApi, isLoading } = useGrpcApi();
 
@@ -67,7 +68,7 @@ export const CourseDialog = ({ trigger, title, id: id1, instructorId, courseId, 
             id: isEditMode ? initialData.id : "",
             instructorId: instructorId,
             courseId: courseId,
-            orderChapter: 1,
+            orderChapter: nextOrder,
             title: values.title,
             status: "",
         };
