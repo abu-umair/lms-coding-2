@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^5.2.2",
     "@protobuf-ts/grpcweb-transport": "^2.11.1",
     "@protobuf-ts/runtime": "^2.11.1",

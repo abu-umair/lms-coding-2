@@ -73,4 +73,9 @@ npx protoc --ts_out ./pb --proto_path ./proto course/course.proto
 ``` bash
 npm install axios
 
+
+## install drag and drop
+``` bash
+npm install @hello-pangea/dnd
+
 ```
