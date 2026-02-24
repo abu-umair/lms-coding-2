@@ -3,8 +3,10 @@ import accordions from "@/libs/accordions";
 import { CopyPlus, Grab, Grip, PencilLine, SquarePen, Trash } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
+import { CourseDialog } from "@/components/shared/course-dialog/CourseDialog";
 
-const LessonAccordion = ({ id, isInputCourse = false, chapters = [] }) => {
+
+const LessonAccordion = ({ id, isInputCourse = false, chapters = [], instructorId, courseId, onSuccessAdd }) => {
   const [openIndex, setOpenIndex] = React.useState<number | null>(0);
 
   const sortedChapters = [...chapters].sort((a, b) => a.order_chapter - b.order_chapter);
@@ -39,9 +41,18 @@ const LessonAccordion = ({ id, isInputCourse = false, chapters = [] }) => {
                         <button className="flex items-center px-2 py-0.5 border border-primaryColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
                           <Grip size={14} strokeWidth={2.5} className="!rotate-0 group-hover:text-primaryColor !fill-none" />
                         </button>
-                        <button className="flex items-center px-2 py-0.5 border border-primaryColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
-                          <PencilLine size={14} strokeWidth={2.5} className="!rotate-0 group-hover:text-primaryColor !fill-none" />
-                        </button>
+                        <CourseDialog
+                          instructorId={instructorId}
+                          courseId={courseId}
+                          title="Edit Topik"
+                          initialData={chapter} // Kirim data chapter yang mau diedit
+                          onSuccessAdd={onSuccessAdd} // Re-fetch data setelah edit
+                          trigger={
+                            <button className="flex items-center px-2 py-0.5 border border-primaryColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
+                              <PencilLine size={14} strokeWidth={2.5} className="!fill-none" />
+                            </button>
+                          }
+                        />
                         <button className="flex items-center px-2 py-0.5 border border-primaryColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
                           <Trash size={14} strokeWidth={2.5} className="!rotate-0 group-hover:text-primaryColor !fill-none" />
                         </button>

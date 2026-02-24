@@ -6,7 +6,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import ButtonPrimary from "../buttons/ButtonPrimary";
 import FormInput from "@/components/shared/form-input/FormInput";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,16 +25,17 @@ interface CourseDialogProps {
     trigger: ReactNode; // Untuk menerima button dari luar
     title: string;
     onSuccessAdd?: () => void;
+    initialData?: any; // Gunakan objek chapter jika ada
 }
 
 
 
-export const CourseDialog = ({ trigger, title, id: id1, instructorId, courseId, onSuccessAdd }: CourseDialogProps) => {
+export const CourseDialog = ({ trigger, title, id: id1, instructorId, courseId, onSuccessAdd, initialData }: CourseDialogProps) => {
     const [open, setOpen] = useState<boolean>(false);
     const { callApi, isLoading } = useGrpcApi();
 
 
-    const isEditMode = false;
+    const isEditMode = !!initialData?.id;;
 
     const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<ChapterFormData>({
         resolver: zodResolver(getChapterSchema(isEditMode)) as any,
@@ -46,20 +47,38 @@ export const CourseDialog = ({ trigger, title, id: id1, instructorId, courseId, 
         }
     });
 
+    useEffect(() => {
+        if (open) {
+            if (isEditMode) {
+                setValue("title", initialData.title || initialData.chapter_name);
+                // Set values lainnya jika ada
+            } else {
+                reset({ title: "", status: "active" }); // Reset jika mode tambah
+            }
+        }
+    }, [open, isEditMode, initialData, setValue, reset]);
+
     const onSubmit = async (values: ChapterFormData) => {
         console.log(values);
         console.log(instructorId);
         console.log(courseId);
+
         const chapterPayload = {
-            id: "",
+            id: isEditMode ? initialData.id : "",
             instructorId: instructorId,
             courseId: courseId,
             orderChapter: 1,
             title: values.title,
             status: "",
         };
+
+        const apiCall = isEditMode
+            ? getCourseChapterClient().editCourseChapter(chapterPayload)
+            : getCourseChapterClient().createCourseChapter(chapterPayload);
+
+
         await callApi(
-            getCourseChapterClient().createCourseChapter(chapterPayload),
+            apiCall,
             {
                 loadingMessage: "Memperbarui chapter...",
                 successMessage: "Chapter berhasil diperbarui!",
@@ -72,7 +91,7 @@ export const CourseDialog = ({ trigger, title, id: id1, instructorId, courseId, 
                 defaultError: (res) => {
                     console.log(res);
 
-                    toast.error("Gagal menambah chapter.");
+                    toast.error("Gagal memperbarui chapter.");
                 }
             }
         );
