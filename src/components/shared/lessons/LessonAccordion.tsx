@@ -7,6 +7,7 @@ import { CourseDialog } from "@/components/shared/course-dialog/CourseDialog";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { getCourseChapterClient } from "@/api/grpc/client";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
+import toast from "react-hot-toast";
 
 
 
@@ -81,6 +82,50 @@ const LessonAccordion = ({ id, isInputCourse = false, chapters = [], instructorI
   };
 
 
+  // delete chapter
+  const handleDeleteChapter = (chapterId: string) => {
+    // Munculkan toast konfirmasi dulu
+    console.log(chapterId);
+
+    toast((t) => (
+      <div className="flex flex-col gap-3 p-1">
+        <div className="flex flex-col">
+          <p className="text-sm font-bold text-headingColor">Hapus Chapter?</p>
+          <p className="text-xs text-contentColor">Tindakan ini tidak dapat dibatalkan.</p>
+        </div>
+        <div className="flex gap-2 justify-end">
+
+          <button
+            className="bg-red-500 text-white px-3 py-1.5 rounded text-xs hover:bg-red-600 transition-all shadow-sm"
+            disabled={isLoading}
+            onClick={async () => {
+              toast.dismiss(t.id); // Tutup konfirmasi
+
+              // JALANKAN API SETELAH KONFIRMASI
+              await callApi(
+                getCourseChapterClient().deleteCourseChapter({ id: chapterId }),
+                {
+                  loadingMessage: "Menghapus chapter...",
+                  successMessage: "Chapter berhasil dihapus!",
+                  onSuccess: () => {
+                    if (onSuccessAdd) onSuccessAdd(); // Refresh data
+                  },
+                }
+              );
+            }}
+          >
+            {isLoading ? "Menghapus..." : "Ya, Hapus"}
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="text-xs px-3 py-1.5 border border-borderColor rounded hover:bg-gray-100 transition-all"
+          >
+            Batal
+          </button>
+        </div>
+      </div>
+    ));
+  };
 
 
   return (
@@ -143,7 +188,7 @@ const LessonAccordion = ({ id, isInputCourse = false, chapters = [], instructorI
                                       </button>
                                     }
                                   />
-                                  <button className="flex items-center px-2 py-0.5 border border-primaryColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
+                                  <button onClick={() => handleDeleteChapter(chapter.id)} className="flex items-center px-2 py-0.5 border border-primaryColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
                                     <Trash size={14} strokeWidth={2.5} className="!rotate-0 group-hover:text-primaryColor !fill-none" />
                                   </button>
                                 </div>
