@@ -597,26 +597,42 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
                 </div>
               </li>
               {/*  accordion */}
-              <li className="accordion mb-5">
+              <li className={`accordion mb-5 ${!courseId ? "opacity-50" : ""}`}>
                 <div className="bg-whiteColor dark:bg-whiteColor-dark shadow-accordion dark:shadow-accordion-dark">
                   {/*  controller */}
-                  <div className="py-5 px-30px">
+                  <div className={`py-5 px-30px ${!courseId ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"}`}>
                     <div className="cursor-pointer accordion-controller flex justify-between items-center text-lg text-headingColor font-semibold w-full dark:text-headingColor-dark font-hind leading-27px">
                       <div>
                         <span>Course Details & Media</span>
                       </div>
-                      <svg
-                        className="transition-all duration-500 rotate-0"
-                        width="20"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        fill="#212529"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                        ></path>
-                      </svg>
+                      {!courseId ?
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg> :
+                        <svg
+                          className="transition-all duration-500 rotate-0"
+                          width="20"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 16 16"
+                          fill="#212529"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                          ></path>
+                        </svg>
+                      }
                     </div>
                   </div>
 
@@ -721,26 +737,42 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
                 </div>
               </li>
               {/*  accordion */}
-              <li className="accordion mb-5">
+              <li className={`accordion mb-5 ${!courseId ? "opacity-50" : ""}`}>
                 <div className="bg-whiteColor dark:bg-whiteColor-dark shadow-accordion dark:shadow-accordion-dark">
                   {/*  controller */}
-                  <div className="py-5 px-30px">
+                  <div className={`py-5 px-30px ${!courseId ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"}`}>
                     <div className="cursor-pointer accordion-controller flex justify-between items-center text-lg text-headingColor font-semibold w-full dark:text-headingColor-dark font-hind leading-27px">
                       <div>
                         <span>Course Builder</span>
                       </div>
-                      <svg
-                        className="transition-all duration-500 rotate-0"
-                        width="20"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        fill="#212529"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                        ></path>
-                      </svg>
+                      {!courseId ?
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg> :
+                        <svg
+                          className="transition-all duration-500 rotate-0"
+                          width="20"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 16 16"
+                          fill="#212529"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                          ></path>
+                        </svg>
+                      }
                     </div>
                   </div>
                   {/*  content */}
@@ -780,26 +812,42 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
                 </div>
               </li>
               {/*  accordion */}
-              <li className="accordion mb-5">
+              <li className={`accordion mb-5 ${!courseId ? "opacity-50" : ""}`}>
                 <div className="bg-whiteColor dark:bg-whiteColor-dark shadow-accordion dark:shadow-accordion-dark">
                   {/*  controller */}
-                  <div className="py-5 px-30px">
+                  <div className={`py-5 px-30px ${!courseId ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"}`}>
                     <div className="cursor-pointer accordion-controller flex justify-between items-center text-lg text-headingColor font-semibold w-full dark:text-headingColor-dark font-hind leading-27px">
                       <div>
                         <span>Course Price & Capacity</span>
                       </div>
-                      <svg
-                        className="transition-all duration-500 rotate-0"
-                        width="20"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        fill="#212529"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                        ></path>
-                      </svg>
+                      {!courseId ?
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg> :
+                        <svg
+                          className="transition-all duration-500 rotate-0"
+                          width="20"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 16 16"
+                          fill="#212529"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                          ></path>
+                        </svg>
+                      }
                     </div>
                   </div>
                   {/*  content */}
@@ -864,26 +912,45 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
                 </div>
               </li>
               {/*  accordion */}
-              <li className="accordion mb-5">
+              <li className={`accordion mb-5 ${!courseId ? "opacity-50" : ""}`}>
                 <div className="bg-whiteColor dark:bg-whiteColor-dark shadow-accordion dark:shadow-accordion-dark">
                   {/*  controller */}
-                  <div className="py-5 px-30px">
-                    <div className="cursor-pointer accordion-controller flex justify-between items-center text-lg text-headingColor font-semibold w-full dark:text-headingColor-dark font-hind leading-27px">
+                  <div className={`py-5 px-30px ${!courseId ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"}`}>
+                    <div
+                      className={`accordion-controller flex justify-between items-center text-lg text-headingColor font-semibold w-full dark:text-headingColor-dark font-hind leading-27px ${!courseId ? "cursor-not-allowed" : "cursor-pointer"}`}
+
+                    >
                       <div>
                         <span>Course Setting & Review</span>
                       </div>
-                      <svg
-                        className="transition-all duration-500 rotate-0"
-                        width="20"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        fill="#212529"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                        ></path>
-                      </svg>
+                      {!courseId ?
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg> :
+                        <svg
+                          className="transition-all duration-500 rotate-0"
+                          width="20"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 16 16"
+                          fill="#212529"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                          ></path>
+                        </svg>
+                      }
                     </div>
                   </div>
                   {/*  content */}
