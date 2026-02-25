@@ -4,6 +4,7 @@ import { AuthServiceClient, IAuthServiceClient } from "@/../../pb/auth/auth.clie
 import { CourseServiceClient, ICourseServiceClient } from "@/../../pb/course/course.client"; // Path hasil generate proto kamu
 import { authInterceptor } from "@/api/grpc/auth-interceptor";
 import { CourseChapterServiceClient, ICourseChapterServiceClient } from "@/../../pb/course_chapter/course_chapter.client";
+import { ChapterLessonServiceClient, IChapterLessonServiceClient } from "@/../../pb/chapter_lesson/chapter_lesson.client";
 
 
 
@@ -12,6 +13,7 @@ let webTransport: GrpcWebFetchTransport | null = null;
 let authClient: IAuthServiceClient | null = null;
 let courseClient: ICourseServiceClient | null = null;
 let courseChapterClient: ICourseChapterServiceClient | null = null;
+let chapterLessonClient: IChapterLessonServiceClient | null = null;
 
 const getWebTransport = () => {
     if (webTransport === null) {
