@@ -8,7 +8,7 @@ import ButtonPrimary from "@/components/shared/buttons/ButtonPrimary";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import FormInput from "@/components/shared/form-input/FormInput";
-import { getCourseChapterClient, getCourseClient } from "@/api/grpc/client";
+import { getChapterLessonClient, getCourseChapterClient, getCourseClient } from "@/api/grpc/client";
 import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getCourseSchema, CourseFormData } from "@/libs/validationSchemaCourse";
@@ -279,6 +279,8 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
 
 
   }, [courseId, authStatus, session]);
+
+
 
   //* fetch detail chapter
   // useEffect(() => {
@@ -793,7 +795,7 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
                           }
                         />
                         <LessonAccordion
-                          id={1}
+                          // id={1}
                           isInputCourse={true}
                           chapters={chapters}
                           instructorId={instructorId}

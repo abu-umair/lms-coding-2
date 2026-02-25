@@ -36,7 +36,7 @@ export const CourseDialog = ({ trigger, title, id: id1, instructorId, courseId, 
     const { callApi, isLoading } = useGrpcApi();
 
 
-    const isEditMode = !!initialData?.id;;
+    const isEditMode = !!initialData?.id;
 
     const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<ChapterFormData>({
         resolver: zodResolver(getChapterSchema(isEditMode)) as any,
@@ -64,11 +64,16 @@ export const CourseDialog = ({ trigger, title, id: id1, instructorId, courseId, 
         console.log(instructorId);
         console.log(courseId);
 
+        const finalOrder = isEditMode
+            ? initialData.orderChapter
+            : nextOrder;
+
         const chapterPayload = {
             id: isEditMode ? initialData.id : "",
             instructorId: instructorId,
             courseId: courseId,
-            orderChapter: nextOrder,
+            // Pastikan nilainya adalah Number agar tidak error di writer.int32
+            orderChapter: Number(finalOrder) || 0,
             title: values.title,
             status: "",
         };
