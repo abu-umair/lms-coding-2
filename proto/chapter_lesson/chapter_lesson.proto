@@ -9,10 +9,41 @@ import "google/protobuf/field_mask.proto";
 option go_package = "github.com/abu-umair/be-lms-go/pb/chapter_lesson";
 
 service ChapterLessonService {
+    rpc GetAllChapterLesson (GetAllChapterLessonRequest) returns (GetAllChapterLessonResponse);
     rpc CreateChapterLesson (CreateChapterLessonRequest) returns (CreateChapterLessonResponse);
     rpc DetailChapterLesson (DetailChapterLessonRequest) returns (DetailChapterLessonResponse);
     rpc EditChapterLesson (EditChapterLessonRequest) returns (EditChapterLessonResponse);
     rpc DeleteChapterLesson (DeleteChapterLessonRequest) returns (DeleteChapterLessonResponse);
+}
+
+message GetAllChapterLessonRequest {
+  string chapter_id = 1;
+  google.protobuf.FieldMask field_mask = 2;
+}
+
+message GetAllChapterLessonResponse {
+  common.BaseResponse base = 1;
+  repeated LessonInfo lessons = 2; // 'repeated' untuk array/slice
+}
+
+message LessonInfo {
+  string id = 1;
+  optional string instructor_id = 2 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+  optional string course_id = 3 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+  optional string chapter_id = 4 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+  optional string title = 5 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+  optional int32 order_lesson = 6 [(buf.validate.field).int32.gte = 0];
+  optional string slug = 7 [(buf.validate.field).string = { max_len: 255 }];
+  optional string file_path = 8 [(buf.validate.field).string = { max_len: 255 }];
+  optional string storage_lesson = 9 [(buf.validate.field).string = { max_len: 255 }];
+  optional string lesson_type = 10 [(buf.validate.field).string = { max_len: 255 }];
+  optional string volume = 11 [(buf.validate.field).string = { max_len: 255 }];
+  optional string duration = 12 [(buf.validate.field).string = { max_len: 255 }];
+  optional string file_type = 13 [(buf.validate.field).string = { max_len: 255 }];
+  optional string downloadable = 14 [(buf.validate.field).string = { max_len: 255 }];
+  optional int32  is_preview = 15 [(buf.validate.field).int32.gte = 0];
+  optional string status = 16 [(buf.validate.field).string = { max_len: 255 }];
+  optional string description = 17 [(buf.validate.field).string = { max_len: 255 }];
 }
 
 message CreateChapterLessonRequest {
@@ -20,7 +51,7 @@ message CreateChapterLessonRequest {
   optional string course_id = 2 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   optional string chapter_id = 3 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   string title = 4 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
-  int64 order_lesson = 5 [(buf.validate.field).int64.gte = 0];
+  int32 order_lesson = 5 [(buf.validate.field).int32.gte = 0];
   optional string slug = 6 [(buf.validate.field).string = { max_len: 255 }];
   optional string description = 7 [(buf.validate.field).string = { max_len: 255 }];
   optional string file_path = 8 [(buf.validate.field).string = { max_len: 255 }];
@@ -30,7 +61,7 @@ message CreateChapterLessonRequest {
   optional string duration = 12 [(buf.validate.field).string = { max_len: 255 }];
   optional string file_type = 13 [(buf.validate.field).string = { max_len: 255 }];
   optional string downloadable = 14 [(buf.validate.field).string = { max_len: 255 }];
-  optional int64  is_preview = 15 [(buf.validate.field).int64.gte = 0];
+  optional int32  is_preview = 15 [(buf.validate.field).int32.gte = 0];
   optional string status = 16 [(buf.validate.field).string = { max_len: 255 }];
 }
 
@@ -49,7 +80,7 @@ message DetailChapterLessonResponse {
   string id = 2;
   optional string chapter_id = 3 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   string title = 4 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
-  int64 order_lesson = 5 [(buf.validate.field).int64.gte = 0];
+  int32 order_lesson = 5 [(buf.validate.field).int32.gte = 0];
   optional string slug = 6 [(buf.validate.field).string = { max_len: 255 }];
   optional string description = 7 [(buf.validate.field).string = { max_len: 255 }];
   optional string file_path = 8 [(buf.validate.field).string = { max_len: 255 }];
@@ -59,7 +90,7 @@ message DetailChapterLessonResponse {
   optional string duration = 12 [(buf.validate.field).string = { max_len: 255 }];
   optional string file_type = 13 [(buf.validate.field).string = { max_len: 255 }];
   optional string downloadable = 14 [(buf.validate.field).string = { max_len: 255 }];
-  optional int64  is_preview = 15 [(buf.validate.field).int64.gte = 0];
+  optional int32  is_preview = 15 [(buf.validate.field).int32.gte = 0];
   optional string status = 16 [(buf.validate.field).string = { max_len: 255 }];
   optional string instructor_id = 17 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   optional string course_id = 18 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
@@ -77,7 +108,7 @@ message EditChapterLessonRequest {
   optional string course_id = 2 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   optional string chapter_id = 3 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   string title = 4 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
-  int64 order_lesson = 5 [(buf.validate.field).int64.gte = 0];
+  int32 order_lesson = 5 [(buf.validate.field).int32.gte = 0];
   optional string slug = 6 [(buf.validate.field).string = { max_len: 255 }];
   optional string description = 7 [(buf.validate.field).string = { max_len: 255 }];
   optional string file_path = 8 [(buf.validate.field).string = { max_len: 255 }];
@@ -87,7 +118,7 @@ message EditChapterLessonRequest {
   optional string duration = 12 [(buf.validate.field).string = { max_len: 255 }];
   optional string file_type = 13 [(buf.validate.field).string = { max_len: 255 }];
   optional string downloadable = 14 [(buf.validate.field).string = { max_len: 255 }];
-  optional int64 is_preview = 15 [(buf.validate.field).int64.gte = 0];
+  optional int32 is_preview = 15 [(buf.validate.field).int32.gte = 0];
   optional string status = 16 [(buf.validate.field).string = { max_len: 255 }];
   optional string instructor_id = 17 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
 }
