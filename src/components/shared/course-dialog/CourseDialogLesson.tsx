@@ -21,7 +21,7 @@ import toast from "react-hot-toast";
 interface CourseDialogLessonProps {
     id?: number;
     instructorId?: string;
-    courseId?: string;
+    courseId: string;
     chapterId?: string;
     trigger: ReactNode; // Untuk menerima button dari luar
     title?: string;
@@ -37,8 +37,7 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
     const { callApi, isLoading } = useGrpcApi();
 
 
-    // const isEditMode = !!initialData?.id;
-    const isEditMode = false;
+    const isEditMode = !!initialData?.id;
 
     const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<LessonFormData>({
         resolver: zodResolver(getLessonSchema(isEditMode)) as any,
@@ -53,6 +52,8 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
     useEffect(() => {
         if (open) {
             if (isEditMode) {
+                console.log(initialData);
+
                 setValue("title", initialData.title);
                 // Set values lainnya jika ada
             } else {
@@ -68,9 +69,11 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
         console.log(values);
         console.log(instructorId);
         console.log(courseId);
+        console.log(initialData);
+        console.log('chapter' + chapterId);
 
         const finalOrder = isEditMode
-            ? initialData.orderChapter
+            ? initialData.orderLesson
             : nextOrder;
 
         const lessonPayload = {

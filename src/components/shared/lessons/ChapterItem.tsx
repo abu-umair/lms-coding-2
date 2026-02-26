@@ -221,6 +221,10 @@ const ChapterItem = ({
                                                     key={idx}
                                                     isInputCourse={isInputCourse}
                                                     initialData={lesson}
+                                                    onSuccessAdd={fetchLesson}
+                                                    courseId={courseId}
+                                                    chapterId={chapter.id}
+                                                    instructorId={instructorId}
                                                 />
                                             ))
                                         ) : (

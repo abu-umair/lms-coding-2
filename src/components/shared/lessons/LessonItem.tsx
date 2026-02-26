@@ -3,10 +3,11 @@ import React from 'react'
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
 import { getChapterLessonClient } from '@/api/grpc/client';
 import { Grip, PencilLine, Trash } from 'lucide-react';
+import { CourseDialogLesson } from '../course-dialog/CourseDialogLesson';
 
 
 
-const LessonItem = ({ isInputCourse, initialData }) => {
+const LessonItem = ({ isInputCourse, courseId, instructorId, chapterId, initialData, onSuccessAdd }) => {
 
 
     return (
@@ -24,9 +25,25 @@ const LessonItem = ({ isInputCourse, initialData }) => {
                 {isInputCourse ? (
                     <div className="flex space-x-2">
                         <div className="flex space-x-1 bg-primaryColor p-0.5 rounded">
-                            <button className="p-1 text-whiteColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all"><Grip size={12} /></button>
-                            <button className="p-1 text-whiteColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all"><PencilLine size={12} /></button>
-                            <button className="p-1 text-whiteColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all"><Trash size={12} /></button>
+                            <button className="p-1 text-whiteColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
+                                <Grip size={12} />
+                            </button>
+                            <CourseDialogLesson
+                                instructorId={instructorId}
+                                courseId={courseId}
+                                title="Edit Lesson"
+                                initialData={initialData}
+                                chapterId={chapterId}
+                                onSuccessAdd={onSuccessAdd} // fungsi refresh ke sini
+                                trigger={
+                                    <button className="p-1 text-whiteColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
+                                        <PencilLine size={12} />
+                                    </button>
+                                }
+                            />
+                            <button className="p-1 text-whiteColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
+                                <Trash size={12} />
+                            </button>
                         </div>
                     </div>
                 ) : (
