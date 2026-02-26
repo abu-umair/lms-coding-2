@@ -119,7 +119,7 @@ const LessonAccordion = ({ isInputCourse = false, chapters = [], instructorId, c
                   onSuccessAdd={onSuccessAdd}
                 />
               ))
-            ) : (
+          ) : (
               <li className="accordion mb-25px overflow-hidden text-center p-5 border border-dashed border-borderColor rounded">
                 <p className="text-contentColor">Belum ada konten topik.</p>
               </li>

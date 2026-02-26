@@ -6,15 +6,15 @@ import { Grip, PencilLine, Trash } from 'lucide-react';
 
 
 
-const LessonItem = ({ isInputCourse }) => {
-   
+const LessonItem = ({ isInputCourse, initialData }) => {
+
 
     return (
         <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark last:border-b-0">
             <div className="flex items-center">
                 <i className="icofont-video-alt mr-10px text-primaryColor"></i>
                 <Link href="/lessons/1" className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor">
-                    Course Intros
+                    {initialData.title}
                 </Link>
             </div>
 

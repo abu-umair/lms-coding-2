@@ -45,3 +45,10 @@ export const getCourseChapterClient = () => {
     }
     return courseChapterClient
 }
+
+export const getChapterLessonClient = () => {
+    if (chapterLessonClient === null) {
+        chapterLessonClient = new ChapterLessonServiceClient(getWebTransport());
+    }
+    return chapterLessonClient
+}

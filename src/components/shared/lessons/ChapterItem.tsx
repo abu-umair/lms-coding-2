@@ -28,7 +28,7 @@ const ChapterItem = ({
     onSuccessAdd,
 }) => {
     const { callApi, isLoading } = useGrpcApi();
-    const [Lessons, setLessons] = useState<getLessons[]>([]);
+    const [lessons, setLessons] = useState<getLessons[]>([]);
     const [lastOrder, setLastOrder] = useState(0);
 
     const chapterId = chapter.id;
@@ -215,8 +215,22 @@ const ChapterItem = ({
                                     )}
 
                                     <ul>
-                                        {/* Lesson items placeholder */}
-                                        <LessonItem isInputCourse={isInputCourse} />
+                                        {lessons?.length > 0 ? (
+                                            lessons.map((lesson, idx) => (
+                                                <LessonItem
+                                                    key={idx}
+                                                    isInputCourse={isInputCourse}
+                                                    initialData={lesson}
+                                                />
+                                            ))
+                                        ) : (
+                                            <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark last:border-b-0">
+                                                <div className="flex items-center">
+                                                    <span className="font-semibold text-sm">No Lessons</span>
+                                                </div>
+                                            </li>
+                                        )
+                                        }
                                     </ul>
                                 </div>
                             </div>
