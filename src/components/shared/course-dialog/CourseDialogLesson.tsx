@@ -25,14 +25,14 @@ interface CourseDialogLessonProps {
     chapterId?: string;
     trigger: ReactNode; // Untuk menerima button dari luar
     title?: string;
-    onSuccessAdd?: () => void;
+    onSuccessLessonAdd?: () => void;
     initialData?: any; // Gunakan objek lesson jika ada
     nextOrder?: number;
 }
 
 
 
-export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, courseId, chapterId, onSuccessAdd, initialData, nextOrder }: CourseDialogLessonProps) => {
+export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, courseId, chapterId, onSuccessLessonAdd, initialData, nextOrder }: CourseDialogLessonProps) => {
     const [open, setOpen] = useState<boolean>(false);
     const { callApi, isLoading } = useGrpcApi();
 
@@ -100,7 +100,7 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                 onSuccess: () => {
                     reset(),
                         setOpen(false); // Menutup Dialog
-                    if (onSuccessAdd) onSuccessAdd(); // 2. Trigger auto-update di parent
+                    if (onSuccessLessonAdd) onSuccessLessonAdd(); // 2. Trigger auto-update di parent
                 },
                 useDefaultError: false,
                 defaultError: (res) => {

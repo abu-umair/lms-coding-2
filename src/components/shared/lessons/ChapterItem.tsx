@@ -8,6 +8,7 @@ import LessonItem from "./LessonItem";
 import { CourseDialogLesson } from "../course-dialog/CourseDialogLesson";
 import { getChapterLessonClient } from "@/api/grpc/client";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
+import toast from "react-hot-toast";
 
 
 interface getLessons {
@@ -101,6 +102,41 @@ const ChapterItem = ({
 
 
     }, [chapterId]);
+
+
+    // delete lesson
+    const handleDeleteLesson = (lessonId: string) => {
+        toast((t) => (
+            <div className="flex flex-col gap-3 p-1">
+                <div className="flex flex-col">
+                    <p className="text-sm font-bold text-headingColor">Hapus Lesson?</p>
+                    <p className="text-xs text-contentColor">Tindakan ini tidak dapat dibatalkan.</p>
+                </div>
+                <div className="flex gap-2 justify-end">
+                    <button
+                        className="bg-red-500 text-white px-3 py-1.5 rounded text-xs hover:bg-red-600 transition-all shadow-sm"
+                        disabled={isLoading}
+                        onClick={async () => {
+                            toast.dismiss(t.id);
+                            await callApi(getChapterLessonClient().deleteChapterLesson({ id: lessonId }), {
+                                loadingMessage: "Menghapus lesson...",
+                                successMessage: "Lesson berhasil dihapus!",
+                                onSuccess: () => { fetchLesson() },
+                            });
+                        }}
+                    >
+                        {isLoading ? "Menghapus..." : "Ya, Hapus"}
+                    </button>
+                    <button
+                        onClick={() => toast.dismiss(t.id)}
+                        className="text-xs px-3 py-1.5 border border-borderColor rounded hover:bg-gray-100 transition-all"
+                    >
+                        Batal
+                    </button>
+                </div>
+            </div>
+        ), { duration: 5000 });
+    };
 
     return (
         <Draggable
@@ -202,7 +238,7 @@ const ChapterItem = ({
                                                 courseId={courseId}
                                                 title="Tambah Lesson Baru"
                                                 chapterId={chapter.id}
-                                                onSuccessAdd={fetchLesson} // fungsi refresh ke sini
+                                                onSuccessLessonAdd={fetchLesson} // fungsi refresh ke sini
                                                 nextOrder={lastOrder + 1}
                                                 trigger={
                                                     <span className="cursor-pointer flex items-center space-x-2 text-size-15 text-whiteColor bg-primaryColor px-3 py-1 border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded transition-all">
@@ -221,10 +257,11 @@ const ChapterItem = ({
                                                     key={idx}
                                                     isInputCourse={isInputCourse}
                                                     initialData={lesson}
-                                                    onSuccessAdd={fetchLesson}
+                                                    onSuccessLessonAdd={fetchLesson}
                                                     courseId={courseId}
                                                     chapterId={chapter.id}
                                                     instructorId={instructorId}
+                                                    onDelete={handleDeleteLesson}
                                                 />
                                             ))
                                         ) : (

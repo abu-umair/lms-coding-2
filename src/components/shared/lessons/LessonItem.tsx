@@ -7,7 +7,15 @@ import { CourseDialogLesson } from '../course-dialog/CourseDialogLesson';
 
 
 
-const LessonItem = ({ isInputCourse, courseId, instructorId, chapterId, initialData, onSuccessAdd }) => {
+const LessonItem = ({
+    isInputCourse,
+    courseId,
+    instructorId,
+    chapterId,
+    initialData,
+    onSuccessLessonAdd,
+    onDelete
+}) => {
 
 
     return (
@@ -32,16 +40,20 @@ const LessonItem = ({ isInputCourse, courseId, instructorId, chapterId, initialD
                                 instructorId={instructorId}
                                 courseId={courseId}
                                 title="Edit Lesson"
-                                initialData={initialData}
+                                initialData={initialData} //lesson data
                                 chapterId={chapterId}
-                                onSuccessAdd={onSuccessAdd} // fungsi refresh ke sini
+                                onSuccessLessonAdd={onSuccessLessonAdd} // fungsi refresh ke sini
                                 trigger={
                                     <button className="p-1 text-whiteColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
                                         <PencilLine size={12} />
                                     </button>
                                 }
                             />
-                            <button className="p-1 text-whiteColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
+                            {/* Menghapus lesson */}
+                            <button
+                                type='button'
+                                onClick={() => onDelete(initialData.id)}
+                                className="p-1 text-whiteColor hover:bg-whiteColor hover:text-primaryColor rounded transition-all">
                                 <Trash size={12} />
                             </button>
                         </div>
