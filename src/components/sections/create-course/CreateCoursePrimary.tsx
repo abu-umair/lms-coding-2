@@ -255,7 +255,7 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
 
             setLastOrder(maxOrder);
           } else {
-            setLastOrder(10);
+            setLastOrder(0);
           }
 
         },

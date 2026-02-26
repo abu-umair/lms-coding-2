@@ -1,10 +1,20 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Draggable } from "@hello-pangea/dnd";
 import { Grip, PencilLine, Trash, CopyPlus } from "lucide-react";
 import { CourseDialog } from "@/components/shared/course-dialog/CourseDialog";
 import Link from "next/link";
 import LessonItem from "./LessonItem";
+import { CourseDialogLesson } from "../course-dialog/CourseDialogLesson";
+import { getChapterLessonClient } from "@/api/grpc/client";
+import useGrpcApi from "@/components/shared/others/useGrpcApi";
+
+
+interface getLessons {
+    id?: string;
+    title?: string;
+    orderLesson?: number;
+}
 
 const ChapterItem = ({
     chapter,
@@ -17,6 +27,81 @@ const ChapterItem = ({
     onDelete,
     onSuccessAdd,
 }) => {
+    const { callApi, isLoading } = useGrpcApi();
+    const [Lessons, setLessons] = useState<getLessons[]>([]);
+    const [lastOrder, setLastOrder] = useState(0);
+
+    const chapterId = chapter.id;
+
+
+
+
+
+    // fetchLesson
+    const fetchLesson = async () => {
+        await callApi(getChapterLessonClient().getAllChapterLesson({
+            chapterId: chapterId,
+            // Implementasi field_mask sesuai input Postman Anda
+            fieldMask: {
+                paths: [
+                    "title",
+                    "order_lesson",
+                    "instructor_id",
+                    "course_id",
+                    "chapter_id",
+                    "slug",
+                    "description",
+                    "file_path",
+                    "storage_lesson",
+                    "lesson_type",
+                    "volume",
+                    "duration",
+                    "file_type",
+                    "downloadable",
+                    "is_preview",
+                    "status"
+                ]
+            }
+        }),
+            {
+                loadingMessage: "Mengambil data lesson...",
+                onSuccess: (res) => {
+                    const data = res.response.lessons || [];
+                    console.log(data);
+
+                    setLessons(data as getLessons[]);
+                    // MENCARI ORDER TERTINGGI
+                    if (data.length > 0) {
+                        const orders = data.map((c: any) => {
+                            // Coba ambil dari order_lesson atau orderLesson (tergantung respons gRPC)
+                            const val = c.order_lesson || c.orderLesson || 0;
+                            return Number(val);
+                        });
+
+                        const maxOrder = Math.max(...orders);
+                        console.log(maxOrder);
+
+                        setLastOrder(maxOrder);
+                    } else {
+                        setLastOrder(0);
+                    }
+
+                },
+                useDefaultError: true,
+            }
+        );
+    };
+
+    useEffect(() => {
+        if (chapterId) {
+            console.log(chapterId);
+
+            fetchLesson();
+        }
+
+
+    }, [chapterId]);
+
     return (
         <Draggable
             key={chapter.id.toString()}
@@ -39,7 +124,7 @@ const ChapterItem = ({
                             onClick={() => toggleAccordion(index)}
                             className="accordion-controller cursor-pointer flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px]"
                         >
-                            <span>{chapter.title || chapter.chapter_name || `Chapter #${index + 1}`}</span>
+                            <span>{chapter.title || `Chapter #${index + 1}`}</span>
 
                             <div className="flex items-center space-x-3">
                                 {isInputCourse && (
@@ -59,7 +144,7 @@ const ChapterItem = ({
                                         <CourseDialog
                                             instructorId={instructorId}
                                             courseId={courseId}
-                                            title="Edit Topik"
+                                            title="Edit Lesson"
                                             initialData={chapter}
                                             onSuccessAdd={onSuccessAdd}
                                             trigger={
@@ -111,10 +196,21 @@ const ChapterItem = ({
                                 <div className="content-wrapper p-10px md:px-30px border-t border-borderColor dark:border-borderColor-dark">
                                     {isInputCourse && (
                                         <div className="mb-4 flex justify-end">
-                                            <button className="flex items-center space-x-2 text-size-15 text-whiteColor bg-primaryColor px-3 py-1 border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded transition-all">
-                                                <CopyPlus size={14} strokeWidth={2.5} />
-                                                <span>New Lesson</span>
-                                            </button>
+                                            <CourseDialogLesson
+                                                id={1}//?bisa dengan param
+                                                instructorId={instructorId}
+                                                courseId={courseId}
+                                                title="Tambah Lesson Baru"
+                                                chapterId={chapter.id}
+                                                onSuccessAdd={fetchLesson} // fungsi refresh ke sini
+                                                nextOrder={lastOrder + 1}
+                                                trigger={
+                                                    <span className="cursor-pointer flex items-center space-x-2 text-size-15 text-whiteColor bg-primaryColor px-3 py-1 border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded transition-all">
+                                                        <CopyPlus size={14} strokeWidth={2.5} />
+                                                        <span>New Lesson</span>
+                                                    </span>
+                                                }
+                                            />
                                         </div>
                                     )}
 
