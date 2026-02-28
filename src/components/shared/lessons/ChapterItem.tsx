@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Draggable } from "@hello-pangea/dnd";
 import { Grip, PencilLine, Trash, CopyPlus } from "lucide-react";
 import { CourseDialog } from "@/components/shared/course-dialog/CourseDialog";
 import Link from "next/link";
@@ -9,6 +8,7 @@ import { CourseDialogLesson } from "../course-dialog/CourseDialogLesson";
 import { getChapterLessonClient } from "@/api/grpc/client";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
 import toast from "react-hot-toast";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 
 interface getLessons {
@@ -102,6 +102,50 @@ const ChapterItem = ({
 
 
     }, [chapterId]);
+
+    // --- LOGIKA DRAG END UNTUK LESSON ---
+    const onLessonDragEnd = async (result: any) => {
+        if (!result.destination) return;
+
+        // 1. Optimistic Update UI
+        const reorderedLessons = Array.from(lessons);
+        const [removed] = reorderedLessons.splice(result.source.index, 1);
+        reorderedLessons.splice(result.destination.index, 0, removed);
+
+        setLessons(reorderedLessons);
+
+        // 2. Update ke Database (Iterasi dan edit order)
+        try {
+            for (let i = 0; i < reorderedLessons.length; i++) {
+                const lesson = reorderedLessons[i];
+                const newOrder = i + 1;
+
+                // Hanya panggil API jika urutan berubah
+                if (lesson.orderLesson !== newOrder) {
+                    await callApi(getChapterLessonClient().editChapterLesson({
+                        id: lesson.id,
+                        chapterId: chapterId,
+                        courseId: courseId,
+                        instructorId: instructorId,
+                        title: lesson.title,
+                        orderLesson: newOrder,
+                        // Masukkan field lain yang wajib ada di payload edit Anda
+                    }), {
+                        useDefaultError: false,
+                        // Tampilkan loading hanya pada item pertama agar tidak spam toast
+                        loadingMessage: i === 0 ? "Menyimpan urutan lesson..." : undefined,
+                        onSuccess: () => {
+                            if (i === reorderedLessons.length - 1) fetchLesson();
+                        }
+                    });
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Gagal memperbarui urutan lesson");
+            fetchLesson(); // Rollback jika gagal
+        }
+    };
 
 
     // delete lesson
@@ -250,29 +294,39 @@ const ChapterItem = ({
                                         </div>
                                     )}
 
-                                    <ul>
-                                        {lessons?.length > 0 ? (
-                                            lessons.map((lesson, idx) => (
-                                                <LessonItem
-                                                    key={idx}
-                                                    isInputCourse={isInputCourse}
-                                                    initialData={lesson}
-                                                    onSuccessLessonAdd={fetchLesson}
-                                                    courseId={courseId}
-                                                    chapterId={chapter.id}
-                                                    instructorId={instructorId}
-                                                    onDelete={handleDeleteLesson}
-                                                />
-                                            ))
-                                        ) : (
-                                            <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark last:border-b-0">
-                                                <div className="flex items-center">
-                                                    <span className="font-semibold text-sm">No Lessons</span>
-                                                </div>
-                                            </li>
-                                        )
-                                        }
-                                    </ul>
+                                    <DragDropContext onDragEnd={onLessonDragEnd}>
+                                        <Droppable droppableId={`lessons-${chapterId}`}>
+                                            {(provided) => (
+                                                <ul
+                                                    {...provided.droppableProps}
+                                                    ref={provided.innerRef}
+                                                >
+                                                    {lessons?.length > 0 ? (
+                                                        lessons.map((lesson, idx) => (
+                                                            <LessonItem
+                                                                key={lesson.id} // Gunakan ID unik
+                                                                index={idx}
+                                                                isInputCourse={isInputCourse}
+                                                                initialData={lesson}
+                                                                onSuccessLessonAdd={fetchLesson}
+                                                                courseId={courseId}
+                                                                chapterId={chapter.id}
+                                                                instructorId={instructorId}
+                                                                onDelete={handleDeleteLesson}
+                                                            />
+                                                        ))
+                                                    ) : (
+                                                        <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark last:border-b-0">
+                                                            <div className="flex items-center">
+                                                                <span className="font-semibold text-sm">No Lessons</span>
+                                                            </div>
+                                                        </li>
+                                                    )}
+                                                    {provided.placeholder}
+                                                </ul>
+                                            )}
+                                        </Droppable>
+                                    </DragDropContext>
                                 </div>
                             </div>
                         </div>

@@ -325,9 +325,9 @@ export interface EditChapterLessonRequest {
      */
     chapterId?: string;
     /**
-     * @generated from protobuf field: string title = 4
+     * @generated from protobuf field: optional string title = 4
      */
-    title: string;
+    title?: string;
     /**
      * @generated from protobuf field: int32 order_lesson = 5
      */
@@ -1157,7 +1157,7 @@ class EditChapterLessonRequest$Type extends MessageType<EditChapterLessonRequest
             { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 2, name: "course_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 3, name: "chapter_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
-            { no: 4, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 4, name: "title", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 5, name: "order_lesson", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "buf.validate.field": { int32: { gte: 0 } } } },
             { no: 6, name: "slug", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
             { no: 7, name: "description", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
@@ -1176,7 +1176,6 @@ class EditChapterLessonRequest$Type extends MessageType<EditChapterLessonRequest
     create(value?: PartialMessage<EditChapterLessonRequest>): EditChapterLessonRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.id = "";
-        message.title = "";
         message.orderLesson = 0;
         if (value !== undefined)
             reflectionMergePartial<EditChapterLessonRequest>(this, message, value);
@@ -1196,7 +1195,7 @@ class EditChapterLessonRequest$Type extends MessageType<EditChapterLessonRequest
                 case /* optional string chapter_id */ 3:
                     message.chapterId = reader.string();
                     break;
-                case /* string title */ 4:
+                case /* optional string title */ 4:
                     message.title = reader.string();
                     break;
                 case /* int32 order_lesson */ 5:
@@ -1259,8 +1258,8 @@ class EditChapterLessonRequest$Type extends MessageType<EditChapterLessonRequest
         /* optional string chapter_id = 3; */
         if (message.chapterId !== undefined)
             writer.tag(3, WireType.LengthDelimited).string(message.chapterId);
-        /* string title = 4; */
-        if (message.title !== "")
+        /* optional string title = 4; */
+        if (message.title !== undefined)
             writer.tag(4, WireType.LengthDelimited).string(message.title);
         /* int32 order_lesson = 5; */
         if (message.orderLesson !== 0)

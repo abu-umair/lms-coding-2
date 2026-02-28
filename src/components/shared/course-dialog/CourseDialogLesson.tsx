@@ -88,7 +88,7 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
         };
 
         const apiCall = isEditMode
-            ? getChapterLessonClient().editChapterLesson(lessonPayload)
+            ? (getChapterLessonClient().editChapterLesson(lessonPayload) as any)
             : getChapterLessonClient().createChapterLesson(lessonPayload);
 
 
