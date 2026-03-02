@@ -75,7 +75,6 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
   const { data: session, status: authStatus } = useSession();
   const [existingImageUrl, setExistingImageUrl] = useState<string | null>(null);
   const [lastOrder, setLastOrder] = useState(0);
-  const [modeEdit, setModeEdit] = useState<string | null>(false);
 
   const isNextMode = !!courseId; //?untuk melanjutkan input ketika form pertama telah dimasukan
   console.log(getAllChapters);
@@ -84,15 +83,11 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
   // 1. Cek localStorage saat pertama kali halaman dibuka (Refresh)
   useEffect(() => {
     const savedId = getCourseId();
-    const modeEdit = getMode();
 
     if (savedId) {
       setCourseId(savedId);
     }
 
-    if (modeEdit) {
-      setModeEdit(modeEdit);
-    }
   }, []);
 
 

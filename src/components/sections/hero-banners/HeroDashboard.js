@@ -1,6 +1,7 @@
 "use client";
 import dashboardImage2 from "@/assets/images/dashbord/dashbord__2.jpg";
 import teacherImage2 from "@/assets/images/teacher/teacher__2.png";
+import { clearCourseId, setModeCreate } from "@/libs/courseStorage";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -14,13 +15,12 @@ const HeroDashboard = () => {
     <section>
       <div className="container-fluid-2">
         <div
-          className={`${
-            isAdmin
-              ? "bg-primaryColor"
-              : isInstructor
+          className={`${isAdmin
+            ? "bg-primaryColor"
+            : isInstructor
               ? "bg-naveBlue"
               : "bg-skycolor"
-          } p-5 md:p-10 rounded-5 flex justify-center md:justify-between items-center flex-wrap gap-2`}
+            } p-5 md:p-10 rounded-5 flex justify-center md:justify-between items-center flex-wrap gap-2`}
         >
           <div className="flex items-center flex-wrap justify-center sm:justify-start">
             <div className="mr-10px lg:mr-5">
@@ -110,13 +110,16 @@ const HeroDashboard = () => {
           <div>
             <Link
               href={`/dashboards/create-course`}
-              className={`text-size-15 border text-whiteColor   ${
-                isAdmin
-                  ? "bg-primaryColor border-whiteColor hover:text-primaryColor  "
-                  : isInstructor
+              onClick={() => {
+                clearCourseId();
+                setModeCreate();
+              }}
+              className={`text-size-15 border text-whiteColor   ${isAdmin
+                ? "bg-primaryColor border-whiteColor hover:text-primaryColor  "
+                : isInstructor
                   ? "bg-primaryColor  border-primaryColor hover:text-primaryColor "
                   : "bg-secondaryColor border-secondaryColor hover:text-secondaryColor"
-              }  px-25px py-10px hover:bg-whiteColor rounded group text-nowrap flex gap-1 items-center`}
+                }  px-25px py-10px hover:bg-whiteColor rounded group text-nowrap flex gap-1 items-center`}
             >
               {isAdmin || isInstructor
                 ? " Create a New Course"
