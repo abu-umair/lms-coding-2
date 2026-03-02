@@ -25,11 +25,19 @@ interface CourseDialogLessonProps {
     chapterId?: string;
     trigger: ReactNode; // Untuk menerima button dari luar
     title?: string;
+    description?: string;
+    storage_lesson?: string;
+    // duration?: string;
+    is_preview?: number;
     onSuccessLessonAdd?: () => void;
     initialData?: any; // Gunakan objek lesson jika ada
     nextOrder?: number;
 }
 
+const isPreviewOptions = [
+    { value: '0', label: "No" },
+    { value: '1', label: "Yes" },
+];
 
 
 export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, courseId, chapterId, onSuccessLessonAdd, initialData, nextOrder }: CourseDialogLessonProps) => {
@@ -44,7 +52,11 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
         defaultValues: {
             // instructor_id: "11",
             title: "",
-            // order_lesson: "1",
+            slug: "",
+            description: "",
+            storage_lesson: "",
+            duration: null,
+            is_preview: null,
             // status: "",
         }
     });
@@ -55,10 +67,16 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                 console.log(initialData);
 
                 setValue("title", initialData.title);
+                setValue("slug", initialData.slug);
+                setValue("description", initialData.description);
+                setValue("storage_lesson", initialData.storageLesson);
+                setValue("duration", initialData.duration);
+                setValue("is_preview", initialData.isPreview);
                 // Set values lainnya jika ada
             } else {
                 reset({
                     title: "",
+                    slug: "",
                     // status: "active"
                 }); // Reset jika mode tambah
             }
@@ -79,11 +97,16 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
         const lessonPayload = {
             id: isEditMode ? initialData.id : "",
             instructorId: instructorId,
-            // courseId: courseId,
+            courseId: courseId,
             chapterId: chapterId,
             // Pastikan nilainya adalah Number agar tidak error di writer.int32
             orderLesson: Number(finalOrder) || 0,
             title: values.title,
+            slug: values.slug,
+            description: values.description,
+            storageLesson: values.storage_lesson,
+            duration: String(values.duration),
+            isPreview: Number(values.is_preview),
             // status: "",
         };
 
@@ -144,12 +167,62 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                                         isInputCourse={true}
                                         lableRequired={true}
                                     />
+                                    <FormInput
+                                        label="Slug Course"
+                                        name="slug"
+                                        type="text"
+                                        placeholder="Masukkan Slug Lesson"
+                                        register={register}
+                                        errors={errors}
+                                        disabled={isLoading}
+                                        isInputCourse={true}
+                                    />
+                                    <FormInput
+                                        label="Description"
+                                        name="description"
+                                        type="textarea"
+                                        placeholder="Masukkan Description lesson"
+                                        register={register}
+                                        errors={errors}
+                                        disabled={isLoading}
+                                        isInputCourse={true}
+                                    />
+
+                                    <FormInput
+                                        label="Video URL"
+                                        name="storage_lesson"
+                                        type="text"
+                                        placeholder="https://www.youtube.com/watch?....."
+                                        register={register}
+                                        errors={errors}
+                                        disabled={isLoading}
+                                        isInputCourse={true}
+                                    />
+                                    <FormInput
+                                        label="Durasi Video"
+                                        name="duration"
+                                        type="number"
+                                        placeholder="masukkan durasi video dalam menit"
+                                        register={register}
+                                        errors={errors}
+                                        disabled={isLoading}
+                                        isInputCourse={true}
+                                    />
+
+                                    <FormInput
+                                        label="Preview Video"
+                                        name="is_preview"
+                                        type="select"
+                                        placeholder="Jadikan Preview Video"
+                                        options={isPreviewOptions}
+                                        register={register}
+                                        errors={errors}
+                                        disabled={isLoading}
+                                        isInputCourse={true}
+                                    />
+
                                 </div>
-                                <div>
-                                    <div className="mb-3 block">
-                                        Example: Membuat Login Dengan React JS
-                                    </div>
-                                </div>
+
                             </div>
                             <div className="mt-15px">
                                 <ButtonPrimary

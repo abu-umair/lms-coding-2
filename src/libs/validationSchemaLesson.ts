@@ -10,7 +10,12 @@ export const baseLessonSchema = z.object({
 
 export const getLessonSchema = (isEdit: boolean) => {
     return baseLessonSchema.extend({
-        status: z.any().optional().or(z.literal("")),
+        slug: z.string().min(1, "Slug diisi"),
+        description: z.string().min(1, "description diisi"),
+        storage_lesson: z.string().min(1, "storage lesson diisi"),
+        duration: z.any().optional().or(z.literal("")),
+        is_preview: z.string().min(1, "preview diisi"),
+        // status: z.any().optional().or(z.literal("")),
 
     });
 };

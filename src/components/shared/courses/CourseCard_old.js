@@ -91,13 +91,11 @@ const CourseCard = ({ course, type }) => {
 
   return (
     <div
-      className={`group  ${
-        type === "primary" || type === "primaryMd"
+      className={`group  ${type === "primary" || type === "primaryMd"
           ? ""
-          : `w-full sm:w-1/2 lg:w-1/3 grid-item ${
-              type === "lg" ? "xl:w-1/4" : ""
-            }`
-      } ${filterOption ? filterOption : ""}`}
+          : `w-full sm:w-1/2 lg:w-1/3 grid-item ${type === "lg" ? "xl:w-1/4" : ""
+          }`
+        } ${filterOption ? filterOption : ""}`}
     >
       <div className={`  ${type === "primaryMd" ? "" : "sm:px-15px  mb-30px"}`}>
         <div className="p-15px bg-whiteColor shadow-brand dark:bg-darkdeep3-dark dark:shadow-brand-dark">
@@ -163,9 +161,8 @@ const CourseCard = ({ course, type }) => {
             <h5 className={`${type === "primaryMd" ? "text-lg " : "text-xl "}`}>
               <Link
                 href={`/courses/${id}`}
-                className={`font-semibold text-blackColor mb-10px dark:text-blackColor-dark hover:text-primaryColor dark:hover:text-primaryColor ${
-                  type === "primaryMd" ? "leading-25px" : "leading-27px "
-                } `}
+                className={`font-semibold text-blackColor mb-10px dark:text-blackColor-dark hover:text-primaryColor dark:hover:text-primaryColor ${type === "primaryMd" ? "leading-25px" : "leading-27px "
+                  } `}
               >
                 {title}
               </Link>
@@ -177,9 +174,8 @@ const CourseCard = ({ course, type }) => {
                 / $67.00
               </del>
               <span
-                className={`ml-6 text-base font-semibold ${
-                  isFree ? " text-greencolor" : " text-secondaryColor3"
-                }`}
+                className={`ml-6 text-base font-semibold ${isFree ? " text-greencolor" : " text-secondaryColor3"
+                  }`}
               >
                 {isFree ? "Free" : <del>Free</del>}
               </span>

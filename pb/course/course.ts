@@ -11,8 +11,167 @@ import { UnknownFieldHandler } from "@protobuf-ts/runtime";
 import type { PartialMessage } from "@protobuf-ts/runtime";
 import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
-import { FieldMask } from "../google/protobuf/field_mask";
 import { BaseResponse } from "../common/base_response";
+import { FieldMask } from "../google/protobuf/field_mask";
+/**
+ * @generated from protobuf message course.GetAllCourseRequest
+ */
+export interface GetAllCourseRequest {
+    /**
+     * @generated from protobuf field: string instructor_id = 1
+     */
+    instructorId: string;
+    /**
+     * @generated from protobuf field: google.protobuf.FieldMask field_mask = 2
+     */
+    fieldMask?: FieldMask;
+}
+/**
+ * @generated from protobuf message course.GetAllCourseResponse
+ */
+export interface GetAllCourseResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse;
+    /**
+     * @generated from protobuf field: repeated course.CourseInfo courses = 2
+     */
+    courses: CourseInfo[]; // 'repeated' untuk array/slice
+}
+/**
+ * @generated from protobuf message course.CourseInfo
+ */
+export interface CourseInfo {
+    /**
+     * @generated from protobuf field: string id = 1
+     */
+    id: string;
+    /**
+     * @generated from protobuf field: optional string image_file_name = 2
+     */
+    imageFileName?: string;
+    /**
+     * @generated from protobuf field: optional string name = 3
+     */
+    name?: string;
+    /**
+     * @generated from protobuf field: optional string address = 4
+     */
+    address?: string;
+    /**
+     * @generated from protobuf field: optional string slug = 5
+     */
+    slug?: string;
+    /**
+     * @generated from protobuf field: optional string category_id = 6
+     */
+    categoryId?: string;
+    /**
+     * @generated from protobuf field: optional string course_type = 7
+     */
+    courseType?: string;
+    /**
+     * @generated from protobuf field: optional string title = 8
+     */
+    title?: string;
+    /**
+     * @generated from protobuf field: optional string seo_description = 9
+     */
+    seoDescription?: string;
+    /**
+     * @generated from protobuf field: optional string duration = 10
+     */
+    duration?: string;
+    /**
+     * @generated from protobuf field: optional string timezone = 11
+     */
+    timezone?: string;
+    /**
+     * @generated from protobuf field: optional string thumbnail = 12
+     */
+    thumbnail?: string;
+    /**
+     * @generated from protobuf field: optional string demo_video_storage = 13
+     */
+    demoVideoStorage?: string;
+    /**
+     * @generated from protobuf field: optional string demo_video_source = 14
+     */
+    demoVideoSource?: string;
+    /**
+     * @generated from protobuf field: optional string description = 15
+     */
+    description?: string;
+    /**
+     * @generated from protobuf field: optional int32 capacity = 16
+     */
+    capacity?: number;
+    /**
+     * @generated from protobuf field: optional string price = 17
+     */
+    price?: string;
+    /**
+     * @generated from protobuf field: optional string discount = 18
+     */
+    discount?: string;
+    /**
+     * @generated from protobuf field: optional string certificate = 19
+     */
+    certificate?: string;
+    /**
+     * @generated from protobuf field: optional string gna = 20
+     */
+    gna?: string;
+    /**
+     * @generated from protobuf field: optional string message_for_reviewer = 21
+     */
+    messageForReviewer?: string;
+    /**
+     * @generated from protobuf field: optional string is_approved = 22
+     */
+    isApproved?: string;
+    /**
+     * @generated from protobuf field: optional string status = 23
+     */
+    status?: string;
+    /**
+     * @generated from protobuf field: optional string course_level_id = 24
+     */
+    courseLevelId?: string;
+    /**
+     * @generated from protobuf field: optional string course_language_id = 25
+     */
+    courseLanguageId?: string;
+    /**
+     * @generated from protobuf field: optional string instructor_id = 26
+     */
+    instructorId?: string;
+    /**
+     * @generated from protobuf field: optional string created_at = 27
+     */
+    createdAt?: string;
+    /**
+     * @generated from protobuf field: optional string created_by = 28
+     */
+    createdBy?: string;
+    /**
+     * @generated from protobuf field: optional string deleted_by = 29
+     */
+    deletedBy?: string;
+    /**
+     * @generated from protobuf field: optional string updated_at = 30
+     */
+    updatedAt?: string;
+    /**
+     * @generated from protobuf field: optional string updated_by = 31
+     */
+    updatedBy?: string;
+    /**
+     * @generated from protobuf field: optional string deleted_at = 32
+     */
+    deletedAt?: string;
+}
 /**
  * @generated from protobuf message course.CreateCourseRequest
  */
@@ -427,6 +586,378 @@ export interface DeleteCourseResponse {
      */
     base?: BaseResponse;
 }
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAllCourseRequest$Type extends MessageType<GetAllCourseRequest> {
+    constructor() {
+        super("course.GetAllCourseRequest", [
+            { no: 1, name: "instructor_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "field_mask", kind: "message", T: () => FieldMask }
+        ]);
+    }
+    create(value?: PartialMessage<GetAllCourseRequest>): GetAllCourseRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.instructorId = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetAllCourseRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAllCourseRequest): GetAllCourseRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string instructor_id */ 1:
+                    message.instructorId = reader.string();
+                    break;
+                case /* google.protobuf.FieldMask field_mask */ 2:
+                    message.fieldMask = FieldMask.internalBinaryRead(reader, reader.uint32(), options, message.fieldMask);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAllCourseRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string instructor_id = 1; */
+        if (message.instructorId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.instructorId);
+        /* google.protobuf.FieldMask field_mask = 2; */
+        if (message.fieldMask)
+            FieldMask.internalBinaryWrite(message.fieldMask, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course.GetAllCourseRequest
+ */
+export const GetAllCourseRequest = new GetAllCourseRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAllCourseResponse$Type extends MessageType<GetAllCourseResponse> {
+    constructor() {
+        super("course.GetAllCourseResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse },
+            { no: 2, name: "courses", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => CourseInfo }
+        ]);
+    }
+    create(value?: PartialMessage<GetAllCourseResponse>): GetAllCourseResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.courses = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetAllCourseResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAllCourseResponse): GetAllCourseResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                case /* repeated course.CourseInfo courses */ 2:
+                    message.courses.push(CourseInfo.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAllCourseResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* repeated course.CourseInfo courses = 2; */
+        for (let i = 0; i < message.courses.length; i++)
+            CourseInfo.internalBinaryWrite(message.courses[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course.GetAllCourseResponse
+ */
+export const GetAllCourseResponse = new GetAllCourseResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CourseInfo$Type extends MessageType<CourseInfo> {
+    constructor() {
+        super("course.CourseInfo", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "image_file_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "address", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "slug", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "category_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "course_type", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "title", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "seo_description", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "duration", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "timezone", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 12, name: "thumbnail", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "demo_video_storage", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 14, name: "demo_video_source", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 15, name: "description", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 16, name: "capacity", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/ },
+            { no: 17, name: "price", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 18, name: "discount", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 19, name: "certificate", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 20, name: "gna", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 21, name: "message_for_reviewer", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 22, name: "is_approved", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 23, name: "status", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 24, name: "course_level_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 25, name: "course_language_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 26, name: "instructor_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 27, name: "created_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 28, name: "created_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 29, name: "deleted_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 30, name: "updated_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 31, name: "updated_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 32, name: "deleted_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<CourseInfo>): CourseInfo {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = "";
+        if (value !== undefined)
+            reflectionMergePartial<CourseInfo>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CourseInfo): CourseInfo {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* optional string image_file_name */ 2:
+                    message.imageFileName = reader.string();
+                    break;
+                case /* optional string name */ 3:
+                    message.name = reader.string();
+                    break;
+                case /* optional string address */ 4:
+                    message.address = reader.string();
+                    break;
+                case /* optional string slug */ 5:
+                    message.slug = reader.string();
+                    break;
+                case /* optional string category_id */ 6:
+                    message.categoryId = reader.string();
+                    break;
+                case /* optional string course_type */ 7:
+                    message.courseType = reader.string();
+                    break;
+                case /* optional string title */ 8:
+                    message.title = reader.string();
+                    break;
+                case /* optional string seo_description */ 9:
+                    message.seoDescription = reader.string();
+                    break;
+                case /* optional string duration */ 10:
+                    message.duration = reader.string();
+                    break;
+                case /* optional string timezone */ 11:
+                    message.timezone = reader.string();
+                    break;
+                case /* optional string thumbnail */ 12:
+                    message.thumbnail = reader.string();
+                    break;
+                case /* optional string demo_video_storage */ 13:
+                    message.demoVideoStorage = reader.string();
+                    break;
+                case /* optional string demo_video_source */ 14:
+                    message.demoVideoSource = reader.string();
+                    break;
+                case /* optional string description */ 15:
+                    message.description = reader.string();
+                    break;
+                case /* optional int32 capacity */ 16:
+                    message.capacity = reader.int32();
+                    break;
+                case /* optional string price */ 17:
+                    message.price = reader.string();
+                    break;
+                case /* optional string discount */ 18:
+                    message.discount = reader.string();
+                    break;
+                case /* optional string certificate */ 19:
+                    message.certificate = reader.string();
+                    break;
+                case /* optional string gna */ 20:
+                    message.gna = reader.string();
+                    break;
+                case /* optional string message_for_reviewer */ 21:
+                    message.messageForReviewer = reader.string();
+                    break;
+                case /* optional string is_approved */ 22:
+                    message.isApproved = reader.string();
+                    break;
+                case /* optional string status */ 23:
+                    message.status = reader.string();
+                    break;
+                case /* optional string course_level_id */ 24:
+                    message.courseLevelId = reader.string();
+                    break;
+                case /* optional string course_language_id */ 25:
+                    message.courseLanguageId = reader.string();
+                    break;
+                case /* optional string instructor_id */ 26:
+                    message.instructorId = reader.string();
+                    break;
+                case /* optional string created_at */ 27:
+                    message.createdAt = reader.string();
+                    break;
+                case /* optional string created_by */ 28:
+                    message.createdBy = reader.string();
+                    break;
+                case /* optional string deleted_by */ 29:
+                    message.deletedBy = reader.string();
+                    break;
+                case /* optional string updated_at */ 30:
+                    message.updatedAt = reader.string();
+                    break;
+                case /* optional string updated_by */ 31:
+                    message.updatedBy = reader.string();
+                    break;
+                case /* optional string deleted_at */ 32:
+                    message.deletedAt = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: CourseInfo, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* optional string image_file_name = 2; */
+        if (message.imageFileName !== undefined)
+            writer.tag(2, WireType.LengthDelimited).string(message.imageFileName);
+        /* optional string name = 3; */
+        if (message.name !== undefined)
+            writer.tag(3, WireType.LengthDelimited).string(message.name);
+        /* optional string address = 4; */
+        if (message.address !== undefined)
+            writer.tag(4, WireType.LengthDelimited).string(message.address);
+        /* optional string slug = 5; */
+        if (message.slug !== undefined)
+            writer.tag(5, WireType.LengthDelimited).string(message.slug);
+        /* optional string category_id = 6; */
+        if (message.categoryId !== undefined)
+            writer.tag(6, WireType.LengthDelimited).string(message.categoryId);
+        /* optional string course_type = 7; */
+        if (message.courseType !== undefined)
+            writer.tag(7, WireType.LengthDelimited).string(message.courseType);
+        /* optional string title = 8; */
+        if (message.title !== undefined)
+            writer.tag(8, WireType.LengthDelimited).string(message.title);
+        /* optional string seo_description = 9; */
+        if (message.seoDescription !== undefined)
+            writer.tag(9, WireType.LengthDelimited).string(message.seoDescription);
+        /* optional string duration = 10; */
+        if (message.duration !== undefined)
+            writer.tag(10, WireType.LengthDelimited).string(message.duration);
+        /* optional string timezone = 11; */
+        if (message.timezone !== undefined)
+            writer.tag(11, WireType.LengthDelimited).string(message.timezone);
+        /* optional string thumbnail = 12; */
+        if (message.thumbnail !== undefined)
+            writer.tag(12, WireType.LengthDelimited).string(message.thumbnail);
+        /* optional string demo_video_storage = 13; */
+        if (message.demoVideoStorage !== undefined)
+            writer.tag(13, WireType.LengthDelimited).string(message.demoVideoStorage);
+        /* optional string demo_video_source = 14; */
+        if (message.demoVideoSource !== undefined)
+            writer.tag(14, WireType.LengthDelimited).string(message.demoVideoSource);
+        /* optional string description = 15; */
+        if (message.description !== undefined)
+            writer.tag(15, WireType.LengthDelimited).string(message.description);
+        /* optional int32 capacity = 16; */
+        if (message.capacity !== undefined)
+            writer.tag(16, WireType.Varint).int32(message.capacity);
+        /* optional string price = 17; */
+        if (message.price !== undefined)
+            writer.tag(17, WireType.LengthDelimited).string(message.price);
+        /* optional string discount = 18; */
+        if (message.discount !== undefined)
+            writer.tag(18, WireType.LengthDelimited).string(message.discount);
+        /* optional string certificate = 19; */
+        if (message.certificate !== undefined)
+            writer.tag(19, WireType.LengthDelimited).string(message.certificate);
+        /* optional string gna = 20; */
+        if (message.gna !== undefined)
+            writer.tag(20, WireType.LengthDelimited).string(message.gna);
+        /* optional string message_for_reviewer = 21; */
+        if (message.messageForReviewer !== undefined)
+            writer.tag(21, WireType.LengthDelimited).string(message.messageForReviewer);
+        /* optional string is_approved = 22; */
+        if (message.isApproved !== undefined)
+            writer.tag(22, WireType.LengthDelimited).string(message.isApproved);
+        /* optional string status = 23; */
+        if (message.status !== undefined)
+            writer.tag(23, WireType.LengthDelimited).string(message.status);
+        /* optional string course_level_id = 24; */
+        if (message.courseLevelId !== undefined)
+            writer.tag(24, WireType.LengthDelimited).string(message.courseLevelId);
+        /* optional string course_language_id = 25; */
+        if (message.courseLanguageId !== undefined)
+            writer.tag(25, WireType.LengthDelimited).string(message.courseLanguageId);
+        /* optional string instructor_id = 26; */
+        if (message.instructorId !== undefined)
+            writer.tag(26, WireType.LengthDelimited).string(message.instructorId);
+        /* optional string created_at = 27; */
+        if (message.createdAt !== undefined)
+            writer.tag(27, WireType.LengthDelimited).string(message.createdAt);
+        /* optional string created_by = 28; */
+        if (message.createdBy !== undefined)
+            writer.tag(28, WireType.LengthDelimited).string(message.createdBy);
+        /* optional string deleted_by = 29; */
+        if (message.deletedBy !== undefined)
+            writer.tag(29, WireType.LengthDelimited).string(message.deletedBy);
+        /* optional string updated_at = 30; */
+        if (message.updatedAt !== undefined)
+            writer.tag(30, WireType.LengthDelimited).string(message.updatedAt);
+        /* optional string updated_by = 31; */
+        if (message.updatedBy !== undefined)
+            writer.tag(31, WireType.LengthDelimited).string(message.updatedBy);
+        /* optional string deleted_at = 32; */
+        if (message.deletedAt !== undefined)
+            writer.tag(32, WireType.LengthDelimited).string(message.deletedAt);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course.CourseInfo
+ */
+export const CourseInfo = new CourseInfo$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class CreateCourseRequest$Type extends MessageType<CreateCourseRequest> {
     constructor() {
@@ -1405,6 +1936,7 @@ export const DeleteCourseResponse = new DeleteCourseResponse$Type();
  * @generated ServiceType for protobuf service course.CourseService
  */
 export const CourseService = new ServiceType("course.CourseService", [
+    { name: "GetAllCourse", options: {}, I: GetAllCourseRequest, O: GetAllCourseResponse },
     { name: "CreateCourse", options: {}, I: CreateCourseRequest, O: CreateCourseResponse },
     { name: "DetailCourse", options: {}, I: DetailCourseRequest, O: DetailCourseResponse },
     { name: "EditCourse", options: {}, I: EditCourseRequest, O: EditCourseResponse },

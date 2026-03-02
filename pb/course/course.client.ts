@@ -10,15 +10,21 @@ import type { EditCourseResponse } from "./course";
 import type { EditCourseRequest } from "./course";
 import type { DetailCourseResponse } from "./course";
 import type { DetailCourseRequest } from "./course";
-import { stackIntercept } from "@protobuf-ts/runtime-rpc";
 import type { CreateCourseResponse } from "./course";
 import type { CreateCourseRequest } from "./course";
+import { stackIntercept } from "@protobuf-ts/runtime-rpc";
+import type { GetAllCourseResponse } from "./course";
+import type { GetAllCourseRequest } from "./course";
 import type { UnaryCall } from "@protobuf-ts/runtime-rpc";
 import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
 /**
  * @generated from protobuf service course.CourseService
  */
 export interface ICourseServiceClient {
+    /**
+     * @generated from protobuf rpc: GetAllCourse
+     */
+    getAllCourse(input: GetAllCourseRequest, options?: RpcOptions): UnaryCall<GetAllCourseRequest, GetAllCourseResponse>;
     /**
      * @generated from protobuf rpc: CreateCourse
      */
@@ -46,31 +52,38 @@ export class CourseServiceClient implements ICourseServiceClient, ServiceInfo {
     constructor(private readonly _transport: RpcTransport) {
     }
     /**
+     * @generated from protobuf rpc: GetAllCourse
+     */
+    getAllCourse(input: GetAllCourseRequest, options?: RpcOptions): UnaryCall<GetAllCourseRequest, GetAllCourseResponse> {
+        const method = this.methods[0], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetAllCourseRequest, GetAllCourseResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * @generated from protobuf rpc: CreateCourse
      */
     createCourse(input: CreateCourseRequest, options?: RpcOptions): UnaryCall<CreateCourseRequest, CreateCourseResponse> {
-        const method = this.methods[0], opt = this._transport.mergeOptions(options);
+        const method = this.methods[1], opt = this._transport.mergeOptions(options);
         return stackIntercept<CreateCourseRequest, CreateCourseResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DetailCourse
      */
     detailCourse(input: DetailCourseRequest, options?: RpcOptions): UnaryCall<DetailCourseRequest, DetailCourseResponse> {
-        const method = this.methods[1], opt = this._transport.mergeOptions(options);
+        const method = this.methods[2], opt = this._transport.mergeOptions(options);
         return stackIntercept<DetailCourseRequest, DetailCourseResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: EditCourse
      */
     editCourse(input: EditCourseRequest, options?: RpcOptions): UnaryCall<EditCourseRequest, EditCourseResponse> {
-        const method = this.methods[2], opt = this._transport.mergeOptions(options);
+        const method = this.methods[3], opt = this._transport.mergeOptions(options);
         return stackIntercept<EditCourseRequest, EditCourseResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DeleteCourse
      */
     deleteCourse(input: DeleteCourseRequest, options?: RpcOptions): UnaryCall<DeleteCourseRequest, DeleteCourseResponse> {
-        const method = this.methods[3], opt = this._transport.mergeOptions(options);
+        const method = this.methods[4], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteCourseRequest, DeleteCourseResponse>("unary", this._transport, method, opt, input);
     }
 }

@@ -15,7 +15,7 @@ import { getCourseSchema, CourseFormData } from "@/libs/validationSchemaCourse";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { getCourseId, saveCourseId } from "@/libs/courseStorage";
+import { getCourseId, getMode, saveCourseId } from "@/libs/courseStorage";
 import { useSession } from "next-auth/react";
 import { setGrpcCache } from "@/api/grpc/auth-interceptor";
 import { CourseDialog } from "@/components/shared/course-dialog/CourseDialog";
@@ -49,8 +49,8 @@ const certificateOptions = [
 ];
 
 const statusOptions = [
+  { value: "publish", label: "Course Publish" },
   { value: "draft", label: "Course Draft" },
-  { value: "completed", label: "Course Completed" },
 ];
 
 interface uploadImageResponse {
@@ -75,21 +75,29 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
   const { data: session, status: authStatus } = useSession();
   const [existingImageUrl, setExistingImageUrl] = useState<string | null>(null);
   const [lastOrder, setLastOrder] = useState(0);
-  const isEditMode = !!courseId;
+  const [modeEdit, setModeEdit] = useState<string | null>(false);
+
+  const isNextMode = !!courseId; //?untuk melanjutkan input ketika form pertama telah dimasukan
   console.log(getAllChapters);
 
 
   // 1. Cek localStorage saat pertama kali halaman dibuka (Refresh)
   useEffect(() => {
     const savedId = getCourseId();
+    const modeEdit = getMode();
+
     if (savedId) {
       setCourseId(savedId);
+    }
+
+    if (modeEdit) {
+      setModeEdit(modeEdit);
     }
   }, []);
 
 
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<CourseFormData>({
-    resolver: zodResolver(getCourseSchema(isEditMode)) as any,
+    resolver: zodResolver(getCourseSchema(isNextMode)) as any,
     defaultValues: {
 
       name: "",
@@ -113,7 +121,7 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
       certificate: "no",
       message_for_reviewer: "",
       instructor_id: "",
-      status: "draft",
+      status: "",
       is_approved: "pending",
     }
   });

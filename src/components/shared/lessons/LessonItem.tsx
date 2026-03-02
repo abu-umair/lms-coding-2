@@ -31,7 +31,7 @@ const LessonItem = ({
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     className={`py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark last:border-b-0 
-                        ${snapshot.isDragging ? "bg-gray-50 shadow-md" : ""
+                        ${snapshot.isDragging ? "bg-gray-50 dark:bg-gray-800 shadow-md" : ""
                         }`}>
                     <div className="flex items-center">
                         <i className="icofont-video-alt mr-10px text-primaryColor"></i>
