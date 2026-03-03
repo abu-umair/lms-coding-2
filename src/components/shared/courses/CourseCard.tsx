@@ -6,12 +6,18 @@ import React from "react";
 import teacherImage2 from "@/assets/images/teacher/teacher__2.png";
 import { saveCourseId, setModeEdit } from "@/libs/courseStorage";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import useGrpcApi from "@/components/shared/others/useGrpcApi";
+import { getCourseClient } from "@/api/grpc/client";
+
 
 
 
 const CourseCard = ({ course, type }) => {
   console.log(course);
   const router = useRouter();
+  const { callApi, isLoading } = useGrpcApi();
+
 
 
   const { addProductToWishlist } = useWishlistContext();
@@ -62,6 +68,43 @@ const CourseCard = ({ course, type }) => {
   const instructorId = instructor?.id || "unknown";
   const instructorImg = teacherImage2;
   const instructorName = instructor?.name || "Instructor";
+
+  //* delete course 
+  const handleDeleteCourse = (id: string) => {
+    toast((t) => (
+      <div className="flex flex-col gap-3 p-1">
+        <div className="flex flex-col">
+          <p className="text-sm font-bold text-headingColor">Hapus Course?</p>
+          <p className="text-xs text-contentColor">Tindakan ini tidak dapat dibatalkan.</p>
+        </div>
+        <div className="flex gap-2 justify-end">
+          <button
+            className="bg-red-500 text-white px-3 py-1.5 rounded text-xs hover:bg-red-600 transition-all shadow-sm"
+            disabled={isLoading}
+            onClick={async () => {
+              toast.dismiss(t.id);
+              await callApi(getCourseClient().deleteCourse({ id: id }), {
+                loadingMessage: "Menghapus course...",
+                successMessage: "Course berhasil dihapus!",
+                onSuccess: () => {
+                  router.refresh();
+                },
+              });
+            }}
+          >
+            {isLoading ? "Menghapus..." : "Ya, Hapus"}
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="text-xs px-3 py-1.5 border border-borderColor rounded hover:bg-gray-100 transition-all"
+          >
+            Batal
+          </button>
+        </div>
+      </div>
+    ), { duration: 5000 });
+  };
+
 
   return (
     <div
@@ -147,9 +190,9 @@ const CourseCard = ({ course, type }) => {
                   <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                 </svg>Edit
               </button>
-              <a
+              <button
+                onClick={() => handleDeleteCourse(id)}
                 className="flex items-center gap-1 text-sm font-bold text-whiteColor hover:text-secondaryColor bg-secondaryColor hover:bg-whiteColor dark:hover:bg-whiteColor-dark border border-secondaryColor h-30px w-full px-14px leading-30px justify-center rounded-md my-5px"
-                href="#"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +211,7 @@ const CourseCard = ({ course, type }) => {
                   <line x1="10" y1="11" x2="10" y2="17"></line>
                   <line x1="14" y1="11" x2="14" y2="17"></line>
                 </svg>Delete
-              </a>
+              </button>
             </div>
 
             {/* AUTHOR SECTION */}
