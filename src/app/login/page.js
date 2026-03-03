@@ -1,6 +1,8 @@
 import LoginMain from "@/components/layout/main/LoginMain";
 import ThemeController from "@/components/shared/others/ThemeController";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
+import GuestGuard from "@/components/auth/GuestGuard";
+
 
 export const metadata = {
   title: "Login/Register | Edurock - Education LMS Template",
@@ -8,12 +10,14 @@ export const metadata = {
 };
 const Login = () => {
   return (
-    <PageWrapper>
-      <main>
-        <LoginMain />
-        <ThemeController />
-      </main>
-    </PageWrapper>
+    <GuestGuard>
+      <PageWrapper>
+        <main>
+          <LoginMain />
+          <ThemeController />
+        </main>
+      </PageWrapper>
+    </GuestGuard>
   );
 };
 
