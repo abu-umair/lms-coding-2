@@ -3,24 +3,33 @@ import useTab from "@/hooks/useTab";
 import TabContentWrapper from "@/components/shared/wrappers/TabContentWrapper";
 import TabButtonSecondary from "@/components/shared/buttons/TabButtonSecondary";
 import EnrolledContent from "@/components/shared/dashboards/EnrolledContent";
-
-// Terima props 'courses' dari parent (page dashboard student)
-const StudentEnrolledCourses = ({ courses = [] }) => {
+import ActiveContent from "@/components/shared/dashboards/ActiveContent";
+import CompletedContent from "@/components/shared/dashboards/CompletedContent";
+import getAllCourses from "@/libs/getAllCourses";
+const StudentEnrolledCourses = () => {
   const { currentIdx, handleTabClick } = useTab();
-
-  // Logika Filter Dinamis berdasarkan data API
-  // ENROLLED: Semua kursus yang dimiliki student
-  const enrolledCourses = courses;
-
-  // ACTIVE: Kursus yang progresnya > 0 tapi < 100
-  const activeCourses = courses?.filter(
-    (course) => (course.progress || 0) > 0 && (course.progress || 0) < 100
-  );
-
-  // COMPLETED: Kursus yang progresnya sudah 100%
-  const completedCourses = courses?.filter(
-    (course) => (course.progress || 0) === 100
-  );
+  const courses = getAllCourses();
+  const enrolledCourses = courses
+    ?.filter(({ id }) => (id > 0 && id < 6) || id === 8)
+    ?.map((course) => ({
+      ...course,
+      isCompleted: course?.id < 4 ? true : false,
+      isActive: course?.id === 4 || course?.id === 5 ? true : false,
+      completedParchent: course?.id === 4 ? 80 : course?.id === 5 ? 70 : false,
+    }));
+  const activeCourses = courses
+    ?.filter(({ id }) => id === 4 || id === 5)
+    ?.map((course) => ({
+      ...course,
+      isActive: true,
+      completedParchent: course?.id === 4 ? 80 : 70,
+    }));
+  const completedCourses = courses
+    ?.filter(({ id }) => id < 4)
+    ?.map((course) => ({
+      ...course,
+      isCompleted: true,
+    }));
 
   const tabbuttons = [
     {
@@ -29,19 +38,19 @@ const StudentEnrolledCourses = ({ courses = [] }) => {
     },
     {
       name: "ACTIVE COURSES",
-      content: <EnrolledContent courses={activeCourses} />,
+      content: <ActiveContent courses={activeCourses} />,
     },
     {
       name: "COMPLETED COURSES",
-      content: <EnrolledContent courses={completedCourses} />,
+      content: <CompletedContent courses={completedCourses} />,
     },
   ];
-
   return (
     <div className="p-10px md:px-10 md:py-50px mb-30px bg-whiteColor dark:bg-whiteColor-dark shadow-accordion dark:shadow-accordion-dark rounded-5">
+      {/* heading  */}
       <div className="mb-6 pb-5 border-b-2 border-borderColor dark:border-borderColor-dark">
         <h2 className="text-2xl font-bold text-blackColor dark:text-blackColor-dark">
-          My Courses
+          My Profile
         </h2>
       </div>
       <div className="tab">
@@ -59,7 +68,10 @@ const StudentEnrolledCourses = ({ courses = [] }) => {
         </div>
         <div>
           {tabbuttons?.map(({ content }, idx) => (
-            <TabContentWrapper key={idx} isShow={idx === currentIdx}>
+            <TabContentWrapper
+              key={idx}
+              isShow={idx === currentIdx ? true : false}
+            >
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 sm:-mx-15px ">
                 {content}
               </div>
