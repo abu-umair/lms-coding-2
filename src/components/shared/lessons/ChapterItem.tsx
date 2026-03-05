@@ -67,8 +67,12 @@ const ChapterItem = ({
             {
                 loadingMessage: "Mengambil data lesson...",
                 onSuccess: (res) => {
-                    const data = res.response.lessons || [];
-                    console.log(data);
+                    const rawLessons = res.response.lessons || [];
+                    const data = rawLessons.map((lesson: any) => ({ //?mengubah menjadi string
+                        ...lesson,
+                        isPreview: lesson.isPreview?.toString() || "0",
+
+                    }));
 
                     setLessons(data as getLessons[]);
                     // MENCARI ORDER TERTINGGI
