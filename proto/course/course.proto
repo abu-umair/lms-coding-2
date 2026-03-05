@@ -237,7 +237,7 @@ message CourseInfoUser {
 }
 
 message DetailCourseUserRequest {
-  string id = 1 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+  string slug = 1 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   google.protobuf.FieldMask field_mask = 2;
 }
 
@@ -275,4 +275,20 @@ message DetailCourseUserResponse {
   optional string updated_by = 31;
   optional string deleted_at = 32;
   optional string image_file_name = 33;
+  repeated Chapter chapters = 34;
+}
+
+message Lesson {
+  string id = 1;
+  string title = 2;
+  string duration = 3;
+  string storage_lesson = 4;
+  int32 order_lesson = 5;
+}
+
+message Chapter {
+  string id = 1;
+  string title = 2;
+  int32 order_chapter = 3;
+  repeated Lesson lessons = 4; // Relasi One-to-Many ke Lesson
 }

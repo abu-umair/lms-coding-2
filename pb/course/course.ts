@@ -754,9 +754,9 @@ export interface CourseInfoUser {
  */
 export interface DetailCourseUserRequest {
     /**
-     * @generated from protobuf field: string id = 1
+     * @generated from protobuf field: string slug = 1
      */
-    id: string;
+    slug: string;
     /**
      * @generated from protobuf field: google.protobuf.FieldMask field_mask = 2
      */
@@ -898,6 +898,56 @@ export interface DetailCourseUserResponse {
      * @generated from protobuf field: optional string image_file_name = 33
      */
     imageFileName?: string;
+    /**
+     * @generated from protobuf field: repeated course.Chapter chapters = 34
+     */
+    chapters: Chapter[];
+}
+/**
+ * @generated from protobuf message course.Lesson
+ */
+export interface Lesson {
+    /**
+     * @generated from protobuf field: string id = 1
+     */
+    id: string;
+    /**
+     * @generated from protobuf field: string title = 2
+     */
+    title: string;
+    /**
+     * @generated from protobuf field: string duration = 3
+     */
+    duration: string;
+    /**
+     * @generated from protobuf field: string storage_lesson = 4
+     */
+    storageLesson: string;
+    /**
+     * @generated from protobuf field: int32 order_lesson = 5
+     */
+    orderLesson: number;
+}
+/**
+ * @generated from protobuf message course.Chapter
+ */
+export interface Chapter {
+    /**
+     * @generated from protobuf field: string id = 1
+     */
+    id: string;
+    /**
+     * @generated from protobuf field: string title = 2
+     */
+    title: string;
+    /**
+     * @generated from protobuf field: int32 order_chapter = 3
+     */
+    orderChapter: number;
+    /**
+     * @generated from protobuf field: repeated course.Lesson lessons = 4
+     */
+    lessons: Lesson[]; // Relasi One-to-Many ke Lesson
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class GetAllCourseRequest$Type extends MessageType<GetAllCourseRequest> {
@@ -2621,13 +2671,13 @@ export const CourseInfoUser = new CourseInfoUser$Type();
 class DetailCourseUserRequest$Type extends MessageType<DetailCourseUserRequest> {
     constructor() {
         super("course.DetailCourseUserRequest", [
-            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 1, name: "slug", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 2, name: "field_mask", kind: "message", T: () => FieldMask }
         ]);
     }
     create(value?: PartialMessage<DetailCourseUserRequest>): DetailCourseUserRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
-        message.id = "";
+        message.slug = "";
         if (value !== undefined)
             reflectionMergePartial<DetailCourseUserRequest>(this, message, value);
         return message;
@@ -2637,8 +2687,8 @@ class DetailCourseUserRequest$Type extends MessageType<DetailCourseUserRequest> 
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string id */ 1:
-                    message.id = reader.string();
+                case /* string slug */ 1:
+                    message.slug = reader.string();
                     break;
                 case /* google.protobuf.FieldMask field_mask */ 2:
                     message.fieldMask = FieldMask.internalBinaryRead(reader, reader.uint32(), options, message.fieldMask);
@@ -2655,9 +2705,9 @@ class DetailCourseUserRequest$Type extends MessageType<DetailCourseUserRequest> 
         return message;
     }
     internalBinaryWrite(message: DetailCourseUserRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string id = 1; */
-        if (message.id !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* string slug = 1; */
+        if (message.slug !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.slug);
         /* google.protobuf.FieldMask field_mask = 2; */
         if (message.fieldMask)
             FieldMask.internalBinaryWrite(message.fieldMask, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
@@ -2707,12 +2757,14 @@ class DetailCourseUserResponse$Type extends MessageType<DetailCourseUserResponse
             { no: 30, name: "updated_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 31, name: "updated_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 32, name: "deleted_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
-            { no: 33, name: "image_file_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
+            { no: 33, name: "image_file_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 34, name: "chapters", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Chapter }
         ]);
     }
     create(value?: PartialMessage<DetailCourseUserResponse>): DetailCourseUserResponse {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.id = "";
+        message.chapters = [];
         if (value !== undefined)
             reflectionMergePartial<DetailCourseUserResponse>(this, message, value);
         return message;
@@ -2820,6 +2872,9 @@ class DetailCourseUserResponse$Type extends MessageType<DetailCourseUserResponse
                     break;
                 case /* optional string image_file_name */ 33:
                     message.imageFileName = reader.string();
+                    break;
+                case /* repeated course.Chapter chapters */ 34:
+                    message.chapters.push(Chapter.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -2932,6 +2987,9 @@ class DetailCourseUserResponse$Type extends MessageType<DetailCourseUserResponse
         /* optional string image_file_name = 33; */
         if (message.imageFileName !== undefined)
             writer.tag(33, WireType.LengthDelimited).string(message.imageFileName);
+        /* repeated course.Chapter chapters = 34; */
+        for (let i = 0; i < message.chapters.length; i++)
+            Chapter.internalBinaryWrite(message.chapters[i], writer.tag(34, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -2942,6 +3000,156 @@ class DetailCourseUserResponse$Type extends MessageType<DetailCourseUserResponse
  * @generated MessageType for protobuf message course.DetailCourseUserResponse
  */
 export const DetailCourseUserResponse = new DetailCourseUserResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class Lesson$Type extends MessageType<Lesson> {
+    constructor() {
+        super("course.Lesson", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "duration", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "storage_lesson", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "order_lesson", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+        ]);
+    }
+    create(value?: PartialMessage<Lesson>): Lesson {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = "";
+        message.title = "";
+        message.duration = "";
+        message.storageLesson = "";
+        message.orderLesson = 0;
+        if (value !== undefined)
+            reflectionMergePartial<Lesson>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Lesson): Lesson {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* string title */ 2:
+                    message.title = reader.string();
+                    break;
+                case /* string duration */ 3:
+                    message.duration = reader.string();
+                    break;
+                case /* string storage_lesson */ 4:
+                    message.storageLesson = reader.string();
+                    break;
+                case /* int32 order_lesson */ 5:
+                    message.orderLesson = reader.int32();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: Lesson, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* string title = 2; */
+        if (message.title !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.title);
+        /* string duration = 3; */
+        if (message.duration !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.duration);
+        /* string storage_lesson = 4; */
+        if (message.storageLesson !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.storageLesson);
+        /* int32 order_lesson = 5; */
+        if (message.orderLesson !== 0)
+            writer.tag(5, WireType.Varint).int32(message.orderLesson);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course.Lesson
+ */
+export const Lesson = new Lesson$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class Chapter$Type extends MessageType<Chapter> {
+    constructor() {
+        super("course.Chapter", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "order_chapter", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 4, name: "lessons", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Lesson }
+        ]);
+    }
+    create(value?: PartialMessage<Chapter>): Chapter {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = "";
+        message.title = "";
+        message.orderChapter = 0;
+        message.lessons = [];
+        if (value !== undefined)
+            reflectionMergePartial<Chapter>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Chapter): Chapter {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* string title */ 2:
+                    message.title = reader.string();
+                    break;
+                case /* int32 order_chapter */ 3:
+                    message.orderChapter = reader.int32();
+                    break;
+                case /* repeated course.Lesson lessons */ 4:
+                    message.lessons.push(Lesson.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: Chapter, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* string title = 2; */
+        if (message.title !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.title);
+        /* int32 order_chapter = 3; */
+        if (message.orderChapter !== 0)
+            writer.tag(3, WireType.Varint).int32(message.orderChapter);
+        /* repeated course.Lesson lessons = 4; */
+        for (let i = 0; i < message.lessons.length; i++)
+            Lesson.internalBinaryWrite(message.lessons[i], writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course.Chapter
+ */
+export const Chapter = new Chapter$Type();
 /**
  * @generated ServiceType for protobuf service course.CourseService
  */

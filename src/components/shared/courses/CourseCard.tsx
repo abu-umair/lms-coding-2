@@ -33,6 +33,7 @@ const CourseCard = ({ course, type }) => {
   const {
     id,
     name,            //* Judul kursus
+    slug,
     imageFileName,            //* URL Thumbnail kursus
     price,            //* Harga (number)
     is_free,          //* Status gratis (API gRPC biasanya snake_case)
@@ -224,7 +225,7 @@ const CourseCard = ({ course, type }) => {
                 // JIKA STUDENT, TAMPILKAN TOMBOL LANJUTKAN BELAJAR / HARGA
                 <Link
                   // href={`/lessons/${id}`}
-                  href={`/lessons/1`}
+                  href={`/lessons/${slug}`}
                   className="flex items-center gap-1 text-sm font-bold text-whiteColor bg-primaryColor h-30px w-full justify-center rounded-md my-5px"
                 >
                   {progress > 0 ? "Continue Learning" : "Start Learning"}

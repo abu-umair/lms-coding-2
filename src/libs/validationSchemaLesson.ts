@@ -14,7 +14,7 @@ export const getLessonSchema = (isEdit: boolean) => {
         description: z.string().min(1, "description diisi"),
         storage_lesson: z.string().min(1, "storage lesson diisi"),
         duration: z.any().optional().or(z.literal("")),
-        is_preview: z.string().min(1, "preview diisi"),
+        is_preview: z.any().optional().or(z.literal("")),
         // status: z.any().optional().or(z.literal("")),
 
     });
