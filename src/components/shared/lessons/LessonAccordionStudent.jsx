@@ -33,23 +33,39 @@ const LessonAccordionStudent = ({ chapters, onSelectLesson, activeLessonId }) =>
                   {chapter.lessons?.map((lesson) => (
                     <li
                       key={lesson.id}
-                      className={`py-4 flex items-center justify-between flex-wrap border-b border-borderColor last:border-none ${activeLessonId === lesson.id ? "bg-lightGreyColor" : ""}`}
+                      className={`group py-15px px-20px flex items-center justify-between gap-4 border-b border-borderColor last:border-none transition-all duration-300
+    ${activeLessonId === lesson.id ? "bg-blue-50 dark:bg-slate-800" : "hover:bg-gray-50 dark:hover:bg-slate-900"}`}
                     >
-                      <div>
-                        <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                          <i className="icofont-video-alt mr-10px"></i>
-                          <button
-                            //* Klik untuk mengganti video yang aktif
-                            onClick={() => onSelectLesson(lesson)}
-                            className={`font-medium text-left hover:text-primaryColor transition-colors ${activeLessonId === lesson.id ? "text-primaryColor" : "text-contentColor"}`}
-                          >
-                            {lesson.title}
-                          </button>
-                        </h4>
+                      <div className="flex items-center flex-grow min-w-0">
+                        <button
+                          onClick={() => onSelectLesson(lesson)}
+                          className="flex items-start gap-3 w-full text-left transition-colors"
+                        >
+                          {/* Icon Video dengan warna aksen saat aktif */}
+                          <i className={`icofont-video-alt text-lg mt-1 ${activeLessonId === lesson.id ? "text-primaryColor" : "text-gray-400"}`}></i>
+
+                          <div className="overflow-hidden">
+                            <h4 className={`text-base font-medium leading-snug truncate ${activeLessonId === lesson.id ? "text-primaryColor" : "text-headingColor dark:text-headingColor-dark"}`}>
+                              {lesson.title}
+                            </h4>
+
+                            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mt-1">
+                              <i className="icofont-clock-time text-xs"></i>
+                              <p className="text-xs font-light">{lesson.duration || "0"} menit</p>
+                            </div>
+                          </div>
+                        </button>
                       </div>
-                      <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center">
-                        {/* //* Durasi dinamis */}
-                        <p className="font-semibold">{lesson.duration || "0:00"}</p>
+
+                      {/* Checkbox Section dengan pemisah visual yang halus */}
+                      <div className="flex items-center pl-4 border-l border-borderColor/50">
+                        <input
+                          type="checkbox"
+                          // Menggunakan checked berdasarkan data dari backend
+                          // checked={lesson.is_completed}
+                          // onChange={() => onToggleComplete(lesson)}
+                          className="w-5 h-5 cursor-pointer accent-primaryColor transition-transform hover:scale-110"
+                        />
                       </div>
                     </li>
                   ))}
