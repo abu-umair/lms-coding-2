@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { authOptions } from "@/libs/authOptions";
 import { getServerSession } from "next-auth";
 import { getCourseClient } from "@/api/grpc/client";
+import { getWatchHistoryClient } from "@/api/grpc/client";
 import { cache } from "react";
 
 
@@ -16,14 +17,19 @@ const getCachedCourse = cache(async (slug) => {
   const accessToken = session?.accessToken;
 
   const client = await getCourseClient();
+  const historyClient = await getWatchHistoryClient();
 
   console.log('test');
+  const meta = {
+    meta: { "authorization": accessToken ? `Bearer ${accessToken}` : '' }
+  };
 
-  // Kirim token ke gRPC melalui metadata jika diperlukan
-  const res = await client.detailCourseUser({
+  //* Memanggil dua API secara paralel (Lebih cepat daripada satu-satu)
+  const courseRes = await client.detailCourseUser({
     slug: slug,
     fieldMask: {
       paths: [
+        "id",
         "name",
         "image_file_name",
         "slug",
@@ -52,40 +58,66 @@ const getCachedCourse = cache(async (slug) => {
         "chapters"
       ]
     }
-  }, {
-    meta: { // Gunakan 'meta', bukan 'metadata' untuk protobuf-ts
-      "authorization": accessToken ? `Bearer ${accessToken}` : ''
-    }
-  });
+  }, meta);
 
-  return res.response
+  const courseData = courseRes.response;
+  if (!courseData?.id) return { course: courseData, history: null };
+
+
+  // 2. Gunakan ID dari hasil pertama untuk ambil history
+  const historyRes = await historyClient.watchLessonId({
+    courseId: courseData.id,
+    fieldMask: {
+      paths: [
+        "user_id",
+        "course_id",
+        "chapter_id",
+        "lesson_id",
+        "is_completed"
+      ]
+    }
+  }, meta);
+
+
+
+  return {
+    course: courseData,
+    history: historyRes.response
+  };
+
 });
+
+
+
 
 //* 2. Metadata sekarang memanggil fungsi yang di-cache
 export async function generateMetadata({ params }) {
-  const course = await getCachedCourse(params.id)
-  console.log(course);
+  const data = await getCachedCourse(params.id)
 
-  if (!course) return { title: "Course Not Found" };
+  if (!data) return { title: "Course Not Found" };
 
   return {
-    title: `${course.name} | Edurock`,
-    description: course.name,
+    title: `${data.course.name} | Edurock`,
+    description: data.course.name,
   };
 }
 
 //* 3. Komponen Utama juga memanggil fungsi yang di-cache
 const Lesson = async ({ params }) => {
-  const course = await getCachedCourse(params.id)
+  const data = await getCachedCourse(params.id)
+  console.log(data);
+  console.log(data.history.lastWatchHistory[0].lessonId);
+  console.log('test');
 
 
-  if (!course) {
+
+  if (!data) {
     notFound();
   }
   return (
     <PageWrapper>
       <main>
-        <LessonMain course={course} />
+        <LessonMain course={data.course} history={data.history} />
         <ThemeController />
       </main>
     </PageWrapper>

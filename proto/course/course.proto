@@ -284,6 +284,7 @@ message Lesson {
   string duration = 3;
   string storage_lesson = 4;
   int32 order_lesson = 5;
+  string chapter_id = 6;
 }
 
 message Chapter {

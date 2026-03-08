@@ -1,80 +1,126 @@
 "use client";
-import accordions from "@/libs/accordions";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import React, { useEffect } from "react";
 
-const LessonAccordionStudent = ({ chapters, onSelectLesson, activeLessonId }) => {
-  useEffect(() => {
-    //* Inisialisasi ulang fungsi accordion agar bisa diklik setelah data render
-    accordions();
-  }, [chapters]);
+const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, history }) => {
+  // Simpan index chapter yang terbuka (default: chapter dari activeLesson)
+  const initialOpenIndex = useMemo(() => {
+    const idx = chapters.findIndex(ch => ch.id === activeLesson?.chapterId);
+    return idx !== -1 ? idx : 0;
+  }, [chapters, activeLesson?.chapterId]);
+
+  const [openIndex, setOpenIndex] = useState(initialOpenIndex);
+
+  // Ambil list ID lesson yang sudah selesai
+  const completedLessonIds = useMemo(() => {
+    return history?.watchedLessonId?.map(h => h.lessonId) || [];
+  }, [history]);
+
+  const toggleAccordion = (index) => {
+    setOpenIndex(openIndex === index ? -1 : index);
+  };
+  console.log(history);
+  console.log(initialOpenIndex);
+  console.log(completedLessonIds);
+
 
   return (
-    <ul className="accordion-container curriculum">
-      {/* //* Looping Chapter Dinamis */}
-      {chapters?.map((chapter, index) => (
-        <li key={chapter.id} className={`accordion mb-25px overflow-hidden ${index === 0 ? "active" : ""}`}>
-          <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark rounded-md">
-            {/* controller */}
-            <div>
-              <button className="accordion-controller flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px]">
-                <span>{chapter.title}</span>
-                <svg className="transition-all duration-500 rotate-0" width="20" viewBox="0 0 16 16" fill="#212529">
-                  <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path>
-                </svg>
-              </button>
-            </div>
+    <ul className="curriculum">
+      {/* HEADER PROGRESS */}
+      <div className="mb-4 p-3 bg-lightGreyColor rounded-md border border-borderColor/50">
+        <p className="text-sm font-bold text-primaryColor">
+          Progres: {history?.lessonCount || 0} Pelajaran Selesai
+        </p>
+      </div>
 
-            {/* content */}
-            <div className="accordion-content transition-all duration-500">
-              <div className="content-wrapper p-10px md:px-30px">
-                <ul>
-                  {/* //* Looping Lesson Dinamis di dalam Chapter */}
-                  {chapter.lessons?.map((lesson) => (
-                    <li
-                      key={lesson.id}
-                      className={`group py-15px px-20px flex items-center justify-between gap-4 border-b border-borderColor last:border-none transition-all duration-300
-    ${activeLessonId === lesson.id ? "bg-blue-50 dark:bg-slate-800" : "hover:bg-gray-50 dark:hover:bg-slate-900"}`}
-                    >
-                      <div className="flex items-center flex-grow min-w-0">
-                        <button
-                          onClick={() => onSelectLesson(lesson)}
-                          className="flex items-start gap-3 w-full text-left transition-colors"
-                        >
-                          {/* Icon Video dengan warna aksen saat aktif */}
-                          <i className={`icofont-video-alt text-lg mt-1 ${activeLessonId === lesson.id ? "text-primaryColor" : "text-gray-400"}`}></i>
+      {chapters.map((chapter, index) => {
+        const isOpen = openIndex === index;
+        const isChapterActive = chapter.id === activeLesson?.chapterId;
 
-                          <div className="overflow-hidden">
-                            <h4 className={`text-base font-medium leading-snug truncate ${activeLessonId === lesson.id ? "text-primaryColor" : "text-headingColor dark:text-headingColor-dark"}`}>
-                              {lesson.title}
-                            </h4>
+        return (
+          // <li key={chapter.id || index} className={`accordion mb-25px overflow-hidden ${isOpen ? "active" : ""}`}>
+          <li key={chapter.id || index} className={`accordion mb-25px overflow-hidden `}>
+            <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark rounded-md shadow-sm">
 
-                            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mt-1">
-                              <i className="icofont-clock-time text-xs"></i>
-                              <p className="text-xs font-light">{lesson.duration || "0"} menit</p>
-                            </div>
-                          </div>
-                        </button>
-                      </div>
+              {/* CONTROLLER */}
+              <div
+                onClick={() => toggleAccordion(index)}
+                className={`accordion-controller cursor-pointer flex justify-between items-center px-5 py-18px transition-colors ${isChapterActive ? "bg-blue-50/50" : ""
+                  }`}
+              >
+                <span className={`text-xl font-bold font-hind leading-[20px] ${isOpen ? "text-primaryColor" : "text-headingColor dark:text-headingColor-dark"
+                  }`}>
+                  {chapter.title}
+                </span>
 
-                      {/* Checkbox Section dengan pemisah visual yang halus */}
-                      <div className="flex items-center pl-4 border-l border-borderColor/50">
-                        <input
-                          type="checkbox"
-                          // Menggunakan checked berdasarkan data dari backend
-                          // checked={lesson.is_completed}
-                          // onChange={() => onToggleComplete(lesson)}
-                          className="w-5 h-5 cursor-pointer accent-primaryColor transition-transform hover:scale-110"
-                        />
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                {/* SVG Icon dengan Rotasi Dinamis */}
+                <span className={`transition-all duration-500 transform ${isOpen ? "rotate-180" : "rotate-0"}`}>
+                  <svg width="20" viewBox="0 0 16 16" fill={isOpen ? "#0c63e4" : "#212529"}>
+                    <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                  </svg>
+                </span>
               </div>
+
+              {/* CONTENT - CSS Grid Transition (Murni CSS, Tidak butuh JS Tinggi) */}
+              <div className={`grid transition-all duration-500 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                }`}>
+                <div className="overflow-hidden">
+                  <div className="content-wrapper  border-t border-borderColor/50">
+                    <ul className="list-none p-0">
+                      {chapter.lessons?.map((lesson) => {
+                        const isActive = activeLesson?.id === lesson.id;
+                        const isWatched = completedLessonIds.includes(lesson.id);
+
+                        return (
+                          <li
+                            key={lesson.id}
+                            className={`group py-15px p-10px md:px-30px flex items-center justify-between gap-4 border-b border-borderColor last:border-none transition-all duration-300 rounded-md my-1 ${isActive ? "bg-blue-50 dark:bg-slate-800" : " hover:bg-gray-50 dark:hover:bg-slate-900 "
+                              }`}
+                          >
+                            <div className="flex items-center flex-grow min-w-0">
+                              <button
+                                onClick={() => onSelectLesson(lesson)}
+                                className="flex items-start gap-3 w-full text-left"
+                              >
+                                <i className={`icofont-video-alt mt-1  ${isActive ? "text-primaryColor" : "text-gray-400"
+                                  }`}></i>
+
+                                <div className="overflow-hidden">
+                                  <h4 className={`capitalize text-base font-medium leading-snug truncate ${isActive ? "text-primaryColor" : "text-headingColor dark:text-headingColor-dark"
+                                    }`}>
+                                    {lesson.title}
+                                  </h4>
+                                  <div className="flex items-center gap-2 text-gray-500 text-xs mt-1">
+                                    <i className="icofont-clock-time"></i>
+                                    <span>{lesson.duration || "0"} menit</span>
+                                  </div>
+                                </div>
+                              </button>
+                            </div>
+
+                            {/* CHECKBOX PROGRESS */}
+                            <div className="flex items-center pl-4 border-l border-borderColor2 dark:border-borderColor/50 ">
+                              <input
+                                type="checkbox"
+                                defaultChecked={isWatched} //?hanya UI saja
+                                // checked={isWatched} //? jika sudah integraasi di DB
+                                // onChange={(e) => handleCheckboxClick(e, lesson)}
+                                // readOnly
+                                className="w-5 h-5 cursor-pointer accent-primaryColor transition-transform hover:scale-110"
+                              />
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
             </div>
-          </div>
-        </li>
-      ))}
+          </li>
+        );
+      })}
     </ul>
   );
 };

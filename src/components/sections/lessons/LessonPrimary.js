@@ -3,9 +3,23 @@ import lessons from "@/../public/fakedata/lessons.json";
 import LessonAccordionStudent from "@/components/shared/lessons/LessonAccordionStudent";
 import { useState } from "react";
 
-const LessonPrimary = ({ course }) => {
+const LessonPrimary = ({ course, history }) => {
+  //* Ambil ID lesson terakhir dari history (jika ada)
+  const lastLessonId = history?.lastWatchHistory[0]?.lessonId;
+  console.log(lastLessonId);
+
+
+  //* Cari objek lesson yang sesuai dengan ID terakhir tersebut di dalam data course
+  const initialLesson = course?.chapters
+    ?.flatMap(ch => ch.lessons)
+    ?.find(l => l.id === lastLessonId)
+    || course?.chapters?.[0]?.lessons?.[0]; //* Fallback ke lesson pertama jika belum ada history
+
   //* State untuk melacak lesson mana yang sedang diputar (default lesson pertama dari chapter pertama)
-  const [activeLesson, setActiveLesson] = useState(course?.chapters?.[0]?.lessons?.[0]);
+  const [activeLesson, setActiveLesson] = useState(initialLesson)
+
+  console.log(initialLesson);
+
 
   return (
     <section>
@@ -18,7 +32,8 @@ const LessonPrimary = ({ course }) => {
             <LessonAccordionStudent
               chapters={course?.chapters}
               onSelectLesson={(lesson) => setActiveLesson(lesson)}
-              activeLessonId={activeLesson?.id}
+              activeLesson={activeLesson}
+              history={history}
             />
           </div>
           {/*//! Lanjut cari file lessonPrimary dari yang ori, kemudian lihat syntax dari menampilkan video dan URL nya  */}
