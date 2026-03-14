@@ -101,13 +101,51 @@ export interface WatchHistoryInfo {
     deletedAt?: string;
 }
 /**
- * @generated from protobuf message watch_history.CreateWatchHistoryRequest
+ * @generated from protobuf message watch_history.EditWatchHistoryRequest
  */
-export interface CreateWatchHistoryRequest {
+export interface EditWatchHistoryRequest {
     /**
-     * @generated from protobuf field: string id = 1
+     * @generated from protobuf field: optional string id = 1
+     */
+    id?: string;
+    /**
+     * @generated from protobuf field: string user_id = 2
+     */
+    userId: string;
+    /**
+     * @generated from protobuf field: string course_id = 3
+     */
+    courseId: string;
+    /**
+     * @generated from protobuf field: string chapter_id = 4
+     */
+    chapterId: string;
+    /**
+     * @generated from protobuf field: string lesson_id = 5
+     */
+    lessonId: string;
+}
+/**
+ * @generated from protobuf message watch_history.EditWatchHistoryResponse
+ */
+export interface EditWatchHistoryResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse;
+    /**
+     * @generated from protobuf field: string id = 2
      */
     id: string;
+}
+/**
+ * @generated from protobuf message watch_history.EditLessonCompletionRequest
+ */
+export interface EditLessonCompletionRequest {
+    /**
+     * @generated from protobuf field: optional string id = 1
+     */
+    id?: string;
     /**
      * @generated from protobuf field: string user_id = 2
      */
@@ -130,65 +168,9 @@ export interface CreateWatchHistoryRequest {
     isCompleted: boolean;
 }
 /**
- * @generated from protobuf message watch_history.CreateWatchHistoryResponse
+ * @generated from protobuf message watch_history.EditLessonCompletionResponse
  */
-export interface CreateWatchHistoryResponse {
-    /**
-     * @generated from protobuf field: common.BaseResponse base = 1
-     */
-    base?: BaseResponse;
-    /**
-     * @generated from protobuf field: string id = 2
-     */
-    id: string;
-}
-/**
- * @generated from protobuf message watch_history.LastWatchHistoryRequest
- */
-export interface LastWatchHistoryRequest {
-    /**
-     * @generated from protobuf field: string user_id = 1
-     */
-    userId: string;
-    /**
-     * @generated from protobuf field: string course_id = 2
-     */
-    courseId: string;
-    /**
-     * @generated from protobuf field: google.protobuf.FieldMask field_mask = 3
-     */
-    fieldMask?: FieldMask;
-}
-/**
- * @generated from protobuf message watch_history.LastWatchHistoryResponse
- */
-export interface LastWatchHistoryResponse {
-    /**
-     * @generated from protobuf field: common.BaseResponse base = 1
-     */
-    base?: BaseResponse;
-    /**
-     * @generated from protobuf field: repeated watch_history.WatchHistoryInfo history = 2
-     */
-    history: WatchHistoryInfo[];
-}
-/**
- * @generated from protobuf message watch_history.EditWatchHistoryRequest
- */
-export interface EditWatchHistoryRequest {
-    /**
-     * @generated from protobuf field: string user_id = 1
-     */
-    userId: string;
-    /**
-     * @generated from protobuf field: string lesson_id = 2
-     */
-    lessonId: string;
-}
-/**
- * @generated from protobuf message watch_history.EditWatchHistoryResponse
- */
-export interface EditWatchHistoryResponse {
+export interface EditLessonCompletionResponse {
     /**
      * @generated from protobuf field: common.BaseResponse base = 1
      */
@@ -447,35 +429,32 @@ class WatchHistoryInfo$Type extends MessageType<WatchHistoryInfo> {
  */
 export const WatchHistoryInfo = new WatchHistoryInfo$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class CreateWatchHistoryRequest$Type extends MessageType<CreateWatchHistoryRequest> {
+class EditWatchHistoryRequest$Type extends MessageType<EditWatchHistoryRequest> {
     constructor() {
-        super("watch_history.CreateWatchHistoryRequest", [
-            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+        super("watch_history.EditWatchHistoryRequest", [
+            { no: 1, name: "id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 2, name: "user_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 3, name: "course_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 4, name: "chapter_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
-            { no: 5, name: "lesson_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
-            { no: 6, name: "is_completed", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+            { no: 5, name: "lesson_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } }
         ]);
     }
-    create(value?: PartialMessage<CreateWatchHistoryRequest>): CreateWatchHistoryRequest {
+    create(value?: PartialMessage<EditWatchHistoryRequest>): EditWatchHistoryRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
-        message.id = "";
         message.userId = "";
         message.courseId = "";
         message.chapterId = "";
         message.lessonId = "";
-        message.isCompleted = false;
         if (value !== undefined)
-            reflectionMergePartial<CreateWatchHistoryRequest>(this, message, value);
+            reflectionMergePartial<EditWatchHistoryRequest>(this, message, value);
         return message;
     }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CreateWatchHistoryRequest): CreateWatchHistoryRequest {
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: EditWatchHistoryRequest): EditWatchHistoryRequest {
         let message = target ?? this.create(), end = reader.pos + length;
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string id */ 1:
+                case /* optional string id */ 1:
                     message.id = reader.string();
                     break;
                 case /* string user_id */ 2:
@@ -490,9 +469,6 @@ class CreateWatchHistoryRequest$Type extends MessageType<CreateWatchHistoryReque
                 case /* string lesson_id */ 5:
                     message.lessonId = reader.string();
                     break;
-                case /* bool is_completed */ 6:
-                    message.isCompleted = reader.bool();
-                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -504,9 +480,9 @@ class CreateWatchHistoryRequest$Type extends MessageType<CreateWatchHistoryReque
         }
         return message;
     }
-    internalBinaryWrite(message: CreateWatchHistoryRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string id = 1; */
-        if (message.id !== "")
+    internalBinaryWrite(message: EditWatchHistoryRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* optional string id = 1; */
+        if (message.id !== undefined)
             writer.tag(1, WireType.LengthDelimited).string(message.id);
         /* string user_id = 2; */
         if (message.userId !== "")
@@ -520,234 +496,6 @@ class CreateWatchHistoryRequest$Type extends MessageType<CreateWatchHistoryReque
         /* string lesson_id = 5; */
         if (message.lessonId !== "")
             writer.tag(5, WireType.LengthDelimited).string(message.lessonId);
-        /* bool is_completed = 6; */
-        if (message.isCompleted !== false)
-            writer.tag(6, WireType.Varint).bool(message.isCompleted);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message watch_history.CreateWatchHistoryRequest
- */
-export const CreateWatchHistoryRequest = new CreateWatchHistoryRequest$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class CreateWatchHistoryResponse$Type extends MessageType<CreateWatchHistoryResponse> {
-    constructor() {
-        super("watch_history.CreateWatchHistoryResponse", [
-            { no: 1, name: "base", kind: "message", T: () => BaseResponse },
-            { no: 2, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<CreateWatchHistoryResponse>): CreateWatchHistoryResponse {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.id = "";
-        if (value !== undefined)
-            reflectionMergePartial<CreateWatchHistoryResponse>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CreateWatchHistoryResponse): CreateWatchHistoryResponse {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* common.BaseResponse base */ 1:
-                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
-                    break;
-                case /* string id */ 2:
-                    message.id = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: CreateWatchHistoryResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* common.BaseResponse base = 1; */
-        if (message.base)
-            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* string id = 2; */
-        if (message.id !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.id);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message watch_history.CreateWatchHistoryResponse
- */
-export const CreateWatchHistoryResponse = new CreateWatchHistoryResponse$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class LastWatchHistoryRequest$Type extends MessageType<LastWatchHistoryRequest> {
-    constructor() {
-        super("watch_history.LastWatchHistoryRequest", [
-            { no: 1, name: "user_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "course_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "field_mask", kind: "message", T: () => FieldMask }
-        ]);
-    }
-    create(value?: PartialMessage<LastWatchHistoryRequest>): LastWatchHistoryRequest {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.userId = "";
-        message.courseId = "";
-        if (value !== undefined)
-            reflectionMergePartial<LastWatchHistoryRequest>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: LastWatchHistoryRequest): LastWatchHistoryRequest {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string user_id */ 1:
-                    message.userId = reader.string();
-                    break;
-                case /* string course_id */ 2:
-                    message.courseId = reader.string();
-                    break;
-                case /* google.protobuf.FieldMask field_mask */ 3:
-                    message.fieldMask = FieldMask.internalBinaryRead(reader, reader.uint32(), options, message.fieldMask);
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: LastWatchHistoryRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string user_id = 1; */
-        if (message.userId !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.userId);
-        /* string course_id = 2; */
-        if (message.courseId !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.courseId);
-        /* google.protobuf.FieldMask field_mask = 3; */
-        if (message.fieldMask)
-            FieldMask.internalBinaryWrite(message.fieldMask, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message watch_history.LastWatchHistoryRequest
- */
-export const LastWatchHistoryRequest = new LastWatchHistoryRequest$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class LastWatchHistoryResponse$Type extends MessageType<LastWatchHistoryResponse> {
-    constructor() {
-        super("watch_history.LastWatchHistoryResponse", [
-            { no: 1, name: "base", kind: "message", T: () => BaseResponse },
-            { no: 2, name: "history", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => WatchHistoryInfo }
-        ]);
-    }
-    create(value?: PartialMessage<LastWatchHistoryResponse>): LastWatchHistoryResponse {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.history = [];
-        if (value !== undefined)
-            reflectionMergePartial<LastWatchHistoryResponse>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: LastWatchHistoryResponse): LastWatchHistoryResponse {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* common.BaseResponse base */ 1:
-                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
-                    break;
-                case /* repeated watch_history.WatchHistoryInfo history */ 2:
-                    message.history.push(WatchHistoryInfo.internalBinaryRead(reader, reader.uint32(), options));
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: LastWatchHistoryResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* common.BaseResponse base = 1; */
-        if (message.base)
-            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* repeated watch_history.WatchHistoryInfo history = 2; */
-        for (let i = 0; i < message.history.length; i++)
-            WatchHistoryInfo.internalBinaryWrite(message.history[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message watch_history.LastWatchHistoryResponse
- */
-export const LastWatchHistoryResponse = new LastWatchHistoryResponse$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class EditWatchHistoryRequest$Type extends MessageType<EditWatchHistoryRequest> {
-    constructor() {
-        super("watch_history.EditWatchHistoryRequest", [
-            { no: 1, name: "user_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
-            { no: 2, name: "lesson_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } }
-        ]);
-    }
-    create(value?: PartialMessage<EditWatchHistoryRequest>): EditWatchHistoryRequest {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.userId = "";
-        message.lessonId = "";
-        if (value !== undefined)
-            reflectionMergePartial<EditWatchHistoryRequest>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: EditWatchHistoryRequest): EditWatchHistoryRequest {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string user_id */ 1:
-                    message.userId = reader.string();
-                    break;
-                case /* string lesson_id */ 2:
-                    message.lessonId = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: EditWatchHistoryRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string user_id = 1; */
-        if (message.userId !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.userId);
-        /* string lesson_id = 2; */
-        if (message.lessonId !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.lessonId);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -812,12 +560,151 @@ class EditWatchHistoryResponse$Type extends MessageType<EditWatchHistoryResponse
  * @generated MessageType for protobuf message watch_history.EditWatchHistoryResponse
  */
 export const EditWatchHistoryResponse = new EditWatchHistoryResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class EditLessonCompletionRequest$Type extends MessageType<EditLessonCompletionRequest> {
+    constructor() {
+        super("watch_history.EditLessonCompletionRequest", [
+            { no: 1, name: "id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 2, name: "user_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 3, name: "course_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 4, name: "chapter_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 5, name: "lesson_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 6, name: "is_completed", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+        ]);
+    }
+    create(value?: PartialMessage<EditLessonCompletionRequest>): EditLessonCompletionRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.userId = "";
+        message.courseId = "";
+        message.chapterId = "";
+        message.lessonId = "";
+        message.isCompleted = false;
+        if (value !== undefined)
+            reflectionMergePartial<EditLessonCompletionRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: EditLessonCompletionRequest): EditLessonCompletionRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* optional string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* string user_id */ 2:
+                    message.userId = reader.string();
+                    break;
+                case /* string course_id */ 3:
+                    message.courseId = reader.string();
+                    break;
+                case /* string chapter_id */ 4:
+                    message.chapterId = reader.string();
+                    break;
+                case /* string lesson_id */ 5:
+                    message.lessonId = reader.string();
+                    break;
+                case /* bool is_completed */ 6:
+                    message.isCompleted = reader.bool();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: EditLessonCompletionRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* optional string id = 1; */
+        if (message.id !== undefined)
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* string user_id = 2; */
+        if (message.userId !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.userId);
+        /* string course_id = 3; */
+        if (message.courseId !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.courseId);
+        /* string chapter_id = 4; */
+        if (message.chapterId !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.chapterId);
+        /* string lesson_id = 5; */
+        if (message.lessonId !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.lessonId);
+        /* bool is_completed = 6; */
+        if (message.isCompleted !== false)
+            writer.tag(6, WireType.Varint).bool(message.isCompleted);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message watch_history.EditLessonCompletionRequest
+ */
+export const EditLessonCompletionRequest = new EditLessonCompletionRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class EditLessonCompletionResponse$Type extends MessageType<EditLessonCompletionResponse> {
+    constructor() {
+        super("watch_history.EditLessonCompletionResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse },
+            { no: 2, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<EditLessonCompletionResponse>): EditLessonCompletionResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = "";
+        if (value !== undefined)
+            reflectionMergePartial<EditLessonCompletionResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: EditLessonCompletionResponse): EditLessonCompletionResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                case /* string id */ 2:
+                    message.id = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: EditLessonCompletionResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* string id = 2; */
+        if (message.id !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.id);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message watch_history.EditLessonCompletionResponse
+ */
+export const EditLessonCompletionResponse = new EditLessonCompletionResponse$Type();
 /**
  * @generated ServiceType for protobuf service watch_history.WatchHistoryService
  */
 export const WatchHistoryService = new ServiceType("watch_history.WatchHistoryService", [
     { name: "WatchLessonId", options: {}, I: WatchLessonIdRequest, O: WatchLessonIdResponse },
-    { name: "CreateWatchHistory", options: {}, I: CreateWatchHistoryRequest, O: CreateWatchHistoryResponse },
-    { name: "LastWatchHistory", options: {}, I: LastWatchHistoryRequest, O: LastWatchHistoryResponse },
-    { name: "EditWatchHistory", options: {}, I: EditWatchHistoryRequest, O: EditWatchHistoryResponse }
+    { name: "EditWatchHistory", options: {}, I: EditWatchHistoryRequest, O: EditWatchHistoryResponse },
+    { name: "EditLessonCompletion", options: {}, I: EditLessonCompletionRequest, O: EditLessonCompletionResponse }
 ]);

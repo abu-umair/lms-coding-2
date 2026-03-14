@@ -285,6 +285,7 @@ message Lesson {
   string storage_lesson = 4;
   int32 order_lesson = 5;
   string chapter_id = 6;
+  string course_id = 7;
 }
 
 message Chapter {

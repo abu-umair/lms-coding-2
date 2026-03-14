@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 
-const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, history }) => {
+const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, history, onToggleManual }) => {
   // Simpan index chapter yang terbuka (default: chapter dari activeLesson)
   const initialOpenIndex = useMemo(() => {
     const idx = chapters.findIndex(ch => ch.id === activeLesson?.chapterId);
@@ -12,8 +12,15 @@ const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, h
   const [openIndex, setOpenIndex] = useState(initialOpenIndex);
 
   // Ambil list ID lesson yang sudah selesai
-  const completedLessonIds = useMemo(() => {
-    return history?.watchedLessonId?.map(h => h.lessonId) || [];
+  // 1. Buat "Kamus" history agar pencarian instan O(1)
+  const historyMap = useMemo(() => {
+    console.log(history);
+
+    const map = {};
+    history?.watchedLessonId?.forEach(h => {
+      map[h.lessonId] = h; // Simpan seluruh objek history berdasarkan lessonId
+    });
+    return map;
   }, [history]);
 
   const toggleAccordion = (index) => {
@@ -21,7 +28,7 @@ const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, h
   };
   console.log(history);
   console.log(initialOpenIndex);
-  console.log(completedLessonIds);
+  // console.log(completedLessonIds);
 
 
   return (
@@ -69,7 +76,11 @@ const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, h
                     <ul className="list-none p-0">
                       {chapter.lessons?.map((lesson) => {
                         const isActive = activeLesson?.id === lesson.id;
-                        const isWatched = completedLessonIds.includes(lesson.id);
+                        const hData = historyMap[lesson.id];
+                        const isWatched = !!hData;
+                        const watchHistoryId = hData?.id;
+
+
 
                         return (
                           <li
@@ -102,10 +113,16 @@ const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, h
                             <div className="flex items-center pl-4 border-l border-borderColor2 dark:border-borderColor/50 ">
                               <input
                                 type="checkbox"
-                                defaultChecked={isWatched} //?hanya UI saja
-                                // checked={isWatched} //? jika sudah integraasi di DB
+                                // defaultChecked={isWatched} //?hanya UI saja
+                                checked={isWatched} //? jika sudah integraasi di DB
                                 // onChange={(e) => handleCheckboxClick(e, lesson)}
                                 // readOnly
+                                onChange={() => {
+                                  // Hanya jalankan jika belum tercentang
+                                  // if (!isWatched) {
+                                  onToggleManual(lesson, isWatched, watchHistoryId);
+                                  // }
+                                }}
                                 className="w-5 h-5 cursor-pointer accent-primaryColor transition-transform hover:scale-110"
                               />
                             </div>

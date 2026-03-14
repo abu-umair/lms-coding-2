@@ -931,6 +931,10 @@ export interface Lesson {
      * @generated from protobuf field: string chapter_id = 6
      */
     chapterId: string;
+    /**
+     * @generated from protobuf field: string course_id = 7
+     */
+    courseId: string;
 }
 /**
  * @generated from protobuf message course.Chapter
@@ -3013,7 +3017,8 @@ class Lesson$Type extends MessageType<Lesson> {
             { no: 3, name: "duration", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "storage_lesson", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "order_lesson", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 6, name: "chapter_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 6, name: "chapter_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "course_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<Lesson>): Lesson {
@@ -3024,6 +3029,7 @@ class Lesson$Type extends MessageType<Lesson> {
         message.storageLesson = "";
         message.orderLesson = 0;
         message.chapterId = "";
+        message.courseId = "";
         if (value !== undefined)
             reflectionMergePartial<Lesson>(this, message, value);
         return message;
@@ -3050,6 +3056,9 @@ class Lesson$Type extends MessageType<Lesson> {
                     break;
                 case /* string chapter_id */ 6:
                     message.chapterId = reader.string();
+                    break;
+                case /* string course_id */ 7:
+                    message.courseId = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -3081,6 +3090,9 @@ class Lesson$Type extends MessageType<Lesson> {
         /* string chapter_id = 6; */
         if (message.chapterId !== "")
             writer.tag(6, WireType.LengthDelimited).string(message.chapterId);
+        /* string course_id = 7; */
+        if (message.courseId !== "")
+            writer.tag(7, WireType.LengthDelimited).string(message.courseId);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

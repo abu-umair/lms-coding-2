@@ -4,12 +4,10 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { WatchHistoryService } from "./watch_history";
+import type { EditLessonCompletionResponse } from "./watch_history";
+import type { EditLessonCompletionRequest } from "./watch_history";
 import type { EditWatchHistoryResponse } from "./watch_history";
 import type { EditWatchHistoryRequest } from "./watch_history";
-import type { LastWatchHistoryResponse } from "./watch_history";
-import type { LastWatchHistoryRequest } from "./watch_history";
-import type { CreateWatchHistoryResponse } from "./watch_history";
-import type { CreateWatchHistoryRequest } from "./watch_history";
 import { stackIntercept } from "@protobuf-ts/runtime-rpc";
 import type { WatchLessonIdResponse } from "./watch_history";
 import type { WatchLessonIdRequest } from "./watch_history";
@@ -24,17 +22,16 @@ export interface IWatchHistoryServiceClient {
      */
     watchLessonId(input: WatchLessonIdRequest, options?: RpcOptions): UnaryCall<WatchLessonIdRequest, WatchLessonIdResponse>;
     /**
-     * @generated from protobuf rpc: CreateWatchHistory
-     */
-    createWatchHistory(input: CreateWatchHistoryRequest, options?: RpcOptions): UnaryCall<CreateWatchHistoryRequest, CreateWatchHistoryResponse>;
-    /**
-     * @generated from protobuf rpc: LastWatchHistory
-     */
-    lastWatchHistory(input: LastWatchHistoryRequest, options?: RpcOptions): UnaryCall<LastWatchHistoryRequest, LastWatchHistoryResponse>;
-    /**
      * @generated from protobuf rpc: EditWatchHistory
      */
     editWatchHistory(input: EditWatchHistoryRequest, options?: RpcOptions): UnaryCall<EditWatchHistoryRequest, EditWatchHistoryResponse>;
+    /**
+     * rpc LastWatchHistory (LastWatchHistoryRequest) returns (LastWatchHistoryResponse);
+     * rpc EditWatchHistory (EditWatchHistoryRequest) returns (EditWatchHistoryResponse);
+     *
+     * @generated from protobuf rpc: EditLessonCompletion
+     */
+    editLessonCompletion(input: EditLessonCompletionRequest, options?: RpcOptions): UnaryCall<EditLessonCompletionRequest, EditLessonCompletionResponse>;
 }
 /**
  * @generated from protobuf service watch_history.WatchHistoryService
@@ -53,24 +50,20 @@ export class WatchHistoryServiceClient implements IWatchHistoryServiceClient, Se
         return stackIntercept<WatchLessonIdRequest, WatchLessonIdResponse>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: CreateWatchHistory
-     */
-    createWatchHistory(input: CreateWatchHistoryRequest, options?: RpcOptions): UnaryCall<CreateWatchHistoryRequest, CreateWatchHistoryResponse> {
-        const method = this.methods[1], opt = this._transport.mergeOptions(options);
-        return stackIntercept<CreateWatchHistoryRequest, CreateWatchHistoryResponse>("unary", this._transport, method, opt, input);
-    }
-    /**
-     * @generated from protobuf rpc: LastWatchHistory
-     */
-    lastWatchHistory(input: LastWatchHistoryRequest, options?: RpcOptions): UnaryCall<LastWatchHistoryRequest, LastWatchHistoryResponse> {
-        const method = this.methods[2], opt = this._transport.mergeOptions(options);
-        return stackIntercept<LastWatchHistoryRequest, LastWatchHistoryResponse>("unary", this._transport, method, opt, input);
-    }
-    /**
      * @generated from protobuf rpc: EditWatchHistory
      */
     editWatchHistory(input: EditWatchHistoryRequest, options?: RpcOptions): UnaryCall<EditWatchHistoryRequest, EditWatchHistoryResponse> {
-        const method = this.methods[3], opt = this._transport.mergeOptions(options);
+        const method = this.methods[1], opt = this._transport.mergeOptions(options);
         return stackIntercept<EditWatchHistoryRequest, EditWatchHistoryResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * rpc LastWatchHistory (LastWatchHistoryRequest) returns (LastWatchHistoryResponse);
+     * rpc EditWatchHistory (EditWatchHistoryRequest) returns (EditWatchHistoryResponse);
+     *
+     * @generated from protobuf rpc: EditLessonCompletion
+     */
+    editLessonCompletion(input: EditLessonCompletionRequest, options?: RpcOptions): UnaryCall<EditLessonCompletionRequest, EditLessonCompletionResponse> {
+        const method = this.methods[2], opt = this._transport.mergeOptions(options);
+        return stackIntercept<EditLessonCompletionRequest, EditLessonCompletionResponse>("unary", this._transport, method, opt, input);
     }
 }
