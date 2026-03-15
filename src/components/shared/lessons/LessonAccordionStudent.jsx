@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { getWatchHistoryClient } from "@/api/grpc/client";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
@@ -16,6 +16,17 @@ const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, h
 
   const [openIndex, setOpenIndex] = useState(initialOpenIndex);
 
+  useEffect(() => {
+    if (activeLesson) {
+      // Gunakan chapter_id atau chapterId sesuai data JSON Anda
+      const activeChapterId = activeLesson.chapterId;
+      const idx = chapters.findIndex(ch => ch.id === activeChapterId);
+
+      if (idx !== -1) {
+        setOpenIndex(idx);
+      }
+    }
+  }, [activeLesson, chapters]);
   // Ambil list ID lesson yang sudah selesai
   // 1. Buat "Kamus" history agar pencarian instan O(1)
   const historyMap = useMemo(() => {
