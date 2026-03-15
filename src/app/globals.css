@@ -82,13 +82,13 @@ html {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #0c63e4; /* Sesuaikan warna primary Anda */
+  background: rgb(95 45 237 / var(--tw-bg-opacity)); /* Sesuaikan warna primary Anda */
   border-radius: 10px;
 }
 
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #0c63e4 transparent;
+  scrollbar-color: rgb(95 45 237 / var(--tw-bg-opacity)) transparent;
   /* Menjaga padding saat scroll muncul */
   padding-right: 5px; 
 }
