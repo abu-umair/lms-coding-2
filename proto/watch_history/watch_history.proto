@@ -49,8 +49,6 @@ optional string deleted_at = 12;
 
 
 message EditWatchHistoryRequest {
-  optional string id = 1 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
-  string user_id = 2 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   string course_id = 3 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   string chapter_id = 4 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   string lesson_id = 5 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
@@ -58,7 +56,6 @@ message EditWatchHistoryRequest {
 
 message EditWatchHistoryResponse {
   common.BaseResponse base = 1;
-  string id = 2;
 
 }
 

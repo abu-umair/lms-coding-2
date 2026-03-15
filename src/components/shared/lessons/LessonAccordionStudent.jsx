@@ -1,8 +1,13 @@
 "use client";
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
+import { getWatchHistoryClient } from "@/api/grpc/client";
+import useGrpcApi from "@/components/shared/others/useGrpcApi";
+
 
 const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, history, onToggleManual }) => {
+  const { callApi, isLoading } = useGrpcApi();
+
   // Simpan index chapter yang terbuka (default: chapter dari activeLesson)
   const initialOpenIndex = useMemo(() => {
     const idx = chapters.findIndex(ch => ch.id === activeLesson?.chapterId);
@@ -30,6 +35,20 @@ const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, h
   console.log(initialOpenIndex);
   // console.log(completedLessonIds);
 
+  const handleTouchLesson = async (lesson) => {
+    console.log(lesson.id);
+
+    try {
+      // update_at di update
+      await callApi(getWatchHistoryClient().editWatchHistory({
+        lessonId: lesson.id,
+        courseId: lesson.courseId,
+        chapterId: lesson.chapterId
+      }));
+    } catch (err) {
+      console.error("Gagal update timestamp:", err);
+    }
+  };
 
   return (
     <ul className="curriculum">
@@ -90,7 +109,13 @@ const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, h
                           >
                             <div className="flex items-center flex-grow min-w-0">
                               <button
-                                onClick={() => onSelectLesson(lesson)}
+                                onClick={() => {
+                                  // 1. Jalankan fungsi select lesson bawaan (untuk ganti video di UI)
+                                  onSelectLesson(lesson);
+
+                                  // 2. Jalankan fungsi update timestamp ke Backend
+                                  handleTouchLesson(lesson);
+                                }}
                                 className="flex items-start gap-3 w-full text-left"
                               >
                                 <i className={`icofont-video-alt mt-1  ${isActive ? "text-primaryColor" : "text-gray-400"
