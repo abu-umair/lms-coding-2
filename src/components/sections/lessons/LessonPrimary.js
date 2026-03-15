@@ -112,12 +112,50 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
     });
   };
 
+  // FUNGSI BARU: Untuk update timestamp/updated_at di backend
+  const touchLessonUpdateAt = async (lesson) => {
+    if (!lesson) return;
+
+    try {
+      await callApi(getWatchHistoryClient().editWatchHistory({
+        lessonId: lesson.id,
+        courseId: lesson.courseId,
+        chapterId: lesson.chapterId
+      }));
+    } catch (err) {
+      console.error("Gagal update timestamp via Navigasi:", err);
+    }
+  };
+
+
+  // Mengumpulkan semua lesson menjadi satu array datar (next and prev)
+  const allLessons = course?.chapters?.flatMap(ch => ch.lessons) || [];
+  const currentIndex = allLessons.findIndex(l => l.id === activeLesson?.id);
+
+  const nextLesson = allLessons[currentIndex + 1];
+  const prevLesson = allLessons[currentIndex - 1];
+
+  const handleNavigation = async (lesson) => {
+    if (lesson) {
+      // Simpan menit terakhir video lama jika perlu sebelum pindah
+      if (playerRef.current) {
+        console.log("Saving progress before nav:", playerRef.current.getCurrentTime());
+      }
+
+      await touchLessonUpdateAt(lesson);
+
+      setActiveLesson(lesson);
+      // Scroll otomatis ke atas video saat ganti lesson
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <section>
       <div className="container-fluid-2 pt-50px pb-100px">
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-30px">
           {/* lesson left  */}
-          <div className="xl:col-start-1 xl:col-span-4" data-aos="fade-up">
+          <div className="xl:col-start-1 xl:col-span-4 sticky top-20px h-fit max-h-[85vh] overflow-y-auto custom-scrollbar" data-aos="fade-up">
             {/* curriculum  */}
             {/* //* Kirim data chapters dan fungsi untuk mengubah video */}
             <LessonAccordionStudent
@@ -170,6 +208,26 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
                     Memuat Pelajaran..
                   </div>
                 )}
+              </div>
+
+              <div className="p-5 flex justify-between items-center bg-lightGreyColor dark:bg-whiteColor-dark border-t border-borderColor dark:border-borderColor-dark">
+                <button
+                  onClick={() => handleNavigation(prevLesson)}
+                  disabled={!prevLesson}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${!prevLesson ? "opacity-30 cursor-not-allowed" : "hover:bg-primaryColor hover:text-white text-primaryColor border border-primaryColor"
+                    }`}
+                >
+                  <i className="icofont-arrow-left"></i> Previous
+                </button>
+
+                <button
+                  onClick={() => handleNavigation(nextLesson)}
+                  disabled={!nextLesson}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${!nextLesson ? "opacity-30 cursor-not-allowed" : "bg-primaryColor text-white hover:bg-opacity-90"
+                    }`}
+                >
+                  Next <i className="icofont-arrow-right"></i>
+                </button>
               </div>
             </div>
           </div>
