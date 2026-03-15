@@ -26,6 +26,8 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
   };
 
   useEffect(() => {
+    if (!course) return;
+
     const lastLessonId = localHistory?.lastWatchHistory[0]?.lessonId;
     // const initialLesson = course?.chapters?.[0]?.lessons?.[0];
     const initialLesson = course?.chapters
@@ -33,7 +35,7 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
       ?.find(l => l.id === lastLessonId)
       || course?.chapters?.[0]?.lessons?.[0];
     setActiveLesson(initialLesson);
-  }, [course, localHistory]);
+  }, [course]);
 
   // *** TAMBAHAN 3: Tangkap progress saat ganti lesson atau tutup tab ***
   useEffect(() => {
@@ -99,11 +101,9 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
 
     // 3. KIRIM KE BACKEND (Tanpa await agar tidak menghambat UI)
     callApi(getWatchHistoryClient().editLessonCompletion({
-      id: "1674bd43-f120-4bbd-bd21-195b66bfe6b4", // Kirim string kosong jika null agar backend tahu ini "Create"
       lessonId: lesson.id,
       chapterId: lesson.chapterId,
       courseId: course.id,
-      userId: 'ed28bf94-38fc-449d-a8c9-7399c5383625',
       isCompleted: newStatus
     })).catch(err => {
       // 4. ROLLBACK JIKA GAGAL (Kembalikan ke data awal)
@@ -144,7 +144,7 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
               <div className="absolute top-0 left-0 w-full flex justify-between items-center px-5 py-10px bg-primaryColor leading-1.2 text-whiteColor">
                 <h3 className="sm:text-size-22 font-bold">
                   {/* //* Nama lesson dinamis */}
-                  {activeLesson?.name || "Select a Lesson"}
+                  {activeLesson?.title || "Select a Lesson"}
                 </h3>
                 <a href="course-details.html" className="">
                   Close

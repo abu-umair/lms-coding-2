@@ -143,14 +143,6 @@ export interface EditWatchHistoryResponse {
  */
 export interface EditLessonCompletionRequest {
     /**
-     * @generated from protobuf field: optional string id = 1
-     */
-    id?: string;
-    /**
-     * @generated from protobuf field: string user_id = 2
-     */
-    userId: string;
-    /**
      * @generated from protobuf field: string course_id = 3
      */
     courseId: string;
@@ -175,10 +167,6 @@ export interface EditLessonCompletionResponse {
      * @generated from protobuf field: common.BaseResponse base = 1
      */
     base?: BaseResponse;
-    /**
-     * @generated from protobuf field: string id = 2
-     */
-    id: string;
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class WatchLessonIdRequest$Type extends MessageType<WatchLessonIdRequest> {
@@ -564,8 +552,6 @@ export const EditWatchHistoryResponse = new EditWatchHistoryResponse$Type();
 class EditLessonCompletionRequest$Type extends MessageType<EditLessonCompletionRequest> {
     constructor() {
         super("watch_history.EditLessonCompletionRequest", [
-            { no: 1, name: "id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
-            { no: 2, name: "user_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 3, name: "course_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 4, name: "chapter_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 5, name: "lesson_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
@@ -574,7 +560,6 @@ class EditLessonCompletionRequest$Type extends MessageType<EditLessonCompletionR
     }
     create(value?: PartialMessage<EditLessonCompletionRequest>): EditLessonCompletionRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
-        message.userId = "";
         message.courseId = "";
         message.chapterId = "";
         message.lessonId = "";
@@ -588,12 +573,6 @@ class EditLessonCompletionRequest$Type extends MessageType<EditLessonCompletionR
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* optional string id */ 1:
-                    message.id = reader.string();
-                    break;
-                case /* string user_id */ 2:
-                    message.userId = reader.string();
-                    break;
                 case /* string course_id */ 3:
                     message.courseId = reader.string();
                     break;
@@ -618,12 +597,6 @@ class EditLessonCompletionRequest$Type extends MessageType<EditLessonCompletionR
         return message;
     }
     internalBinaryWrite(message: EditLessonCompletionRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* optional string id = 1; */
-        if (message.id !== undefined)
-            writer.tag(1, WireType.LengthDelimited).string(message.id);
-        /* string user_id = 2; */
-        if (message.userId !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.userId);
         /* string course_id = 3; */
         if (message.courseId !== "")
             writer.tag(3, WireType.LengthDelimited).string(message.courseId);
@@ -650,13 +623,11 @@ export const EditLessonCompletionRequest = new EditLessonCompletionRequest$Type(
 class EditLessonCompletionResponse$Type extends MessageType<EditLessonCompletionResponse> {
     constructor() {
         super("watch_history.EditLessonCompletionResponse", [
-            { no: 1, name: "base", kind: "message", T: () => BaseResponse },
-            { no: 2, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse }
         ]);
     }
     create(value?: PartialMessage<EditLessonCompletionResponse>): EditLessonCompletionResponse {
         const message = globalThis.Object.create((this.messagePrototype!));
-        message.id = "";
         if (value !== undefined)
             reflectionMergePartial<EditLessonCompletionResponse>(this, message, value);
         return message;
@@ -668,9 +639,6 @@ class EditLessonCompletionResponse$Type extends MessageType<EditLessonCompletion
             switch (fieldNo) {
                 case /* common.BaseResponse base */ 1:
                     message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
-                    break;
-                case /* string id */ 2:
-                    message.id = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -687,9 +655,6 @@ class EditLessonCompletionResponse$Type extends MessageType<EditLessonCompletion
         /* common.BaseResponse base = 1; */
         if (message.base)
             BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* string id = 2; */
-        if (message.id !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.id);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
