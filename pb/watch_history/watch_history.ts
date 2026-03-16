@@ -76,6 +76,10 @@ export interface WatchHistoryInfo {
      */
     isCompleted?: string;
     /**
+     * @generated from protobuf field: optional string last_position = 13
+     */
+    lastPosition?: string;
+    /**
      * @generated from protobuf field: optional string created_at = 7
      */
     createdAt?: string;
@@ -104,6 +108,10 @@ export interface WatchHistoryInfo {
  * @generated from protobuf message watch_history.EditWatchHistoryRequest
  */
 export interface EditWatchHistoryRequest {
+    /**
+     * @generated from protobuf field: optional int32 last_position = 2
+     */
+    lastPosition?: number;
     /**
      * @generated from protobuf field: string course_id = 3
      */
@@ -290,6 +298,7 @@ class WatchHistoryInfo$Type extends MessageType<WatchHistoryInfo> {
             { no: 4, name: "chapter_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "lesson_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "is_completed", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "last_position", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "created_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "created_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 9, name: "deleted_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
@@ -327,6 +336,9 @@ class WatchHistoryInfo$Type extends MessageType<WatchHistoryInfo> {
                     break;
                 case /* optional string is_completed */ 6:
                     message.isCompleted = reader.string();
+                    break;
+                case /* optional string last_position */ 13:
+                    message.lastPosition = reader.string();
                     break;
                 case /* optional string created_at */ 7:
                     message.createdAt = reader.string();
@@ -394,6 +406,9 @@ class WatchHistoryInfo$Type extends MessageType<WatchHistoryInfo> {
         /* optional string deleted_at = 12; */
         if (message.deletedAt !== undefined)
             writer.tag(12, WireType.LengthDelimited).string(message.deletedAt);
+        /* optional string last_position = 13; */
+        if (message.lastPosition !== undefined)
+            writer.tag(13, WireType.LengthDelimited).string(message.lastPosition);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -408,6 +423,7 @@ export const WatchHistoryInfo = new WatchHistoryInfo$Type();
 class EditWatchHistoryRequest$Type extends MessageType<EditWatchHistoryRequest> {
     constructor() {
         super("watch_history.EditWatchHistoryRequest", [
+            { no: 2, name: "last_position", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/, options: { "buf.validate.field": { int32: { gte: 0 } } } },
             { no: 3, name: "course_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 4, name: "chapter_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 5, name: "lesson_id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } }
@@ -427,6 +443,9 @@ class EditWatchHistoryRequest$Type extends MessageType<EditWatchHistoryRequest> 
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
+                case /* optional int32 last_position */ 2:
+                    message.lastPosition = reader.int32();
+                    break;
                 case /* string course_id */ 3:
                     message.courseId = reader.string();
                     break;
@@ -448,6 +467,9 @@ class EditWatchHistoryRequest$Type extends MessageType<EditWatchHistoryRequest> 
         return message;
     }
     internalBinaryWrite(message: EditWatchHistoryRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* optional int32 last_position = 2; */
+        if (message.lastPosition !== undefined)
+            writer.tag(2, WireType.Varint).int32(message.lastPosition);
         /* string course_id = 3; */
         if (message.courseId !== "")
             writer.tag(3, WireType.LengthDelimited).string(message.courseId);

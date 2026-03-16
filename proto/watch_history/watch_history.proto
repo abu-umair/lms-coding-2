@@ -38,6 +38,7 @@ optional string course_id = 3;
 optional string chapter_id = 4;
 optional string lesson_id = 5;
 optional string is_completed = 6;
+optional string last_position = 13;
 
 optional string created_at = 7;
 optional string created_by = 8;
@@ -49,6 +50,7 @@ optional string deleted_at = 12;
 
 
 message EditWatchHistoryRequest {
+  optional int32 last_position = 2 [(buf.validate.field).int32.gte = 0];
   string course_id = 3 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   string chapter_id = 4 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   string lesson_id = 5 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];

@@ -65,27 +65,44 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
   };
 
   const onReady = (event) => {
-    // *** TAMBAHAN 4: Simpan instance player ke ref agar bisa diakses di useEffect ***
     playerRef.current = event.target;
+
+    // Cari di history, apakah ada posisi terakhir untuk lesson ini?
+    const hData = localHistory?.watchedLessonId?.find(h => h.lessonId === activeLesson?.id);
+    console.log(localHistory);
+    console.log(hData);
     console.log("Player Ready");
+
+
+    if (hData?.lastPosition) {
+      const seekToSeconds = parseInt(hData.lastPosition);
+      event.target.seekTo(seekToSeconds);
+      console.log(`[RESUME] Melompat ke detik ${seekToSeconds}`);
+    }
+
   };
 
   // 2. Fungsi yang berjalan saat video di-pause (untuk ambil menit terakhir)
   const onPause = (event) => {
     // event.target adalah instance dari player
     const currentTime = event.target.getCurrentTime();
-    console.log("Video berhenti di detik:", currentTime);
-    // Di sinilah nanti kita akan memanggil API Go untuk simpan menit
+    // Jalankan fungsi simpan
+
+    const roundedTime = Math.floor(currentTime);
+    touchLessonUpdateAt(activeLesson, roundedTime);
   };
 
   // 3. Fungsi saat video selesai (untuk otomatis centang)
   const onEnd = (event) => {
     console.log("Video selesai ditonton!");
-    handleUpdateProgress(activeLesson, false, "ID_HISTORY_JIKA_ADA");
+    console.log(activeLesson);
+    handleUpdateProgress(activeLesson, false, activeLesson.id);
     // Di sinilah nanti kita panggil API untuk set is_completed = true
+    touchLessonUpdateAt(activeLesson, 0);
+
   };
 
-  const handleUpdateProgress = async (lesson, isCurrentlyWatched, watchHistoryId) => {
+  const handleUpdateProgress = (lesson, isCurrentlyWatched, watchHistoryId) => {
     // 1. Tentukan status baru (kebalikan dari sekarang)
     const newStatus = !isCurrentlyWatched;
 
@@ -113,14 +130,15 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
   };
 
   // FUNGSI BARU: Untuk update timestamp/updated_at di backend
-  const touchLessonUpdateAt = async (lesson) => {
+  const touchLessonUpdateAt = async (lesson, seconds) => {
     if (!lesson) return;
 
     try {
       await callApi(getWatchHistoryClient().editWatchHistory({
         lessonId: lesson.id,
         courseId: lesson.courseId,
-        chapterId: lesson.chapterId
+        chapterId: lesson.chapterId,
+        lastPosition: seconds //?permasalahan tidak mau masuk, nilainya
       }));
     } catch (err) {
       console.error("Gagal update timestamp via Navigasi:", err);
