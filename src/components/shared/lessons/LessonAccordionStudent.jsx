@@ -107,7 +107,8 @@ const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, h
                       {chapter.lessons?.map((lesson) => {
                         const isActive = activeLesson?.id === lesson.id;
                         const hData = historyMap[lesson.id];
-                        const isWatched = !!hData;
+                        // isWatched hanya TRUE jika data ada DAN field is_completed bernilai "true"
+                        const isWatched = hData?.isCompleted === "true" || hData?.isCompleted === true;
                         const watchHistoryId = hData?.id;
 
 

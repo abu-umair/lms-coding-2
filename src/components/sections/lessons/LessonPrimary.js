@@ -67,17 +67,16 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
   const onReady = (event) => {
     playerRef.current = event.target;
 
-    // Cari di history, apakah ada posisi terakhir untuk lesson ini?
+    // Cari data di watchedLessonId (yang sekarang berisi SEMUA riwayat berkat update BE)
     const hData = localHistory?.watchedLessonId?.find(h => h.lessonId === activeLesson?.id);
-    console.log(localHistory);
-    console.log(hData);
-    console.log("Player Ready");
-
 
     if (hData?.lastPosition) {
       const seekToSeconds = parseInt(hData.lastPosition);
-      event.target.seekTo(seekToSeconds);
-      console.log(`[RESUME] Melompat ke detik ${seekToSeconds}`);
+      // Hanya seek jika durasi lebih dari 2 detik agar tidak tanggung
+      if (seekToSeconds > 2) {
+        event.target.seekTo(seekToSeconds);
+        console.log(`[RESUME] Berhasil melompat ke: ${seekToSeconds}s`);
+      }
     }
 
   };
@@ -87,6 +86,9 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
     // event.target adalah instance dari player
     const currentTime = event.target.getCurrentTime();
     // Jalankan fungsi simpan
+
+    // ? ada edit disini
+    // handleUpdateProgress(activeLesson, true, activeLesson.id);
 
     const roundedTime = Math.floor(currentTime);
     touchLessonUpdateAt(activeLesson, roundedTime);
@@ -106,15 +108,38 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
     // 1. Tentukan status baru (kebalikan dari sekarang)
     const newStatus = !isCurrentlyWatched;
 
-    // 2. UPDATE UI SECARA INSTAN (Optimistic)
-    setLocalHistory(prev => ({
-      ...prev,
-      // Kita filter dulu ID yang lama (jika ada), lalu tambahkan yang baru jika statusnya true
-      watchedLessonId: newStatus
-        ? [...(prev.watchedLessonId || []), { id: watchHistoryId, lessonId: lesson.id }]
-        : prev.watchedLessonId.filter(h => h.lessonId !== lesson.id),
-      lessonCount: newStatus ? prev.lessonCount + 1 : prev.lessonCount - 1
-    }));
+    setLocalHistory(prev => {
+      const existingHistory = prev.watchedLessonId || [];
+      const isAlreadyInList = existingHistory.some(h => h.lessonId === lesson.id);
+
+      let updatedList;
+      if (isAlreadyInList) {
+        // Jika sudah ada, update status isCompleted-nya saja (pertahankan lastPosition)
+        updatedList = existingHistory.map(h =>
+          h.lessonId === lesson.id
+            ? { ...h, isCompleted: newStatus.toString() }
+            : h
+        );
+      } else {
+        // Jika belum ada (data baru), tambahkan ke array
+        updatedList = [
+          ...existingHistory,
+          {
+            id: watchHistoryId || "",
+            lessonId: lesson.id,
+            isCompleted: newStatus.toString(),
+            lastPosition: "0"
+          }
+        ];
+      }
+
+      return {
+        ...prev,
+        watchedLessonId: updatedList,
+        // Count hanya bertambah jika status barunya true
+        lessonCount: newStatus ? prev.lessonCount + 1 : Math.max(0, prev.lessonCount - 1)
+      };
+    });
 
     // 3. KIRIM KE BACKEND (Tanpa await agar tidak menghambat UI)
     callApi(getWatchHistoryClient().editLessonCompletion({
@@ -133,10 +158,31 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
   const touchLessonUpdateAt = async (lesson, seconds) => {
     if (!lesson) return;
 
+    // const stringSeconds = Math.floor(seconds || 0).toString();
+    const stringSeconds = Math.floor(seconds || 0);
+
+    // UPDATE STATE LOKAL DULU (Optimistic Update)
+    // Ini kunci agar saat pindah-pindah lesson, datanya langsung "ingat" tanpa nunggu refresh
+    setLocalHistory(prev => {
+      const currentList = prev.watchedLessonId || [];
+      const isExist = currentList.find(h => h.lessonId === lesson.id);
+
+      let newList;
+      if (isExist) {
+        newList = currentList.map(h =>
+          h.lessonId === lesson.id ? { ...h, lastPosition: stringSeconds } : h
+        );
+      } else {
+        newList = [...currentList, { lessonId: lesson.id, lastPosition: stringSeconds, isCompleted: "false" }];
+      }
+
+      return { ...prev, watchedLessonId: newList };
+    });
+
     try {
       await callApi(getWatchHistoryClient().editWatchHistory({
         lessonId: lesson.id,
-        courseId: lesson.courseId,
+        courseId: course.id,
         chapterId: lesson.chapterId,
         lastPosition: seconds //?permasalahan tidak mau masuk, nilainya
       }));
@@ -157,10 +203,10 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
     if (lesson) {
       // Simpan menit terakhir video lama jika perlu sebelum pindah
       if (playerRef.current) {
-        console.log("Saving progress before nav:", playerRef.current.getCurrentTime());
+        const lastTime = playerRef.current.getCurrentTime();
+        // Simpan progress video yang sedang aktif SEBELUM pindah ke video baru
+        await touchLessonUpdateAt(activeLesson, lastTime);
       }
-
-      await touchLessonUpdateAt(lesson);
 
       setActiveLesson(lesson);
       // Scroll otomatis ke atas video saat ganti lesson
@@ -179,9 +225,9 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
             <LessonAccordionStudent
               chapters={course?.chapters}
               onSelectLesson={(lesson) => {
-                // *** TAMBAHAN 5: Sebelum pindah, log menit terakhir video lama ***
+                // *** TAMBAHAN 5: Sebelum pindah, simpan menit terakhir video lama ***
                 if (playerRef.current) {
-                  console.log(`Pindah dari ${activeLesson?.title}. Detik terakhir:`, playerRef.current.getCurrentTime());
+                  touchLessonUpdateAt(activeLesson, playerRef.current.getCurrentTime());
                 }
                 setActiveLesson(lesson)
               }}
