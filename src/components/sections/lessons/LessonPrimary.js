@@ -1,7 +1,7 @@
 "use client";
 import lessons from "@/../public/fakedata/lessons.json";
 import LessonAccordionStudent from "@/components/shared/lessons/LessonAccordionStudent";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import YouTube from "react-youtube"; // Import library baru
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
@@ -154,6 +154,22 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
     });
   };
 
+  const progressStats = useMemo(() => {
+    // 1. Hitung total seluruh lesson (Denominator)
+    const total = course?.chapters?.reduce(
+      (acc, chapter) => acc + (chapter.lessons?.length || 0),
+      0
+    ) || 0;
+
+    // 2. Ambil jumlah selesai dari state yang selalu terupdate
+    const completed = localHistory?.lessonCount || 0;
+
+    // 3. Hitung persentase
+    const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+    return { total, completed, percentage };
+  }, [course, localHistory]); // Re-calculate hanya jika data ini berubah
+
   // FUNGSI BARU: Untuk update timestamp/updated_at di backend
   const touchLessonUpdateAt = async (lesson, seconds) => {
     if (!lesson) return;
@@ -233,6 +249,7 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
               }}
               activeLesson={activeLesson}
               history={localHistory} // Gunakan state lokal
+              progressStats={progressStats}
               onToggleManual={handleUpdateProgress}
             />
           </div>

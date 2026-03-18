@@ -5,7 +5,7 @@ import { getWatchHistoryClient } from "@/api/grpc/client";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
 
 
-const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, history, onToggleManual }) => {
+const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, history, progressStats, onToggleManual }) => {
   const { callApi, isLoading } = useGrpcApi();
 
   // Simpan index chapter yang terbuka (default: chapter dari activeLesson)
@@ -66,7 +66,8 @@ const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, h
       {/* HEADER PROGRESS */}
       <div className="mb-4 p-3 bg-lightGreyColor rounded-md border border-borderColor/50">
         <p className="text-sm font-bold text-primaryColor">
-          Progres: {history?.lessonCount || 0} Pelajaran Selesai
+          Progres: {progressStats.completed} of {progressStats.total}
+          ({progressStats.percentage}%)
         </p>
       </div>
 
