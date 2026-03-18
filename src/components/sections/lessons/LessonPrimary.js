@@ -110,11 +110,13 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
 
     setLocalHistory(prev => {
       const existingHistory = prev.watchedLessonId || [];
-      const isAlreadyInList = existingHistory.some(h => h.lessonId === lesson.id);
+      // Cari data lama untuk tahu apakah sebelumnya memang sudah completed
+      const oldData = existingHistory.find(h => h.lessonId === lesson.id);
+      const wasAlreadyCompleted = oldData?.isCompleted === "true";
 
       let updatedList;
-      if (isAlreadyInList) {
-        // Jika sudah ada, update status isCompleted-nya saja (pertahankan lastPosition)
+      if (oldData) {
+        // Jika data sudah ada di history, update statusnya
         updatedList = existingHistory.map(h =>
           h.lessonId === lesson.id
             ? { ...h, isCompleted: newStatus.toString() }
@@ -133,11 +135,21 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
         ];
       }
 
+      let newCount = prev.lessonCount;
+
+      // HANYA tambah jika status berubah dari FALSE ke TRUE
+      if (newStatus && !wasAlreadyCompleted) {
+        newCount = prev.lessonCount + 1;
+      }
+      // HANYA kurang jika status berubah dari TRUE ke FALSE
+      else if (!newStatus && wasAlreadyCompleted) {
+        newCount = Math.max(0, prev.lessonCount - 1);
+      }
+
       return {
         ...prev,
         watchedLessonId: updatedList,
-        // Count hanya bertambah jika status barunya true
-        lessonCount: newStatus ? prev.lessonCount + 1 : Math.max(0, prev.lessonCount - 1)
+        lessonCount: newCount
       };
     });
 
