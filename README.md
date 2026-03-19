@@ -85,3 +85,9 @@ npm install @hello-pangea/dnd
 npm install js-confetti
 
 ```
+
+## install confetti version 2
+``` bash
+npm install react-confetti react-use
+
+```
