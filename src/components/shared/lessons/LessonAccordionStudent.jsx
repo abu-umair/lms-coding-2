@@ -3,6 +3,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { getWatchHistoryClient } from "@/api/grpc/client";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
+import { formatDuration } from "@/utils/formatDuration";
 
 
 const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, history, progressStats, onToggleManual }) => {
@@ -135,7 +136,7 @@ const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, h
                                   </h4>
                                   <div className="flex items-center gap-2 text-gray-500 text-xs mt-1">
                                     <i className="icofont-clock-time"></i>
-                                    <span>{lesson.duration || "0"} menit</span>
+                                    <span>{formatDuration(lesson.duration)}</span>
                                   </div>
                                 </div>
                               </button>
