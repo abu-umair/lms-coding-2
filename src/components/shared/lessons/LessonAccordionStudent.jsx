@@ -63,13 +63,7 @@ const LessonAccordionStudent = ({ chapters = [], onSelectLesson, activeLesson, h
 
   return (
     <ul className="curriculum">
-      {/* HEADER PROGRESS */}
-      <div className="mb-4 p-3 bg-lightGreyColor rounded-md border border-borderColor/50">
-        <p className="text-sm font-bold text-primaryColor">
-          Progres: {progressStats.completed} of {progressStats.total}
-          ({progressStats.percentage}%)
-        </p>
-      </div>
+
 
       {chapters.map((chapter, index) => {
         const isOpen = openIndex === index;

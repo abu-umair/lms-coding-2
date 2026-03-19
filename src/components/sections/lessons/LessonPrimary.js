@@ -1,12 +1,10 @@
 "use client";
-import lessons from "@/../public/fakedata/lessons.json";
 import LessonAccordionStudent from "@/components/shared/lessons/LessonAccordionStudent";
 import { useEffect, useMemo, useRef, useState } from "react";
-import ReactPlayer from "react-player";
 import YouTube from "react-youtube"; // Import library baru
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
 import { getWatchHistoryClient } from "@/api/grpc/client";
-
+import CourseProgressBar from "@/libs/CourseProgressBar";
 
 
 const LessonPrimary = ({ course, history: initialHistory }) => {
@@ -180,7 +178,7 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
     const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
     return { total, completed, percentage };
-  }, [course, localHistory]); // Re-calculate hanya jika data ini berubah
+  }, [course, localHistory?.lessonCount]); // Re-calculate hanya jika data ini berubah
 
   // FUNGSI BARU: Untuk update timestamp/updated_at di backend
   const touchLessonUpdateAt = async (lesson, seconds) => {
@@ -245,6 +243,10 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
   return (
     <section>
       <div className="container-fluid-2 pt-50px pb-100px">
+        {/* *** TAMBAHKAN DI SINI: Komponen Progres Bar Beranimasi *** */}
+        <CourseProgressBar
+          stats={progressStats}
+        />
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-30px">
           {/* lesson left  */}
           <div className="xl:col-start-1 xl:col-span-4 sticky top-20px h-fit max-h-[85vh] overflow-y-auto custom-scrollbar" data-aos="fade-up">
