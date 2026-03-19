@@ -79,3 +79,9 @@ npm install axios
 npm install @hello-pangea/dnd
 
 ```
+
+## install confetti
+``` bash
+npm install js-confetti
+
+```

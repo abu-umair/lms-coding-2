@@ -1,7 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion, useSpring, useTransform } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import JSConfetti from 'js-confetti';
 
 const CourseProgressBar = ({ stats }) => {
     // --- 1. LOGIKA COUNTER ANGKA (Fix Deprecated onChange) ---
@@ -11,8 +12,54 @@ const CourseProgressBar = ({ stats }) => {
     const springValue = useSpring(0, { stiffness: 40, damping: 15 });
     const rounded = useTransform(springValue, (latest) => Math.round(latest));
 
+    // Simpan instance confetti agar tidak dibuat ulang terus menerus
+    const jsConfettiRef = useRef(null);
+
+    // Variabel untuk melacak apakah confetti sudah pernah ditembakkan
+    const hasLaunchedRef = useRef(false);
+
+    // --- 3. MEMBUAT INSTANCE CONFETTI SAAT KOMPONEN DIMUAT ---
     useEffect(() => {
-        springValue.set(stats.percentage || 0);
+        // Pastikan kita hanya membuat instance di sisi klien
+        if (typeof window !== 'undefined' && !jsConfettiRef.current) {
+            jsConfettiRef.current = new JSConfetti();
+        }
+
+        // Cleanup saat komponen dibongkar (optional tapi baik)
+        return () => {
+            jsConfettiRef.current = null;
+        }
+    }, []);
+
+    useEffect(() => {
+        // Update nilai spring setiap kali stats.percentage berubah
+        const targetPercentage = stats.percentage || 0;
+        springValue.set(targetPercentage);
+
+        // Periksa apakah sudah mencapai 100% dan confetti belum ditembakkan
+        if (targetPercentage === 100 && jsConfettiRef.current && !hasLaunchedRef.current) {
+
+            // Tembakkan Confetti!
+            jsConfettiRef.current.addConfetti({
+                confettiColors: [
+                    '#3b82f6', // Biru primary (ganti sesuai tema Anda)
+                    '#a78bfa', // Ungu secondary
+                    '#22c55e', // Hijau success
+                    '#eab308', // Kuning warning
+                ],
+                confettiRadius: 5,
+                confettiNumber: 500, // Jumlah confetti (sesuaikan)
+            });
+
+            // Tandai bahwa confetti sudah ditembakkan
+            hasLaunchedRef.current = true;
+            console.log("Confetti launched!");
+        }
+
+        // Reset tanda jika persentase turun dari 100% (opsional)
+        if (targetPercentage < 100) {
+            hasLaunchedRef.current = false;
+        }
     }, [stats.percentage, springValue]);
 
     // Cara terbaru membaca perubahan nilai spring di Framer Motion v10+
