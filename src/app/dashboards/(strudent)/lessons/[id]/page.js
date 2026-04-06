@@ -8,7 +8,7 @@ import { getServerSession } from "next-auth";
 import { getCourseClient } from "@/api/grpc/client";
 import { getWatchHistoryClient } from "@/api/grpc/client";
 import { cache } from "react";
-import { getEnrollmentClient } from "@/api/grpc/client";
+import { checkCourseUserBuy } from "@/components/auth/CourseGuard";
 
 
 
@@ -20,35 +20,16 @@ const getCachedCourse = cache(async (slug) => {
 
   const client = await getCourseClient();
   const historyClient = await getWatchHistoryClient();
-  const userBuyClient = getEnrollmentClient();
 
 
-
+  //nanti ganti by slug, bukan by courseId 
+  await checkCourseUserBuy("5c7fd549-ed81-4bce-87af-fd06f803ef60", accessToken);
 
   console.log('test');
   const meta = {
     meta: { "authorization": accessToken ? `Bearer ${accessToken}` : '' }
   };
 
-  const res = await userBuyClient.detailEnrollByUserRole({
-    courseId: "5c7fd549-ed81-4bce-87af-fd06f803ef60",
-    fieldMask: {
-      paths: [
-        "id",
-      ]
-    }
-  }, meta);
-
-  // console.log("hasil ress", res.response);
-  // console.log("hasil ress", res.response.base.statusCode);
-
-
-  if (res.response.base.statusCode != 200) {
-    // console.log("error nih", res);
-
-    // redirect("/course-preview/" + courseSlug); // Tendang jika belum beli
-    redirect("/dashboards/student-dashboard"); //! errornya disini, ada atau tidak ada tetap dianggapnya error
-  }
 
   //* Memanggil dua API secara paralel (Lebih cepat daripada satu-satu)
   const courseRes = await client.detailCourseUser({
