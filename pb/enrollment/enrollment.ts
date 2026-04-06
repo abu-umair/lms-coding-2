@@ -18,9 +18,9 @@ import { FieldMask } from "../google/protobuf/field_mask";
  */
 export interface DetailEnrollByUserRoleRequest {
     /**
-     * @generated from protobuf field: string course_id = 1
+     * @generated from protobuf field: string course_slug = 1
      */
-    courseId: string;
+    courseSlug: string;
     /**
      * @generated from protobuf field: google.protobuf.FieldMask field_mask = 2
      */
@@ -91,13 +91,13 @@ export interface DetailEnrollByUserRoleResponse {
 class DetailEnrollByUserRoleRequest$Type extends MessageType<DetailEnrollByUserRoleRequest> {
     constructor() {
         super("enrollment.DetailEnrollByUserRoleRequest", [
-            { no: 1, name: "course_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "course_slug", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "field_mask", kind: "message", T: () => FieldMask }
         ]);
     }
     create(value?: PartialMessage<DetailEnrollByUserRoleRequest>): DetailEnrollByUserRoleRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
-        message.courseId = "";
+        message.courseSlug = "";
         if (value !== undefined)
             reflectionMergePartial<DetailEnrollByUserRoleRequest>(this, message, value);
         return message;
@@ -107,8 +107,8 @@ class DetailEnrollByUserRoleRequest$Type extends MessageType<DetailEnrollByUserR
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string course_id */ 1:
-                    message.courseId = reader.string();
+                case /* string course_slug */ 1:
+                    message.courseSlug = reader.string();
                     break;
                 case /* google.protobuf.FieldMask field_mask */ 2:
                     message.fieldMask = FieldMask.internalBinaryRead(reader, reader.uint32(), options, message.fieldMask);
@@ -125,9 +125,9 @@ class DetailEnrollByUserRoleRequest$Type extends MessageType<DetailEnrollByUserR
         return message;
     }
     internalBinaryWrite(message: DetailEnrollByUserRoleRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string course_id = 1; */
-        if (message.courseId !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.courseId);
+        /* string course_slug = 1; */
+        if (message.courseSlug !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.courseSlug);
         /* google.protobuf.FieldMask field_mask = 2; */
         if (message.fieldMask)
             FieldMask.internalBinaryWrite(message.fieldMask, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
