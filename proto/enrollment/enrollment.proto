@@ -1,0 +1,296 @@
+syntax = "proto3";
+
+package enrollment;
+
+import "common/base_response.proto";
+import "buf/validate/validate.proto";
+import "google/protobuf/field_mask.proto";
+
+option go_package = "github.com/abu-umair/be-lms-go/pb/enrollment";
+
+
+service EnrollmentService {
+    rpc DetailEnrollByUserRole (DetailEnrollByUserRoleRequest) returns (DetailEnrollByUserRoleResponse);
+    // rpc CreateCourse (CreateCourseRequest) returns (CreateCourseResponse);
+    // rpc DetailCourse (DetailCourseRequest) returns (DetailCourseResponse);
+    // rpc EditCourse (EditCourseRequest) returns (EditCourseResponse);
+    // rpc DeleteCourse (DeleteCourseRequest) returns (DeleteCourseResponse);
+    // // USER
+    // rpc GetAllCourseUser (GetAllCourseUserRequest) returns (GetAllCourseUserResponse);
+    // rpc DetailCourseUser (DetailCourseUserRequest) returns (DetailCourseUserResponse);
+}
+
+message DetailEnrollByUserRoleRequest {
+  string course_id = 1;
+  google.protobuf.FieldMask field_mask = 2;
+}
+
+message DetailEnrollByUserRoleResponse {
+  common.BaseResponse base = 1;
+  
+  string id = 14;
+  optional string user_id = 2;
+  optional string course_id = 3;
+  optional string instructor_id = 4;
+  optional int32 have_access = 5;
+
+  optional string created_at = 6;
+  optional string created_by = 7;
+  optional string deleted_by = 8;
+  optional string updated_at = 9;
+  optional string updated_by = 10;
+  optional string deleted_at = 11;
+
+  optional string user_full_name = 12;
+  optional string user_email = 13;
+}
+
+
+// message EnrollmentInfo {
+//   string id = 1;
+//   optional string user_id = 2;
+//   optional string course_id = 3;
+//   optional string instructor_id = 4;
+//   optional int32 have_access = 5;
+
+//   optional string created_at = 6;
+//   optional string created_by = 7;
+//   optional string deleted_by = 8;
+//   optional string updated_at = 9;
+//   optional string updated_by = 10;
+//   optional string deleted_at = 11;
+
+//   optional string user_full_name = 12;
+//   optional string user_email = 13;
+
+// }
+
+
+// message CreateCourseRequest {
+//   string id = 1 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+//   string name = 2 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+//   optional string address = 3 [(buf.validate.field).string = { max_len: 1000 }];
+//   string image_file_name = 4 [(buf.validate.field).string = { min_len: 1, max_len: 255}];
+//   optional string slug = 5 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string category_id = 6 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string course_type = 7 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string title = 8 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string seo_description = 9 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string duration = 10 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string timezone = 11 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string thumbnail = 12 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string demo_video_storage = 13 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string demo_video_source = 14 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string description = 15 [(buf.validate.field).string = { max_len: 255 }];
+//   optional int32 capacity = 16 [(buf.validate.field).int32.gte = 0];
+//   optional string price = 17 [(buf.validate.field).string = { pattern: "^[0-9]+(\\.[0-9]{1,2})?$" }];
+//   optional string discount = 18 [(buf.validate.field).string = { pattern: "^[0-9]+(\\.[0-9]{1,2})?$" }];
+//   optional string certificate = 19 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string gna = 20 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string message_for_reviewer = 21 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string is_approved = 22 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string status = 23 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string course_level_id = 24 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string course_language_id = 25 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string instructor_id = 26 [(buf.validate.field).string = { max_len: 255 }];
+// }
+
+// message CreateCourseResponse {
+//   common.BaseResponse base = 1;
+//   string id = 2;
+// //   string name = 3;
+// //   string address = 4;
+
+// }
+
+// message DetailCourseRequest {
+//   string id = 1 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+//   google.protobuf.FieldMask field_mask = 2;
+// }
+
+// message DetailCourseResponse {
+//   common.BaseResponse base = 1;
+//   string id = 2;
+//   optional string name = 3;
+//   optional string address = 4;
+//   optional string slug = 5;
+//   optional string category_id = 6;
+//   optional string course_type = 7;
+//   optional string title = 8;
+//   optional string seo_description = 9;
+//   optional string duration = 10;
+//   optional string timezone = 11;
+//   optional string thumbnail = 12;
+//   optional string demo_video_storage = 13;
+//   optional string demo_video_source = 14;
+//   optional string description = 15;
+//   optional int32 capacity = 16;
+//   optional string price = 17;
+//   optional string discount = 18;
+//   optional string certificate = 19;
+//   optional string gna = 20;
+//   optional string message_for_reviewer = 21;
+//   optional string is_approved = 22;
+//   optional string status = 23;
+//   optional string course_level_id = 24;
+//   optional string course_language_id = 25;
+//   optional string instructor_id = 26;
+//   optional string created_at = 27;
+//   optional string created_by = 28;
+//   optional string deleted_by = 29;
+//   optional string updated_at = 30;
+//   optional string updated_by = 31;
+//   optional string deleted_at = 32;
+//   optional string image_file_name = 33;
+// }
+
+// message EditCourseRequest {
+//   string id = 1 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+//   string name = 2 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+//   optional string address = 3 [(buf.validate.field).string = { max_len: 1000 }];
+//   string image_file_name = 4 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+//   optional string slug = 5 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string category_id = 6 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string course_type = 7 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string title = 8 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string seo_description = 9 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string duration = 10 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string timezone = 11 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string thumbnail = 12 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string demo_video_storage = 13 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string demo_video_source = 14 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string description = 15 [(buf.validate.field).string = { max_len: 255 }];
+//   optional int32 capacity = 16 [(buf.validate.field).int32.gte = 0];
+//   optional string price = 17 [(buf.validate.field).string = { pattern: "^[0-9]+(\\.[0-9]{1,2})?$" }];
+//   optional string discount = 18 [(buf.validate.field).string = { pattern: "^[0-9]+(\\.[0-9]{1,2})?$" }];
+//   optional string certificate = 19 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string gna = 20 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string message_for_reviewer = 21 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string is_approved = 22 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string status = 23 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string course_level_id = 24 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string course_language_id = 25 [(buf.validate.field).string = { max_len: 255 }];
+//   optional string instructor_id = 26 [(buf.validate.field).string = { max_len: 255 }];
+// }
+
+// message EditCourseResponse {
+//   common.BaseResponse base = 1;
+//   string id = 2;
+// //   string name = 3;
+// //   string address = 4;
+
+// }
+
+// message DeleteCourseRequest {
+//   string id = 1 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+// }
+
+// message DeleteCourseResponse {
+//   common.BaseResponse base = 1;
+// }
+
+// // USER
+// message GetAllCourseUserRequest {
+//   string user_id = 1;
+//   google.protobuf.FieldMask field_mask = 2;
+// }
+
+// message GetAllCourseUserResponse {
+//   common.BaseResponse base = 1;
+//   repeated CourseInfoUser courses = 2; // 'repeated' untuk array/slice
+// }  
+
+// //nanti dihapus pada bagian yang tidak penting menjaga security 
+// message CourseInfoUser {
+//   string id = 1;
+//   optional string image_file_name = 2;
+//   optional string name = 3;
+//   optional string address = 4;
+//   optional string slug = 5;
+//   optional string category_id = 6;
+//   optional string course_type = 7;
+//   optional string title = 8;
+//   optional string seo_description = 9;
+//   optional string duration = 10;
+//   optional string timezone = 11;
+//   optional string thumbnail = 12;
+//   optional string demo_video_storage = 13;
+//   optional string demo_video_source = 14;
+//   optional string description = 15;
+//   optional int32 capacity = 16;
+//   optional string price = 17;
+//   optional string discount = 18;
+//   optional string certificate = 19;
+//   optional string gna = 20;
+//   optional string message_for_reviewer = 21;
+//   optional string is_approved = 22;
+//   optional string status = 23;
+//   optional string course_level_id = 24;
+//   optional string course_language_id = 25;
+//   optional string instructor_id = 26;
+//   optional string created_at = 27;
+//   optional string created_by = 28;
+//   optional string deleted_by = 29;
+//   optional string updated_at = 30;
+//   optional string updated_by = 31;
+//   optional string deleted_at = 32;
+// }
+
+// message DetailCourseUserRequest {
+//   string slug = 1 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+//   google.protobuf.FieldMask field_mask = 2;
+// }
+
+// message DetailCourseUserResponse {
+//   common.BaseResponse base = 1;
+//   string id = 2;
+//   optional string name = 3;
+//   optional string address = 4;
+//   optional string slug = 5;
+//   optional string category_id = 6;
+//   optional string course_type = 7;
+//   optional string title = 8;
+//   optional string seo_description = 9;
+//   optional string duration = 10;
+//   optional string timezone = 11;
+//   optional string thumbnail = 12;
+//   optional string demo_video_storage = 13;
+//   optional string demo_video_source = 14;
+//   optional string description = 15;
+//   optional int32 capacity = 16;
+//   optional string price = 17;
+//   optional string discount = 18;
+//   optional string certificate = 19;
+//   optional string gna = 20;
+//   optional string message_for_reviewer = 21;
+//   optional string is_approved = 22;
+//   optional string status = 23;
+//   optional string course_level_id = 24;
+//   optional string course_language_id = 25;
+//   optional string instructor_id = 26;
+//   optional string created_at = 27;
+//   optional string created_by = 28;
+//   optional string deleted_by = 29;
+//   optional string updated_at = 30;
+//   optional string updated_by = 31;
+//   optional string deleted_at = 32;
+//   optional string image_file_name = 33;
+//   repeated Chapter chapters = 34;
+// }
+
+// message Lesson {
+//   string id = 1;
+//   string title = 2;
+//   string duration = 3;
+//   string storage_lesson = 4;
+//   int32 order_lesson = 5;
+//   string chapter_id = 6;
+//   string course_id = 7;
+// }
+
+// message Chapter {
+//   string id = 1;
+//   string title = 2;
+//   int32 order_chapter = 3;
+//   repeated Lesson lessons = 4; // Relasi One-to-Many ke Lesson
+// }

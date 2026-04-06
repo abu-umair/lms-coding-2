@@ -6,6 +6,7 @@ import { authInterceptor } from "@/api/grpc/auth-interceptor";
 import { CourseChapterServiceClient, ICourseChapterServiceClient } from "@/../../pb/course_chapter/course_chapter.client";
 import { ChapterLessonServiceClient, IChapterLessonServiceClient } from "@/../../pb/chapter_lesson/chapter_lesson.client";
 import { WatchHistoryServiceClient, IWatchHistoryServiceClient } from "@/../../pb/watch_history/watch_history.client";
+import { EnrollmentServiceClient, IEnrollmentServiceClient } from "@/../../pb/enrollment/enrollment.client";
 
 
 
@@ -16,6 +17,7 @@ let courseClient: ICourseServiceClient | null = null;
 let courseChapterClient: ICourseChapterServiceClient | null = null;
 let chapterLessonClient: IChapterLessonServiceClient | null = null;
 let watchHistoryClient: IWatchHistoryServiceClient | null = null;
+let enrollmentClient: IEnrollmentServiceClient | null = null;
 
 const getWebTransport = () => {
     if (webTransport === null) {
@@ -60,4 +62,11 @@ export const getWatchHistoryClient = () => {
         watchHistoryClient = new WatchHistoryServiceClient(getWebTransport());
     }
     return watchHistoryClient
+}
+
+export const getEnrollmentClient = () => {
+    if (enrollmentClient === null) {
+        enrollmentClient = new EnrollmentServiceClient(getWebTransport());
+    }
+    return enrollmentClient
 }
