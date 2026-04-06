@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 /**
  * Helper untuk mengecek kepemilikan kursus di sisi Server.
  */
-export async function checkCourseUserBuy(courseId, accessToken) {
+export async function checkCourseUserBuy(courseSlug, accessToken) {
     if (!accessToken) {
         redirect("/login");
     }
@@ -18,7 +18,7 @@ export async function checkCourseUserBuy(courseId, accessToken) {
 
     try {
         const res = await client.detailEnrollByUserRole({
-            courseId: courseId,
+            courseSlug: courseSlug,
             fieldMask: { paths: ["id"] }
         }, meta);
 

@@ -21,7 +21,7 @@ service EnrollmentService {
 }
 
 message DetailEnrollByUserRoleRequest {
-  string course_id = 1;
+  string course_slug = 1;
   google.protobuf.FieldMask field_mask = 2;
 }
 

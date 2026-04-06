@@ -46,7 +46,7 @@ const Navbar = () => {
           )}
           <div className="grid grid-cols-2 lg:grid-cols-12 items-center gap-15px">
             {/* navbar left */}
-            <NavbarLogo />
+            {/* <NavbarLogo /> */}
             {/* Main menu */}
             {isHome2Dark ? <NavItems2 /> : <NavItems />}
 

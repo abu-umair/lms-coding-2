@@ -23,7 +23,7 @@ const getCachedCourse = cache(async (slug) => {
 
 
   //nanti ganti by slug, bukan by courseId 
-  await checkCourseUserBuy("5c7fd549-ed81-4bce-87af-fd06f803ef60", accessToken);
+  await checkCourseUserBuy(slug, accessToken);
 
   console.log('test');
   const meta = {
