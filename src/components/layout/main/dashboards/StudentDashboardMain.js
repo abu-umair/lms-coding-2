@@ -4,6 +4,7 @@ import React from "react";
 import { getDashboardUserClient } from "@/api/grpc/client";
 import { authOptions } from "@/libs/authOptions";
 import { getServerSession } from "next-auth";
+import ActivityChart from "@/libs/ActivityChart"
 
 const StudentDashboardMain = async () => {
   // 1. Ambil session
@@ -34,6 +35,9 @@ const StudentDashboardMain = async () => {
   return (
     <>
       <CounterStudent stats={stats} />
+      <div className="grid grid-cols-1 gap-6 !border-none ">
+        {/* <ActivityChart className="!border-none border-gray-500" /> */}
+      </div>
       <AdminFeedbacks />
     </>
   );

@@ -91,3 +91,9 @@ npm install js-confetti
 npm install react-confetti react-use
 
 ```
+
+## install recharts
+``` bash
+npm install recharts
+
+```
