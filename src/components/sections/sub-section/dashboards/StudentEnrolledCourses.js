@@ -11,6 +11,8 @@ const StudentEnrolledCourses = ({ courses = [] }) => {
   // Logika Filter Dinamis berdasarkan data API
   // ENROLLED: Semua kursus yang dimiliki student
   const enrolledCourses = courses;
+  console.log(courses);
+  
 
   // ACTIVE: Kursus yang progresnya > 0 tapi < 100
   const activeCourses = courses?.filter(

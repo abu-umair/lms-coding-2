@@ -38,6 +38,7 @@ const StudentEnrolledCoursesMain = async () => {
         "message_for_reviewer",
         "is_approved",
         "status",
+        "progress",
       ]
     }
   }, {

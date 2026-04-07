@@ -234,6 +234,7 @@ message CourseInfoUser {
   optional string updated_at = 30;
   optional string updated_by = 31;
   optional string deleted_at = 32;
+  optional double progress = 33;
 }
 
 message DetailCourseUserRequest {

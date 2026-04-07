@@ -748,6 +748,10 @@ export interface CourseInfoUser {
      * @generated from protobuf field: optional string deleted_at = 32
      */
     deletedAt?: string;
+    /**
+     * @generated from protobuf field: optional double progress = 33
+     */
+    progress?: number;
 }
 /**
  * @generated from protobuf message course.DetailCourseUserRequest
@@ -2446,7 +2450,8 @@ class CourseInfoUser$Type extends MessageType<CourseInfoUser> {
             { no: 29, name: "deleted_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 30, name: "updated_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 31, name: "updated_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
-            { no: 32, name: "deleted_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
+            { no: 32, name: "deleted_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 33, name: "progress", kind: "scalar", opt: true, T: 1 /*ScalarType.DOUBLE*/ }
         ]);
     }
     create(value?: PartialMessage<CourseInfoUser>): CourseInfoUser {
@@ -2557,6 +2562,9 @@ class CourseInfoUser$Type extends MessageType<CourseInfoUser> {
                 case /* optional string deleted_at */ 32:
                     message.deletedAt = reader.string();
                     break;
+                case /* optional double progress */ 33:
+                    message.progress = reader.double();
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -2665,6 +2673,9 @@ class CourseInfoUser$Type extends MessageType<CourseInfoUser> {
         /* optional string deleted_at = 32; */
         if (message.deletedAt !== undefined)
             writer.tag(32, WireType.LengthDelimited).string(message.deletedAt);
+        /* optional double progress = 33; */
+        if (message.progress !== undefined)
+            writer.tag(33, WireType.Bit64).double(message.progress);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
