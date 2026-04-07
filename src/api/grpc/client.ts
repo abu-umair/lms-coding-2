@@ -7,6 +7,7 @@ import { CourseChapterServiceClient, ICourseChapterServiceClient } from "@/../..
 import { ChapterLessonServiceClient, IChapterLessonServiceClient } from "@/../../pb/chapter_lesson/chapter_lesson.client";
 import { WatchHistoryServiceClient, IWatchHistoryServiceClient } from "@/../../pb/watch_history/watch_history.client";
 import { EnrollmentServiceClient, IEnrollmentServiceClient } from "@/../../pb/enrollment/enrollment.client";
+import { DashboardUserServiceClient, IDashboardUserServiceClient } from "@/../../pb/dashboard_user/dashboard_user.client";
 
 
 
@@ -18,6 +19,7 @@ let courseChapterClient: ICourseChapterServiceClient | null = null;
 let chapterLessonClient: IChapterLessonServiceClient | null = null;
 let watchHistoryClient: IWatchHistoryServiceClient | null = null;
 let enrollmentClient: IEnrollmentServiceClient | null = null;
+let dashboardUserClient: IDashboardUserServiceClient | null = null;
 
 const getWebTransport = () => {
     if (webTransport === null) {
@@ -69,4 +71,11 @@ export const getEnrollmentClient = () => {
         enrollmentClient = new EnrollmentServiceClient(getWebTransport());
     }
     return enrollmentClient
+}
+
+export const getDashboardUserClient = () => {
+    if (dashboardUserClient === null) {
+        dashboardUserClient = new DashboardUserServiceClient(getWebTransport());
+    }
+    return dashboardUserClient
 }

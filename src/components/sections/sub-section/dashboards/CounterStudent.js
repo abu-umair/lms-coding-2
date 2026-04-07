@@ -4,24 +4,24 @@ import counter3 from "@/assets/images/counter/counter__3.png";
 import CounterDashboard from "@/components/shared/dashboards/CounterDashboard";
 import HeadingDashboard from "@/components/shared/headings/HeadingDashboard";
 
-const CounterStudent = () => {
+const CounterStudent = ({ stats }) => {
   const counts = [
     {
       name: "Enrolled Courses",
       image: counter1,
-      data: 27,
+      data: stats.enrolled,
       symbol: "+",
     },
     {
       name: "Active Courses",
       image: counter2,
-      data: 8,
+      data: stats.active,
       symbol: "+",
     },
     {
       name: "Complete Courses",
       image: counter3,
-      data: 12,
+      data: stats.completed,
     },
   ];
   return (
