@@ -4,6 +4,8 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { AuthService } from "./auth";
+import type { GetProfileUserResponse } from "./auth";
+import type { GetProfileUserRequest } from "./auth";
 import type { RequestOTPResponse } from "./auth";
 import type { RequestOTPRequest } from "./auth";
 import type { VerifyResponse } from "./auth";
@@ -53,6 +55,12 @@ export interface IAuthServiceClient {
      * @generated from protobuf rpc: RequestOTP
      */
     requestOTP(input: RequestOTPRequest, options?: RpcOptions): UnaryCall<RequestOTPRequest, RequestOTPResponse>;
+    /**
+     * user
+     *
+     * @generated from protobuf rpc: GetProfileUser
+     */
+    getProfileUser(input: GetProfileUserRequest, options?: RpcOptions): UnaryCall<GetProfileUserRequest, GetProfileUserResponse>;
 }
 /**
  * @generated from protobuf service auth.AuthService
@@ -111,5 +119,14 @@ export class AuthServiceClient implements IAuthServiceClient, ServiceInfo {
     requestOTP(input: RequestOTPRequest, options?: RpcOptions): UnaryCall<RequestOTPRequest, RequestOTPResponse> {
         const method = this.methods[6], opt = this._transport.mergeOptions(options);
         return stackIntercept<RequestOTPRequest, RequestOTPResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * user
+     *
+     * @generated from protobuf rpc: GetProfileUser
+     */
+    getProfileUser(input: GetProfileUserRequest, options?: RpcOptions): UnaryCall<GetProfileUserRequest, GetProfileUserResponse> {
+        const method = this.methods[7], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetProfileUserRequest, GetProfileUserResponse>("unary", this._transport, method, opt, input);
     }
 }

@@ -17,6 +17,9 @@ service AuthService {
   rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
   rpc Verify(VerifyRequest) returns (VerifyResponse);
   rpc RequestOTP(RequestOTPRequest) returns (RequestOTPResponse);
+  
+  //user 
+  rpc GetProfileUser(GetProfileUserRequest) returns (GetProfileUserResponse);
 }
 
 message RegisterRequest {
@@ -64,6 +67,20 @@ message GetProfileRequest {
 }
 
 message GetProfileResponse { 
+  common.BaseResponse base = 1;
+  string user_id = 2;
+  string full_name = 3;
+  string email = 4;
+  string role_code = 5;
+  google.protobuf.Timestamp member_since = 6;
+  google.protobuf.Timestamp verified_at = 7;
+}
+
+message GetProfileUserRequest { 
+
+}
+
+message GetProfileUserResponse { 
   common.BaseResponse base = 1;
   string user_id = 2;
   string full_name = 3;

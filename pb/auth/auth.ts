@@ -150,6 +150,44 @@ export interface GetProfileResponse {
     verifiedAt?: Timestamp;
 }
 /**
+ * @generated from protobuf message auth.GetProfileUserRequest
+ */
+export interface GetProfileUserRequest {
+}
+/**
+ * @generated from protobuf message auth.GetProfileUserResponse
+ */
+export interface GetProfileUserResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse;
+    /**
+     * @generated from protobuf field: string user_id = 2
+     */
+    userId: string;
+    /**
+     * @generated from protobuf field: string full_name = 3
+     */
+    fullName: string;
+    /**
+     * @generated from protobuf field: string email = 4
+     */
+    email: string;
+    /**
+     * @generated from protobuf field: string role_code = 5
+     */
+    roleCode: string;
+    /**
+     * @generated from protobuf field: google.protobuf.Timestamp member_since = 6
+     */
+    memberSince?: Timestamp;
+    /**
+     * @generated from protobuf field: google.protobuf.Timestamp verified_at = 7
+     */
+    verifiedAt?: Timestamp;
+}
+/**
  * @generated from protobuf message auth.VerifyRequest
  */
 export interface VerifyRequest {
@@ -731,6 +769,136 @@ class GetProfileResponse$Type extends MessageType<GetProfileResponse> {
  */
 export const GetProfileResponse = new GetProfileResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
+class GetProfileUserRequest$Type extends MessageType<GetProfileUserRequest> {
+    constructor() {
+        super("auth.GetProfileUserRequest", []);
+    }
+    create(value?: PartialMessage<GetProfileUserRequest>): GetProfileUserRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<GetProfileUserRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetProfileUserRequest): GetProfileUserRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetProfileUserRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message auth.GetProfileUserRequest
+ */
+export const GetProfileUserRequest = new GetProfileUserRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetProfileUserResponse$Type extends MessageType<GetProfileUserResponse> {
+    constructor() {
+        super("auth.GetProfileUserResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse },
+            { no: 2, name: "user_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "full_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "role_code", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "member_since", kind: "message", T: () => Timestamp },
+            { no: 7, name: "verified_at", kind: "message", T: () => Timestamp }
+        ]);
+    }
+    create(value?: PartialMessage<GetProfileUserResponse>): GetProfileUserResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.userId = "";
+        message.fullName = "";
+        message.email = "";
+        message.roleCode = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetProfileUserResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetProfileUserResponse): GetProfileUserResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                case /* string user_id */ 2:
+                    message.userId = reader.string();
+                    break;
+                case /* string full_name */ 3:
+                    message.fullName = reader.string();
+                    break;
+                case /* string email */ 4:
+                    message.email = reader.string();
+                    break;
+                case /* string role_code */ 5:
+                    message.roleCode = reader.string();
+                    break;
+                case /* google.protobuf.Timestamp member_since */ 6:
+                    message.memberSince = Timestamp.internalBinaryRead(reader, reader.uint32(), options, message.memberSince);
+                    break;
+                case /* google.protobuf.Timestamp verified_at */ 7:
+                    message.verifiedAt = Timestamp.internalBinaryRead(reader, reader.uint32(), options, message.verifiedAt);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetProfileUserResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* string user_id = 2; */
+        if (message.userId !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.userId);
+        /* string full_name = 3; */
+        if (message.fullName !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.fullName);
+        /* string email = 4; */
+        if (message.email !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.email);
+        /* string role_code = 5; */
+        if (message.roleCode !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.roleCode);
+        /* google.protobuf.Timestamp member_since = 6; */
+        if (message.memberSince)
+            Timestamp.internalBinaryWrite(message.memberSince, writer.tag(6, WireType.LengthDelimited).fork(), options).join();
+        /* google.protobuf.Timestamp verified_at = 7; */
+        if (message.verifiedAt)
+            Timestamp.internalBinaryWrite(message.verifiedAt, writer.tag(7, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message auth.GetProfileUserResponse
+ */
+export const GetProfileUserResponse = new GetProfileUserResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class VerifyRequest$Type extends MessageType<VerifyRequest> {
     constructor() {
         super("auth.VerifyRequest", [
@@ -917,5 +1085,6 @@ export const AuthService = new ServiceType("auth.AuthService", [
     { name: "ChangePassword", options: {}, I: ChangePasswordRequest, O: ChangePasswordResponse },
     { name: "GetProfile", options: {}, I: GetProfileRequest, O: GetProfileResponse },
     { name: "Verify", options: {}, I: VerifyRequest, O: VerifyResponse },
-    { name: "RequestOTP", options: {}, I: RequestOTPRequest, O: RequestOTPResponse }
+    { name: "RequestOTP", options: {}, I: RequestOTPRequest, O: RequestOTPResponse },
+    { name: "GetProfileUser", options: {}, I: GetProfileUserRequest, O: GetProfileUserResponse }
 ]);
