@@ -11,6 +11,8 @@ import { UnknownFieldHandler } from "@protobuf-ts/runtime";
 import type { PartialMessage } from "@protobuf-ts/runtime";
 import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
+import { PaginationResponse } from "../common/pagination";
+import { PaginationRequest } from "../common/pagination";
 import { BaseResponse } from "../common/base_response";
 import { FieldMask } from "../google/protobuf/field_mask";
 /**
@@ -752,6 +754,10 @@ export interface CourseInfoUser {
      * @generated from protobuf field: optional double progress = 33
      */
     progress?: number;
+    /**
+     * @generated from protobuf field: optional int64 total_sold = 34
+     */
+    totalSold?: bigint;
 }
 /**
  * @generated from protobuf message course.DetailCourseUserRequest
@@ -960,6 +966,258 @@ export interface Chapter {
      * @generated from protobuf field: repeated course.Lesson lessons = 4
      */
     lessons: Lesson[]; // Relasi One-to-Many ke Lesson
+}
+/**
+ * !ListCourse(public)
+ *
+ * @generated from protobuf message course.ListCourseRequest
+ */
+export interface ListCourseRequest {
+    /**
+     * @generated from protobuf field: common.PaginationRequest pagination = 1
+     */
+    pagination?: PaginationRequest;
+    /**
+     * @generated from protobuf field: google.protobuf.FieldMask field_mask = 2
+     */
+    fieldMask?: FieldMask;
+}
+/**
+ * ?untuk pagenation
+ *
+ * @generated from protobuf message course.ListCourseResponse
+ */
+export interface ListCourseResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse;
+    /**
+     * @generated from protobuf field: common.PaginationResponse pagination = 2
+     */
+    pagination?: PaginationResponse;
+    /**
+     * @generated from protobuf field: repeated course.CourseInfoUser courses = 3
+     */
+    courses: CourseInfoUser[];
+}
+/**
+ * !ListCourse(admin)
+ *
+ * @generated from protobuf message course.ListCourseAdminRequest
+ */
+export interface ListCourseAdminRequest {
+    /**
+     * @generated from protobuf field: common.PaginationRequest pagination = 1
+     */
+    pagination?: PaginationRequest;
+    /**
+     * @generated from protobuf field: google.protobuf.FieldMask field_mask = 2
+     */
+    fieldMask?: FieldMask;
+}
+/**
+ * ?untuk pagenation
+ *
+ * @generated from protobuf message course.ListCourseAdminResponse
+ */
+export interface ListCourseAdminResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse;
+    /**
+     * @generated from protobuf field: common.PaginationResponse pagination = 2
+     */
+    pagination?: PaginationResponse;
+    /**
+     * @generated from protobuf field: repeated course.CourseInfoUser courses = 3
+     */
+    courses: CourseInfoUser[];
+}
+/**
+ * highlight
+ *
+ * @generated from protobuf message course.HighlightCoursesRequest
+ */
+export interface HighlightCoursesRequest {
+    /**
+     * @generated from protobuf field: common.PaginationRequest pagination = 1
+     */
+    pagination?: PaginationRequest;
+    /**
+     * @generated from protobuf field: google.protobuf.FieldMask field_mask = 2
+     */
+    fieldMask?: FieldMask;
+}
+/**
+ * @generated from protobuf message course.HighlightCoursesResponse
+ */
+export interface HighlightCoursesResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse;
+    /**
+     * @generated from protobuf field: common.PaginationResponse pagination = 2
+     */
+    pagination?: PaginationResponse;
+    /**
+     * @generated from protobuf field: repeated course.CourseInfoUser courses = 3
+     */
+    courses: CourseInfoUser[];
+}
+/**
+ * Detail course guest
+ *
+ * @generated from protobuf message course.DetailCourseGuestRequest
+ */
+export interface DetailCourseGuestRequest {
+    /**
+     * @generated from protobuf field: string id = 1
+     */
+    id: string;
+    /**
+     * @generated from protobuf field: google.protobuf.FieldMask field_mask = 2
+     */
+    fieldMask?: FieldMask;
+}
+/**
+ * @generated from protobuf message course.DetailCourseGuestResponse
+ */
+export interface DetailCourseGuestResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse;
+    /**
+     * @generated from protobuf field: string id = 2
+     */
+    id: string;
+    /**
+     * @generated from protobuf field: optional string name = 3
+     */
+    name?: string;
+    /**
+     * @generated from protobuf field: optional string address = 4
+     */
+    address?: string;
+    /**
+     * @generated from protobuf field: optional string slug = 5
+     */
+    slug?: string;
+    /**
+     * @generated from protobuf field: optional string category_id = 6
+     */
+    categoryId?: string;
+    /**
+     * @generated from protobuf field: optional string course_type = 7
+     */
+    courseType?: string;
+    /**
+     * @generated from protobuf field: optional string title = 8
+     */
+    title?: string;
+    /**
+     * @generated from protobuf field: optional string seo_description = 9
+     */
+    seoDescription?: string;
+    /**
+     * @generated from protobuf field: optional string duration = 10
+     */
+    duration?: string;
+    /**
+     * @generated from protobuf field: optional string timezone = 11
+     */
+    timezone?: string;
+    /**
+     * @generated from protobuf field: optional string thumbnail = 12
+     */
+    thumbnail?: string;
+    /**
+     * @generated from protobuf field: optional string demo_video_storage = 13
+     */
+    demoVideoStorage?: string;
+    /**
+     * @generated from protobuf field: optional string demo_video_source = 14
+     */
+    demoVideoSource?: string;
+    /**
+     * @generated from protobuf field: optional string description = 15
+     */
+    description?: string;
+    /**
+     * @generated from protobuf field: optional int32 capacity = 16
+     */
+    capacity?: number;
+    /**
+     * @generated from protobuf field: optional string price = 17
+     */
+    price?: string;
+    /**
+     * @generated from protobuf field: optional string discount = 18
+     */
+    discount?: string;
+    /**
+     * @generated from protobuf field: optional string certificate = 19
+     */
+    certificate?: string;
+    /**
+     * @generated from protobuf field: optional string gna = 20
+     */
+    gna?: string;
+    /**
+     * @generated from protobuf field: optional string message_for_reviewer = 21
+     */
+    messageForReviewer?: string;
+    /**
+     * @generated from protobuf field: optional string is_approved = 22
+     */
+    isApproved?: string;
+    /**
+     * @generated from protobuf field: optional string status = 23
+     */
+    status?: string;
+    /**
+     * @generated from protobuf field: optional string course_level_id = 24
+     */
+    courseLevelId?: string;
+    /**
+     * @generated from protobuf field: optional string course_language_id = 25
+     */
+    courseLanguageId?: string;
+    /**
+     * @generated from protobuf field: optional string instructor_id = 26
+     */
+    instructorId?: string;
+    /**
+     * @generated from protobuf field: optional string created_at = 27
+     */
+    createdAt?: string;
+    /**
+     * @generated from protobuf field: optional string created_by = 28
+     */
+    createdBy?: string;
+    /**
+     * @generated from protobuf field: optional string deleted_by = 29
+     */
+    deletedBy?: string;
+    /**
+     * @generated from protobuf field: optional string updated_at = 30
+     */
+    updatedAt?: string;
+    /**
+     * @generated from protobuf field: optional string updated_by = 31
+     */
+    updatedBy?: string;
+    /**
+     * @generated from protobuf field: optional string deleted_at = 32
+     */
+    deletedAt?: string;
+    /**
+     * @generated from protobuf field: optional string image_file_name = 33
+     */
+    imageFileName?: string;
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class GetAllCourseRequest$Type extends MessageType<GetAllCourseRequest> {
@@ -2451,7 +2709,8 @@ class CourseInfoUser$Type extends MessageType<CourseInfoUser> {
             { no: 30, name: "updated_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 31, name: "updated_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 32, name: "deleted_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
-            { no: 33, name: "progress", kind: "scalar", opt: true, T: 1 /*ScalarType.DOUBLE*/ }
+            { no: 33, name: "progress", kind: "scalar", opt: true, T: 1 /*ScalarType.DOUBLE*/ },
+            { no: 34, name: "total_sold", kind: "scalar", opt: true, T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
         ]);
     }
     create(value?: PartialMessage<CourseInfoUser>): CourseInfoUser {
@@ -2565,6 +2824,9 @@ class CourseInfoUser$Type extends MessageType<CourseInfoUser> {
                 case /* optional double progress */ 33:
                     message.progress = reader.double();
                     break;
+                case /* optional int64 total_sold */ 34:
+                    message.totalSold = reader.int64().toBigInt();
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -2676,6 +2938,9 @@ class CourseInfoUser$Type extends MessageType<CourseInfoUser> {
         /* optional double progress = 33; */
         if (message.progress !== undefined)
             writer.tag(33, WireType.Bit64).double(message.progress);
+        /* optional int64 total_sold = 34; */
+        if (message.totalSold !== undefined)
+            writer.tag(34, WireType.Varint).int64(message.totalSold);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3185,6 +3450,673 @@ class Chapter$Type extends MessageType<Chapter> {
  * @generated MessageType for protobuf message course.Chapter
  */
 export const Chapter = new Chapter$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListCourseRequest$Type extends MessageType<ListCourseRequest> {
+    constructor() {
+        super("course.ListCourseRequest", [
+            { no: 1, name: "pagination", kind: "message", T: () => PaginationRequest },
+            { no: 2, name: "field_mask", kind: "message", T: () => FieldMask }
+        ]);
+    }
+    create(value?: PartialMessage<ListCourseRequest>): ListCourseRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<ListCourseRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListCourseRequest): ListCourseRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.PaginationRequest pagination */ 1:
+                    message.pagination = PaginationRequest.internalBinaryRead(reader, reader.uint32(), options, message.pagination);
+                    break;
+                case /* google.protobuf.FieldMask field_mask */ 2:
+                    message.fieldMask = FieldMask.internalBinaryRead(reader, reader.uint32(), options, message.fieldMask);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListCourseRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.PaginationRequest pagination = 1; */
+        if (message.pagination)
+            PaginationRequest.internalBinaryWrite(message.pagination, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* google.protobuf.FieldMask field_mask = 2; */
+        if (message.fieldMask)
+            FieldMask.internalBinaryWrite(message.fieldMask, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course.ListCourseRequest
+ */
+export const ListCourseRequest = new ListCourseRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListCourseResponse$Type extends MessageType<ListCourseResponse> {
+    constructor() {
+        super("course.ListCourseResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse },
+            { no: 2, name: "pagination", kind: "message", T: () => PaginationResponse },
+            { no: 3, name: "courses", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => CourseInfoUser }
+        ]);
+    }
+    create(value?: PartialMessage<ListCourseResponse>): ListCourseResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.courses = [];
+        if (value !== undefined)
+            reflectionMergePartial<ListCourseResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListCourseResponse): ListCourseResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                case /* common.PaginationResponse pagination */ 2:
+                    message.pagination = PaginationResponse.internalBinaryRead(reader, reader.uint32(), options, message.pagination);
+                    break;
+                case /* repeated course.CourseInfoUser courses */ 3:
+                    message.courses.push(CourseInfoUser.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListCourseResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* common.PaginationResponse pagination = 2; */
+        if (message.pagination)
+            PaginationResponse.internalBinaryWrite(message.pagination, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* repeated course.CourseInfoUser courses = 3; */
+        for (let i = 0; i < message.courses.length; i++)
+            CourseInfoUser.internalBinaryWrite(message.courses[i], writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course.ListCourseResponse
+ */
+export const ListCourseResponse = new ListCourseResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListCourseAdminRequest$Type extends MessageType<ListCourseAdminRequest> {
+    constructor() {
+        super("course.ListCourseAdminRequest", [
+            { no: 1, name: "pagination", kind: "message", T: () => PaginationRequest },
+            { no: 2, name: "field_mask", kind: "message", T: () => FieldMask }
+        ]);
+    }
+    create(value?: PartialMessage<ListCourseAdminRequest>): ListCourseAdminRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<ListCourseAdminRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListCourseAdminRequest): ListCourseAdminRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.PaginationRequest pagination */ 1:
+                    message.pagination = PaginationRequest.internalBinaryRead(reader, reader.uint32(), options, message.pagination);
+                    break;
+                case /* google.protobuf.FieldMask field_mask */ 2:
+                    message.fieldMask = FieldMask.internalBinaryRead(reader, reader.uint32(), options, message.fieldMask);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListCourseAdminRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.PaginationRequest pagination = 1; */
+        if (message.pagination)
+            PaginationRequest.internalBinaryWrite(message.pagination, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* google.protobuf.FieldMask field_mask = 2; */
+        if (message.fieldMask)
+            FieldMask.internalBinaryWrite(message.fieldMask, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course.ListCourseAdminRequest
+ */
+export const ListCourseAdminRequest = new ListCourseAdminRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListCourseAdminResponse$Type extends MessageType<ListCourseAdminResponse> {
+    constructor() {
+        super("course.ListCourseAdminResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse },
+            { no: 2, name: "pagination", kind: "message", T: () => PaginationResponse },
+            { no: 3, name: "courses", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => CourseInfoUser }
+        ]);
+    }
+    create(value?: PartialMessage<ListCourseAdminResponse>): ListCourseAdminResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.courses = [];
+        if (value !== undefined)
+            reflectionMergePartial<ListCourseAdminResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListCourseAdminResponse): ListCourseAdminResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                case /* common.PaginationResponse pagination */ 2:
+                    message.pagination = PaginationResponse.internalBinaryRead(reader, reader.uint32(), options, message.pagination);
+                    break;
+                case /* repeated course.CourseInfoUser courses */ 3:
+                    message.courses.push(CourseInfoUser.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListCourseAdminResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* common.PaginationResponse pagination = 2; */
+        if (message.pagination)
+            PaginationResponse.internalBinaryWrite(message.pagination, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* repeated course.CourseInfoUser courses = 3; */
+        for (let i = 0; i < message.courses.length; i++)
+            CourseInfoUser.internalBinaryWrite(message.courses[i], writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course.ListCourseAdminResponse
+ */
+export const ListCourseAdminResponse = new ListCourseAdminResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class HighlightCoursesRequest$Type extends MessageType<HighlightCoursesRequest> {
+    constructor() {
+        super("course.HighlightCoursesRequest", [
+            { no: 1, name: "pagination", kind: "message", T: () => PaginationRequest },
+            { no: 2, name: "field_mask", kind: "message", T: () => FieldMask }
+        ]);
+    }
+    create(value?: PartialMessage<HighlightCoursesRequest>): HighlightCoursesRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<HighlightCoursesRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: HighlightCoursesRequest): HighlightCoursesRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.PaginationRequest pagination */ 1:
+                    message.pagination = PaginationRequest.internalBinaryRead(reader, reader.uint32(), options, message.pagination);
+                    break;
+                case /* google.protobuf.FieldMask field_mask */ 2:
+                    message.fieldMask = FieldMask.internalBinaryRead(reader, reader.uint32(), options, message.fieldMask);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: HighlightCoursesRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.PaginationRequest pagination = 1; */
+        if (message.pagination)
+            PaginationRequest.internalBinaryWrite(message.pagination, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* google.protobuf.FieldMask field_mask = 2; */
+        if (message.fieldMask)
+            FieldMask.internalBinaryWrite(message.fieldMask, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course.HighlightCoursesRequest
+ */
+export const HighlightCoursesRequest = new HighlightCoursesRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class HighlightCoursesResponse$Type extends MessageType<HighlightCoursesResponse> {
+    constructor() {
+        super("course.HighlightCoursesResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse },
+            { no: 2, name: "pagination", kind: "message", T: () => PaginationResponse },
+            { no: 3, name: "courses", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => CourseInfoUser }
+        ]);
+    }
+    create(value?: PartialMessage<HighlightCoursesResponse>): HighlightCoursesResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.courses = [];
+        if (value !== undefined)
+            reflectionMergePartial<HighlightCoursesResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: HighlightCoursesResponse): HighlightCoursesResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                case /* common.PaginationResponse pagination */ 2:
+                    message.pagination = PaginationResponse.internalBinaryRead(reader, reader.uint32(), options, message.pagination);
+                    break;
+                case /* repeated course.CourseInfoUser courses */ 3:
+                    message.courses.push(CourseInfoUser.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: HighlightCoursesResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* common.PaginationResponse pagination = 2; */
+        if (message.pagination)
+            PaginationResponse.internalBinaryWrite(message.pagination, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* repeated course.CourseInfoUser courses = 3; */
+        for (let i = 0; i < message.courses.length; i++)
+            CourseInfoUser.internalBinaryWrite(message.courses[i], writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course.HighlightCoursesResponse
+ */
+export const HighlightCoursesResponse = new HighlightCoursesResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DetailCourseGuestRequest$Type extends MessageType<DetailCourseGuestRequest> {
+    constructor() {
+        super("course.DetailCourseGuestRequest", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 2, name: "field_mask", kind: "message", T: () => FieldMask }
+        ]);
+    }
+    create(value?: PartialMessage<DetailCourseGuestRequest>): DetailCourseGuestRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = "";
+        if (value !== undefined)
+            reflectionMergePartial<DetailCourseGuestRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DetailCourseGuestRequest): DetailCourseGuestRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* google.protobuf.FieldMask field_mask */ 2:
+                    message.fieldMask = FieldMask.internalBinaryRead(reader, reader.uint32(), options, message.fieldMask);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DetailCourseGuestRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* google.protobuf.FieldMask field_mask = 2; */
+        if (message.fieldMask)
+            FieldMask.internalBinaryWrite(message.fieldMask, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course.DetailCourseGuestRequest
+ */
+export const DetailCourseGuestRequest = new DetailCourseGuestRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DetailCourseGuestResponse$Type extends MessageType<DetailCourseGuestResponse> {
+    constructor() {
+        super("course.DetailCourseGuestResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse },
+            { no: 2, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "address", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "slug", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "category_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "course_type", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "title", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "seo_description", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "duration", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "timezone", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 12, name: "thumbnail", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "demo_video_storage", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 14, name: "demo_video_source", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 15, name: "description", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 16, name: "capacity", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/ },
+            { no: 17, name: "price", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 18, name: "discount", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 19, name: "certificate", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 20, name: "gna", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 21, name: "message_for_reviewer", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 22, name: "is_approved", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 23, name: "status", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 24, name: "course_level_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 25, name: "course_language_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 26, name: "instructor_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 27, name: "created_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 28, name: "created_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 29, name: "deleted_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 30, name: "updated_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 31, name: "updated_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 32, name: "deleted_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 33, name: "image_file_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DetailCourseGuestResponse>): DetailCourseGuestResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = "";
+        if (value !== undefined)
+            reflectionMergePartial<DetailCourseGuestResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DetailCourseGuestResponse): DetailCourseGuestResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                case /* string id */ 2:
+                    message.id = reader.string();
+                    break;
+                case /* optional string name */ 3:
+                    message.name = reader.string();
+                    break;
+                case /* optional string address */ 4:
+                    message.address = reader.string();
+                    break;
+                case /* optional string slug */ 5:
+                    message.slug = reader.string();
+                    break;
+                case /* optional string category_id */ 6:
+                    message.categoryId = reader.string();
+                    break;
+                case /* optional string course_type */ 7:
+                    message.courseType = reader.string();
+                    break;
+                case /* optional string title */ 8:
+                    message.title = reader.string();
+                    break;
+                case /* optional string seo_description */ 9:
+                    message.seoDescription = reader.string();
+                    break;
+                case /* optional string duration */ 10:
+                    message.duration = reader.string();
+                    break;
+                case /* optional string timezone */ 11:
+                    message.timezone = reader.string();
+                    break;
+                case /* optional string thumbnail */ 12:
+                    message.thumbnail = reader.string();
+                    break;
+                case /* optional string demo_video_storage */ 13:
+                    message.demoVideoStorage = reader.string();
+                    break;
+                case /* optional string demo_video_source */ 14:
+                    message.demoVideoSource = reader.string();
+                    break;
+                case /* optional string description */ 15:
+                    message.description = reader.string();
+                    break;
+                case /* optional int32 capacity */ 16:
+                    message.capacity = reader.int32();
+                    break;
+                case /* optional string price */ 17:
+                    message.price = reader.string();
+                    break;
+                case /* optional string discount */ 18:
+                    message.discount = reader.string();
+                    break;
+                case /* optional string certificate */ 19:
+                    message.certificate = reader.string();
+                    break;
+                case /* optional string gna */ 20:
+                    message.gna = reader.string();
+                    break;
+                case /* optional string message_for_reviewer */ 21:
+                    message.messageForReviewer = reader.string();
+                    break;
+                case /* optional string is_approved */ 22:
+                    message.isApproved = reader.string();
+                    break;
+                case /* optional string status */ 23:
+                    message.status = reader.string();
+                    break;
+                case /* optional string course_level_id */ 24:
+                    message.courseLevelId = reader.string();
+                    break;
+                case /* optional string course_language_id */ 25:
+                    message.courseLanguageId = reader.string();
+                    break;
+                case /* optional string instructor_id */ 26:
+                    message.instructorId = reader.string();
+                    break;
+                case /* optional string created_at */ 27:
+                    message.createdAt = reader.string();
+                    break;
+                case /* optional string created_by */ 28:
+                    message.createdBy = reader.string();
+                    break;
+                case /* optional string deleted_by */ 29:
+                    message.deletedBy = reader.string();
+                    break;
+                case /* optional string updated_at */ 30:
+                    message.updatedAt = reader.string();
+                    break;
+                case /* optional string updated_by */ 31:
+                    message.updatedBy = reader.string();
+                    break;
+                case /* optional string deleted_at */ 32:
+                    message.deletedAt = reader.string();
+                    break;
+                case /* optional string image_file_name */ 33:
+                    message.imageFileName = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DetailCourseGuestResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* string id = 2; */
+        if (message.id !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.id);
+        /* optional string name = 3; */
+        if (message.name !== undefined)
+            writer.tag(3, WireType.LengthDelimited).string(message.name);
+        /* optional string address = 4; */
+        if (message.address !== undefined)
+            writer.tag(4, WireType.LengthDelimited).string(message.address);
+        /* optional string slug = 5; */
+        if (message.slug !== undefined)
+            writer.tag(5, WireType.LengthDelimited).string(message.slug);
+        /* optional string category_id = 6; */
+        if (message.categoryId !== undefined)
+            writer.tag(6, WireType.LengthDelimited).string(message.categoryId);
+        /* optional string course_type = 7; */
+        if (message.courseType !== undefined)
+            writer.tag(7, WireType.LengthDelimited).string(message.courseType);
+        /* optional string title = 8; */
+        if (message.title !== undefined)
+            writer.tag(8, WireType.LengthDelimited).string(message.title);
+        /* optional string seo_description = 9; */
+        if (message.seoDescription !== undefined)
+            writer.tag(9, WireType.LengthDelimited).string(message.seoDescription);
+        /* optional string duration = 10; */
+        if (message.duration !== undefined)
+            writer.tag(10, WireType.LengthDelimited).string(message.duration);
+        /* optional string timezone = 11; */
+        if (message.timezone !== undefined)
+            writer.tag(11, WireType.LengthDelimited).string(message.timezone);
+        /* optional string thumbnail = 12; */
+        if (message.thumbnail !== undefined)
+            writer.tag(12, WireType.LengthDelimited).string(message.thumbnail);
+        /* optional string demo_video_storage = 13; */
+        if (message.demoVideoStorage !== undefined)
+            writer.tag(13, WireType.LengthDelimited).string(message.demoVideoStorage);
+        /* optional string demo_video_source = 14; */
+        if (message.demoVideoSource !== undefined)
+            writer.tag(14, WireType.LengthDelimited).string(message.demoVideoSource);
+        /* optional string description = 15; */
+        if (message.description !== undefined)
+            writer.tag(15, WireType.LengthDelimited).string(message.description);
+        /* optional int32 capacity = 16; */
+        if (message.capacity !== undefined)
+            writer.tag(16, WireType.Varint).int32(message.capacity);
+        /* optional string price = 17; */
+        if (message.price !== undefined)
+            writer.tag(17, WireType.LengthDelimited).string(message.price);
+        /* optional string discount = 18; */
+        if (message.discount !== undefined)
+            writer.tag(18, WireType.LengthDelimited).string(message.discount);
+        /* optional string certificate = 19; */
+        if (message.certificate !== undefined)
+            writer.tag(19, WireType.LengthDelimited).string(message.certificate);
+        /* optional string gna = 20; */
+        if (message.gna !== undefined)
+            writer.tag(20, WireType.LengthDelimited).string(message.gna);
+        /* optional string message_for_reviewer = 21; */
+        if (message.messageForReviewer !== undefined)
+            writer.tag(21, WireType.LengthDelimited).string(message.messageForReviewer);
+        /* optional string is_approved = 22; */
+        if (message.isApproved !== undefined)
+            writer.tag(22, WireType.LengthDelimited).string(message.isApproved);
+        /* optional string status = 23; */
+        if (message.status !== undefined)
+            writer.tag(23, WireType.LengthDelimited).string(message.status);
+        /* optional string course_level_id = 24; */
+        if (message.courseLevelId !== undefined)
+            writer.tag(24, WireType.LengthDelimited).string(message.courseLevelId);
+        /* optional string course_language_id = 25; */
+        if (message.courseLanguageId !== undefined)
+            writer.tag(25, WireType.LengthDelimited).string(message.courseLanguageId);
+        /* optional string instructor_id = 26; */
+        if (message.instructorId !== undefined)
+            writer.tag(26, WireType.LengthDelimited).string(message.instructorId);
+        /* optional string created_at = 27; */
+        if (message.createdAt !== undefined)
+            writer.tag(27, WireType.LengthDelimited).string(message.createdAt);
+        /* optional string created_by = 28; */
+        if (message.createdBy !== undefined)
+            writer.tag(28, WireType.LengthDelimited).string(message.createdBy);
+        /* optional string deleted_by = 29; */
+        if (message.deletedBy !== undefined)
+            writer.tag(29, WireType.LengthDelimited).string(message.deletedBy);
+        /* optional string updated_at = 30; */
+        if (message.updatedAt !== undefined)
+            writer.tag(30, WireType.LengthDelimited).string(message.updatedAt);
+        /* optional string updated_by = 31; */
+        if (message.updatedBy !== undefined)
+            writer.tag(31, WireType.LengthDelimited).string(message.updatedBy);
+        /* optional string deleted_at = 32; */
+        if (message.deletedAt !== undefined)
+            writer.tag(32, WireType.LengthDelimited).string(message.deletedAt);
+        /* optional string image_file_name = 33; */
+        if (message.imageFileName !== undefined)
+            writer.tag(33, WireType.LengthDelimited).string(message.imageFileName);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message course.DetailCourseGuestResponse
+ */
+export const DetailCourseGuestResponse = new DetailCourseGuestResponse$Type();
 /**
  * @generated ServiceType for protobuf service course.CourseService
  */
@@ -3195,5 +4127,9 @@ export const CourseService = new ServiceType("course.CourseService", [
     { name: "EditCourse", options: {}, I: EditCourseRequest, O: EditCourseResponse },
     { name: "DeleteCourse", options: {}, I: DeleteCourseRequest, O: DeleteCourseResponse },
     { name: "GetAllCourseUser", options: {}, I: GetAllCourseUserRequest, O: GetAllCourseUserResponse },
-    { name: "DetailCourseUser", options: {}, I: DetailCourseUserRequest, O: DetailCourseUserResponse }
+    { name: "DetailCourseUser", options: {}, I: DetailCourseUserRequest, O: DetailCourseUserResponse },
+    { name: "ListCourseAdmin", options: {}, I: ListCourseAdminRequest, O: ListCourseAdminResponse },
+    { name: "ListCourse", options: {}, I: ListCourseRequest, O: ListCourseResponse },
+    { name: "DetailCourseGuest", options: {}, I: DetailCourseGuestRequest, O: DetailCourseGuestResponse },
+    { name: "HighlightCourses", options: {}, I: HighlightCoursesRequest, O: HighlightCoursesResponse }
 ]);

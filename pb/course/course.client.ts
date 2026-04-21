@@ -4,6 +4,14 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { CourseService } from "./course";
+import type { HighlightCoursesResponse } from "./course";
+import type { HighlightCoursesRequest } from "./course";
+import type { DetailCourseGuestResponse } from "./course";
+import type { DetailCourseGuestRequest } from "./course";
+import type { ListCourseResponse } from "./course";
+import type { ListCourseRequest } from "./course";
+import type { ListCourseAdminResponse } from "./course";
+import type { ListCourseAdminRequest } from "./course";
 import type { DetailCourseUserResponse } from "./course";
 import type { DetailCourseUserRequest } from "./course";
 import type { GetAllCourseUserResponse } from "./course";
@@ -55,6 +63,24 @@ export interface ICourseServiceClient {
      * @generated from protobuf rpc: DetailCourseUser
      */
     detailCourseUser(input: DetailCourseUserRequest, options?: RpcOptions): UnaryCall<DetailCourseUserRequest, DetailCourseUserResponse>;
+    /**
+     * @generated from protobuf rpc: ListCourseAdmin
+     */
+    listCourseAdmin(input: ListCourseAdminRequest, options?: RpcOptions): UnaryCall<ListCourseAdminRequest, ListCourseAdminResponse>;
+    /**
+     * guest
+     *
+     * @generated from protobuf rpc: ListCourse
+     */
+    listCourse(input: ListCourseRequest, options?: RpcOptions): UnaryCall<ListCourseRequest, ListCourseResponse>;
+    /**
+     * @generated from protobuf rpc: DetailCourseGuest
+     */
+    detailCourseGuest(input: DetailCourseGuestRequest, options?: RpcOptions): UnaryCall<DetailCourseGuestRequest, DetailCourseGuestResponse>;
+    /**
+     * @generated from protobuf rpc: HighlightCourses
+     */
+    highlightCourses(input: HighlightCoursesRequest, options?: RpcOptions): UnaryCall<HighlightCoursesRequest, HighlightCoursesResponse>;
 }
 /**
  * @generated from protobuf service course.CourseService
@@ -115,5 +141,35 @@ export class CourseServiceClient implements ICourseServiceClient, ServiceInfo {
     detailCourseUser(input: DetailCourseUserRequest, options?: RpcOptions): UnaryCall<DetailCourseUserRequest, DetailCourseUserResponse> {
         const method = this.methods[6], opt = this._transport.mergeOptions(options);
         return stackIntercept<DetailCourseUserRequest, DetailCourseUserResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: ListCourseAdmin
+     */
+    listCourseAdmin(input: ListCourseAdminRequest, options?: RpcOptions): UnaryCall<ListCourseAdminRequest, ListCourseAdminResponse> {
+        const method = this.methods[7], opt = this._transport.mergeOptions(options);
+        return stackIntercept<ListCourseAdminRequest, ListCourseAdminResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * guest
+     *
+     * @generated from protobuf rpc: ListCourse
+     */
+    listCourse(input: ListCourseRequest, options?: RpcOptions): UnaryCall<ListCourseRequest, ListCourseResponse> {
+        const method = this.methods[8], opt = this._transport.mergeOptions(options);
+        return stackIntercept<ListCourseRequest, ListCourseResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: DetailCourseGuest
+     */
+    detailCourseGuest(input: DetailCourseGuestRequest, options?: RpcOptions): UnaryCall<DetailCourseGuestRequest, DetailCourseGuestResponse> {
+        const method = this.methods[9], opt = this._transport.mergeOptions(options);
+        return stackIntercept<DetailCourseGuestRequest, DetailCourseGuestResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: HighlightCourses
+     */
+    highlightCourses(input: HighlightCoursesRequest, options?: RpcOptions): UnaryCall<HighlightCoursesRequest, HighlightCoursesResponse> {
+        const method = this.methods[10], opt = this._transport.mergeOptions(options);
+        return stackIntercept<HighlightCoursesRequest, HighlightCoursesResponse>("unary", this._transport, method, opt, input);
     }
 }
