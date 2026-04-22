@@ -2,14 +2,91 @@
 import Image from "next/image";
 import PopupVideo from "../popup/PopupVideo";
 import blogImage7 from "@/assets/images/blog/blog_7.png";
+import blogImag8 from "@/assets/images/blog/blog_8.png";
+import useGrpcApi from "@/components/shared/others/useGrpcApi";
 import { useCartContext } from "@/contexts/CartContext";
 import getAllCourses from "@/libs/getAllCourses";
+import { CartFormData, getCartSchema } from "@/libs/validationSchemaCart";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { getCartClient } from "@/api/grpc/client";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
-const CourseEnroll = ({ type, course }) => {
-  const courses = getAllCourses();
-  const { title: demoTitle, price: demoPrice, image: demoImage } = courses[0];
-  const { addProductToCart } = useCartContext();
-  const { id, image, price, title } = course || {};
+
+const CourseEnroll = ({ type, course, userId }) => {
+  const router = useRouter();
+
+
+
+
+  // Data Dummy sebagai fallback
+  const dummyCourse = {
+    id: 1,
+    title: "Mastering Next.js 14 for Beginners",
+    price: 49.99,
+    image: blogImag8, // Menggunakan import image yang sudah ada
+    name: "Mastering Next.js 14 for Beginners", // Seringkali 'title' dan 'name' tertukar
+    lesson: "45 Lessons",
+    categories: "Web Development",
+    instructor_id: 1,
+    // Tambahkan field lain yang dibutuhkan
+  };
+
+  // Gunakan data dari props 'course', jika tidak ada gunakan dummy
+  const currentCourse = course || dummyCourse;
+
+  // Sekarang proses destructuring dari currentCourse
+  const { id, image, price, title, name } = currentCourse;
+  const displayTitle = title || name || "Judul tidak ditemukan";
+  const isEditMode = false;
+  const { callApi, isLoading } = useGrpcApi();
+
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<CartFormData>({
+    resolver: zodResolver(getCartSchema(isEditMode)) as any,
+    defaultValues: {
+      course_id: "",
+      // cart_id: "",
+      // new_quantity: 1,
+    }
+  });
+
+  const addProductToCart = async (values: CartFormData) => {
+    if (!userId) {
+      toast.success("Silakan login terlebih dahulu untuk menambah ke keranjang.");
+      router.push("/login"); // Arahkan ke halaman login
+      return;
+    }
+    console.log("value course:", course);
+
+    const cartPayload = {
+      courseId: values.course_id,
+    };
+
+    // const apiCall = isEditMode
+    //   ? (getCartClient().addCourseToCart(cartPayload) as any)
+    //   : getCartClient().updateCartQuantity(cartPayload);
+    const apiCall = getCartClient().addCourseToCart(cartPayload);
+
+    await callApi(
+      apiCall,
+      {
+        loadingMessage: "Memperbarui cart...",
+        successMessage: "Cart berhasil diperbarui!",
+        // onSuccess: () => {
+
+        // },
+        useDefaultError: false,
+        defaultError: (res) => {
+          console.log(res);
+
+          toast.error("Gagal memperbarui cart.");
+        }
+      }
+    );
+
+  };
+
   return (
     <div
       className="py-33px px-25px shadow-event mb-30px bg-whiteColor dark:bg-whiteColor-dark rounded-md"
@@ -48,12 +125,9 @@ const CourseEnroll = ({ type, course }) => {
         <button
           onClick={() =>
             addProductToCart({
-              id: id || 1,
-              title: title || demoTitle,
-              price: price || demoPrice,
-              quantity: 1,
-              image: image || demoImage,
-              isCourse: true,
+              course_id: course.id,
+              // cart_id: "1", // Tambahkan ini
+              // new_quantity: 1, // Tambahkan ini
             })
           }
           className="w-full text-size-15 text-whiteColor bg-primaryColor px-25px py-10px border mb-10px leading-1.8 border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark"

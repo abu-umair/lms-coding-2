@@ -8,7 +8,8 @@ import CourseDetailsTab from "@/components/shared/course-details/CourseDetailsTa
 import InstrutorOtherCourses from "@/components/shared/course-details/InstrutorOtherCourses";
 import getAllCourses from "@/libs/getAllCourses";
 let cid = 0;
-const CourseDetailsPrimary = ({ type, course }) => {
+const CourseDetailsPrimary = ({ type, course, userId }) => {
+
   // const allCourses = getAllCourses();
   // const course = allCourses?.find(({ id }) => parseInt(currentId) === id);
   // const { title, price, lesson, insName, categories, id } = course || {};
@@ -64,7 +65,7 @@ const CourseDetailsPrimary = ({ type, course }) => {
                         <p className="text-sm text-contentColor dark:text-contentColor-dark font-medium">
                           Last Update:{" "}
                           <span className="text-blackColor dark:text-blackColor-dark">
-                            Sep 29, 2024
+                            Sep 29, 2026
                           </span>
                         </p>
                       </div>
@@ -75,7 +76,7 @@ const CourseDetailsPrimary = ({ type, course }) => {
                       className="text-size-32 md:text-4xl font-bold text-blackColor dark:text-blackColor-dark mb-15px leading-43px md:leading-14.5"
                       data-aos="fade-up"
                     >
-                      {course?.name}
+                      asdfsadf
                     </h4>
                     {/* price and rating  */}
                     <div
@@ -280,7 +281,7 @@ const CourseDetailsPrimary = ({ type, course }) => {
             className={`lg:col-start-9 lg:col-span-4 ${type === 2 || type === 3 ? "relative lg:top-[-340px]" : ""
               }`}
           >
-            <CourseDetailsSidebar type={type} course={course} />
+            <CourseDetailsSidebar type={type} course={course} userId={userId} />
           </div>
         </div>
       </div>

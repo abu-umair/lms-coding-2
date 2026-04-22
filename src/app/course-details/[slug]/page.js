@@ -3,10 +3,11 @@ import ThemeController from "@/components/shared/others/ThemeController";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
 import { getCourseClient } from "@/api/grpc/client";
 import { cache } from 'react';
+import { authOptions } from "@/libs/authOptions";
+import { getServerSession } from "next-auth";
 
 
 const client = getCourseClient();
-
 // Helper untuk memanggil API agar tidak menulis ulang paths
 const getCourseData = cache(async (slug) => {
   return await client.detailCourseGuest({
@@ -40,14 +41,18 @@ export async function generateMetadata({ params }) {
 }
 
 const Course_Details_3 = async ({ params }) => {
+  // Ambil session di server
+  const session = await getServerSession(authOptions);
+  // const accessToken = session?.accessToken;
+  const userId = session?.user?.id;
+
   const { slug } = params;
   const res = await getCourseData(slug);
-  console.log("judul saya :", res?.response?.name);
 
   return (
     <PageWrapper>
       <main>
-        <CourseDetails3Main course={res.response} />
+        <CourseDetails3Main course={res.response} userId={userId} />
         <ThemeController />
       </main>
     </PageWrapper>

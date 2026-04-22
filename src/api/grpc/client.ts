@@ -7,6 +7,7 @@ import { CourseChapterServiceClient, ICourseChapterServiceClient } from "@/../..
 import { ChapterLessonServiceClient, IChapterLessonServiceClient } from "@/../../pb/chapter_lesson/chapter_lesson.client";
 import { WatchHistoryServiceClient, IWatchHistoryServiceClient } from "@/../../pb/watch_history/watch_history.client";
 import { EnrollmentServiceClient, IEnrollmentServiceClient } from "@/../../pb/enrollment/enrollment.client";
+import { CartServiceClient, ICartServiceClient } from "@/../../pb/cart/cart.client";
 import { DashboardUserServiceClient, IDashboardUserServiceClient } from "@/../../pb/dashboard_user/dashboard_user.client";
 
 
@@ -19,6 +20,7 @@ let courseChapterClient: ICourseChapterServiceClient | null = null;
 let chapterLessonClient: IChapterLessonServiceClient | null = null;
 let watchHistoryClient: IWatchHistoryServiceClient | null = null;
 let enrollmentClient: IEnrollmentServiceClient | null = null;
+let cartClient: ICartServiceClient | null = null;
 let dashboardUserClient: IDashboardUserServiceClient | null = null;
 
 const getWebTransport = () => {
@@ -71,6 +73,13 @@ export const getEnrollmentClient = () => {
         enrollmentClient = new EnrollmentServiceClient(getWebTransport());
     }
     return enrollmentClient
+}
+
+export const getCartClient = () => {
+    if (cartClient === null) {
+        cartClient = new CartServiceClient(getWebTransport());
+    }
+    return cartClient
 }
 
 export const getDashboardUserClient = () => {

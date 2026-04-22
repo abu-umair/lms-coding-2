@@ -37,7 +37,7 @@ const InstructorContent = ({ id }) => {
               </Link>
             </h3>
             <p className="text-xs text-contentColor2 dark:text-contentColor2-dark">
-              Blogger/Photographer
+              Blogger/  
             </p>
           </div>
           {/* description  */}
