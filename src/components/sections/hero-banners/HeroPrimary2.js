@@ -6,14 +6,13 @@ import PopupVideo from "@/components/shared/popup/PopupVideo";
 import Image from "next/image";
 import blogImage7 from "@/assets/images/blog/blog_7.png";
 
-const HeroPrimary2 = ({ type }) => {
+const HeroPrimary2 = ({ type, course }) => {
   return (
     <section data-aos="fade-up">
       {/* banner section */}
       <div
-        className={`bg-lightGrey10 dark:bg-lightGrey10-dark relative z-0 overflow-y-visible ${
-          type === 3 ? "pt-50px" : "py-50px"
-        }`}
+        className={`bg-lightGrey10 dark:bg-lightGrey10-dark relative z-0 overflow-y-visible ${type === 3 ? "pt-50px" : "py-50px"
+          }`}
       >
         {/* animated icons */}
         <div>
@@ -56,7 +55,7 @@ const HeroPrimary2 = ({ type }) => {
                 className="text-size-32 md:text-4xl font-bold text-blackColor dark:text-blackColor-dark mb-15px leading-43px md:leading-14.5"
                 data-aos="fade-up"
               >
-                Making Music with Other People
+                {course.name}
               </h4>
               {/* price and rating */}
               <div

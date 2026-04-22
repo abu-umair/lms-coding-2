@@ -28,12 +28,11 @@ const CourseEnroll = ({ type, course }) => {
       {/* meeting thumbnail  */}
 
       <div
-        className={`flex justify-between  ${
-          type === 2 ? "mt-50px mb-5" : type === 3 ? "mb-50px" : "mb-5"
-        }`}
+        className={`flex justify-between  ${type === 2 ? "mt-50px mb-5" : type === 3 ? "mb-50px" : "mb-5"
+          }`}
       >
         <div className="text-size-21 font-bold text-primaryColor font-inter leading-25px">
-          ${price ? price.toFixed(2) : "32.00"}{" "}
+          ${price ? price : "dummy"}{" "}
           <del className="text-sm text-lightGrey4 font-semibold">/ $67.00</del>
         </div>
         <div>

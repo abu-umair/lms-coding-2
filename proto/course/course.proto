@@ -348,7 +348,7 @@ message HighlightCoursesResponse {
 
 // Detail course guest
 message DetailCourseGuestRequest {
-  string id = 1 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+  string slug = 1 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   google.protobuf.FieldMask field_mask = 2;
 }
 
@@ -386,4 +386,7 @@ message DetailCourseGuestResponse {
   optional string updated_by = 31;
   optional string deleted_at = 32;
   optional string image_file_name = 33;
+  repeated Chapter chapters = 34;
+  optional int64 total_sold = 35;
+
 }

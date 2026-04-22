@@ -8,12 +8,19 @@ import CourseDetailsTab from "@/components/shared/course-details/CourseDetailsTa
 import InstrutorOtherCourses from "@/components/shared/course-details/InstrutorOtherCourses";
 import getAllCourses from "@/libs/getAllCourses";
 let cid = 0;
-const CourseDetailsPrimary = ({ id: currentId, type }) => {
-  const allCourses = getAllCourses();
-  const course = allCourses?.find(({ id }) => parseInt(currentId) === id);
-  const { title, price, lesson, insName, categories, id } = course || {};
-  cid = id;
+const CourseDetailsPrimary = ({ type, course }) => {
+  // const allCourses = getAllCourses();
+  // const course = allCourses?.find(({ id }) => parseInt(currentId) === id);
+  // const { title, price, lesson, insName, categories, id } = course || {};
+  // cid = id;
   cid = cid % 6 ? cid % 6 : 6;
+
+  const lesson = course?.lesson || "333";
+  const price = 2222;
+  const insName = course?.categories || "test";
+  const categories = course?.categories || "test";
+  // Ambil ID untuk keperluan Tab (jika diperlukan)
+  // const cid = course?.id || 0;
 
   return (
     <section>
@@ -68,7 +75,7 @@ const CourseDetailsPrimary = ({ id: currentId, type }) => {
                       className="text-size-32 md:text-4xl font-bold text-blackColor dark:text-blackColor-dark mb-15px leading-43px md:leading-14.5"
                       data-aos="fade-up"
                     >
-                      {title || "Making Music with Other People"}
+                      {course?.name}
                     </h4>
                     {/* price and rating  */}
                     <div
@@ -76,7 +83,7 @@ const CourseDetailsPrimary = ({ id: currentId, type }) => {
                       data-aos="fade-up"
                     >
                       <div className="text-size-21 font-medium text-primaryColor font-inter leading-25px">
-                        ${price ? price.toFixed(2) : "32.00"}{" "}
+                        {/* ${price ? price.toFixed(2) : "32.00"}{" "} */}
                         <del className="text-sm text-lightGrey4 font-semibold">
                           / $67.00
                         </del>
@@ -270,9 +277,8 @@ const CourseDetailsPrimary = ({ id: currentId, type }) => {
           </div>
           {/* course sidebar  */}
           <div
-            className={`lg:col-start-9 lg:col-span-4 ${
-              type === 2 || type === 3 ? "relative lg:top-[-340px]" : ""
-            }`}
+            className={`lg:col-start-9 lg:col-span-4 ${type === 2 || type === 3 ? "relative lg:top-[-340px]" : ""
+              }`}
           >
             <CourseDetailsSidebar type={type} course={course} />
           </div>

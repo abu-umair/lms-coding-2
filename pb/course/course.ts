@@ -1074,9 +1074,9 @@ export interface HighlightCoursesResponse {
  */
 export interface DetailCourseGuestRequest {
     /**
-     * @generated from protobuf field: string id = 1
+     * @generated from protobuf field: string slug = 1
      */
-    id: string;
+    slug: string;
     /**
      * @generated from protobuf field: google.protobuf.FieldMask field_mask = 2
      */
@@ -1218,6 +1218,14 @@ export interface DetailCourseGuestResponse {
      * @generated from protobuf field: optional string image_file_name = 33
      */
     imageFileName?: string;
+    /**
+     * @generated from protobuf field: repeated course.Chapter chapters = 34
+     */
+    chapters: Chapter[];
+    /**
+     * @generated from protobuf field: optional int64 total_sold = 35
+     */
+    totalSold?: bigint;
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class GetAllCourseRequest$Type extends MessageType<GetAllCourseRequest> {
@@ -3796,13 +3804,13 @@ export const HighlightCoursesResponse = new HighlightCoursesResponse$Type();
 class DetailCourseGuestRequest$Type extends MessageType<DetailCourseGuestRequest> {
     constructor() {
         super("course.DetailCourseGuestRequest", [
-            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 1, name: "slug", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 2, name: "field_mask", kind: "message", T: () => FieldMask }
         ]);
     }
     create(value?: PartialMessage<DetailCourseGuestRequest>): DetailCourseGuestRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
-        message.id = "";
+        message.slug = "";
         if (value !== undefined)
             reflectionMergePartial<DetailCourseGuestRequest>(this, message, value);
         return message;
@@ -3812,8 +3820,8 @@ class DetailCourseGuestRequest$Type extends MessageType<DetailCourseGuestRequest
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string id */ 1:
-                    message.id = reader.string();
+                case /* string slug */ 1:
+                    message.slug = reader.string();
                     break;
                 case /* google.protobuf.FieldMask field_mask */ 2:
                     message.fieldMask = FieldMask.internalBinaryRead(reader, reader.uint32(), options, message.fieldMask);
@@ -3830,9 +3838,9 @@ class DetailCourseGuestRequest$Type extends MessageType<DetailCourseGuestRequest
         return message;
     }
     internalBinaryWrite(message: DetailCourseGuestRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string id = 1; */
-        if (message.id !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* string slug = 1; */
+        if (message.slug !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.slug);
         /* google.protobuf.FieldMask field_mask = 2; */
         if (message.fieldMask)
             FieldMask.internalBinaryWrite(message.fieldMask, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
@@ -3882,12 +3890,15 @@ class DetailCourseGuestResponse$Type extends MessageType<DetailCourseGuestRespon
             { no: 30, name: "updated_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 31, name: "updated_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 32, name: "deleted_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
-            { no: 33, name: "image_file_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
+            { no: 33, name: "image_file_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 34, name: "chapters", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Chapter },
+            { no: 35, name: "total_sold", kind: "scalar", opt: true, T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
         ]);
     }
     create(value?: PartialMessage<DetailCourseGuestResponse>): DetailCourseGuestResponse {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.id = "";
+        message.chapters = [];
         if (value !== undefined)
             reflectionMergePartial<DetailCourseGuestResponse>(this, message, value);
         return message;
@@ -3995,6 +4006,12 @@ class DetailCourseGuestResponse$Type extends MessageType<DetailCourseGuestRespon
                     break;
                 case /* optional string image_file_name */ 33:
                     message.imageFileName = reader.string();
+                    break;
+                case /* repeated course.Chapter chapters */ 34:
+                    message.chapters.push(Chapter.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* optional int64 total_sold */ 35:
+                    message.totalSold = reader.int64().toBigInt();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -4107,6 +4124,12 @@ class DetailCourseGuestResponse$Type extends MessageType<DetailCourseGuestRespon
         /* optional string image_file_name = 33; */
         if (message.imageFileName !== undefined)
             writer.tag(33, WireType.LengthDelimited).string(message.imageFileName);
+        /* repeated course.Chapter chapters = 34; */
+        for (let i = 0; i < message.chapters.length; i++)
+            Chapter.internalBinaryWrite(message.chapters[i], writer.tag(34, WireType.LengthDelimited).fork(), options).join();
+        /* optional int64 total_sold = 35; */
+        if (message.totalSold !== undefined)
+            writer.tag(35, WireType.Varint).int64(message.totalSold);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

@@ -7,7 +7,8 @@ const InstructorContent = ({ id }) => {
   const { image, desig } = getAllInstructors()?.find(
     ({ id: idx }) => idx === id
   );
-  const { insName } = getAllCourses()?.find(({ id: idx }) => idx === id);
+  // const { insName } = getAllCourses()?.find(({ id: idx }) => idx === id);
+  const insName = "InstructorDummy";
 
   return (
     <div>
