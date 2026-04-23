@@ -4,6 +4,8 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { CartService } from "./cart";
+import type { CartCountResponse } from "./cart";
+import type { CartCountRequest } from "./cart";
 import type { UpdateCartQuantityResponse } from "./cart";
 import type { UpdateCartQuantityRequest } from "./cart";
 import type { DeleteCartResponse } from "./cart";
@@ -35,6 +37,10 @@ export interface ICartServiceClient {
      * @generated from protobuf rpc: UpdateCartQuantity
      */
     updateCartQuantity(input: UpdateCartQuantityRequest, options?: RpcOptions): UnaryCall<UpdateCartQuantityRequest, UpdateCartQuantityResponse>;
+    /**
+     * @generated from protobuf rpc: CartCount
+     */
+    cartCount(input: CartCountRequest, options?: RpcOptions): UnaryCall<CartCountRequest, CartCountResponse>;
 }
 /**
  * @generated from protobuf service cart.CartService
@@ -72,5 +78,12 @@ export class CartServiceClient implements ICartServiceClient, ServiceInfo {
     updateCartQuantity(input: UpdateCartQuantityRequest, options?: RpcOptions): UnaryCall<UpdateCartQuantityRequest, UpdateCartQuantityResponse> {
         const method = this.methods[3], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateCartQuantityRequest, UpdateCartQuantityResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: CartCount
+     */
+    cartCount(input: CartCountRequest, options?: RpcOptions): UnaryCall<CartCountRequest, CartCountResponse> {
+        const method = this.methods[4], opt = this._transport.mergeOptions(options);
+        return stackIntercept<CartCountRequest, CartCountResponse>("unary", this._transport, method, opt, input);
     }
 }

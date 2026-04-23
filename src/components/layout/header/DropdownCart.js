@@ -6,7 +6,7 @@ import Link from "next/link";
 import countTotalPrice from "@/libs/countTotalPrice";
 import useIsTrue from "@/hooks/useIsTrue";
 import { useCartContext } from "@/contexts/CartContext";
-const DropdownCart = ({ isHeaderTop }) => {
+const DropdownCart = ({ isHeaderTop, cartCount }) => {
   const { cartProducts, deleteProductFromCart } = useCartContext();
 
   // calculate total price
@@ -20,21 +20,19 @@ const DropdownCart = ({ isHeaderTop }) => {
     <>
       <Link
         href="/ecommerce/cart"
-        className={`relative ${
-          isHeaderTop
-            ? "block"
-            : isHome4 || isHome4Dark || isHome5 || isHome5Dark
+        className={`relative ${isHeaderTop
+          ? "block"
+          : isHome4 || isHome4Dark || isHome5 || isHome5Dark
             ? "block lg:hidden"
             : "block"
-        }`}
+          }`}
       >
         <i className="icofont-cart-alt text-2xl text-blackColor group-hover:text-secondaryColor transition-all duration-300 dark:text-blackColor-dark"></i>
         <span
-          className={`${
-            totalProduct < 10 ? "px-1 py-[2px]" : "px-3px pb-1 pt-3px"
-          } absolute -top-1 2xl:-top-[5px] -right-[10px] lg:right-3/4 2xl:-right-[10px] text-[10px] font-medium text-white dark:text-whiteColor-dark bg-secondaryColor leading-1 rounded-full z-50 block`}
+          className={`${totalProduct < 10 ? "px-1 py-[2px]" : "px-3px pb-1 pt-3px"
+            } absolute -top-1 2xl:-top-[5px] -right-[10px] lg:right-3/4 2xl:-right-[10px] text-[10px] font-medium text-white dark:text-whiteColor-dark bg-secondaryColor leading-1 rounded-full z-50 block`}
         >
-          {totalProduct}
+          {cartCount}
         </span>
       </Link>
       <DropdownWrapperSecondary isHeaderTop={isHeaderTop}>
@@ -54,9 +52,8 @@ const DropdownCart = ({ isHeaderTop }) => {
                     className="relative flex gap-x-15px items-center"
                   >
                     <Link
-                      href={`/${
-                        isCourse ? "courses" : "ecommerce/products"
-                      }/${id}`}
+                      href={`/${isCourse ? "courses" : "ecommerce/products"
+                        }/${id}`}
                     >
                       <Image
                         prioriy="false"
@@ -68,9 +65,8 @@ const DropdownCart = ({ isHeaderTop }) => {
                     </Link>
                     <div>
                       <Link
-                        href={`/${
-                          isCourse ? "courses" : "ecommerce/products"
-                        }/${id}`}
+                        href={`/${isCourse ? "courses" : "ecommerce/products"
+                          }/${id}`}
                         className="text-sm text-darkblack hover:text-secondaryColor leading-5 block pb-2 capitalize dark:text-darkblack-dark dark:hover:text-secondaryColor"
                       >
                         {title.length > 16 ? title.slice(0, 16) : title}

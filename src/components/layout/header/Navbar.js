@@ -6,7 +6,7 @@ import NavbarRight from "./NavbarRight";
 import NavItems2 from "./NavItems2";
 import useIsTrue from "@/hooks/useIsTrue";
 import NavbarTop from "./NavbarTop";
-const Navbar = () => {
+const Navbar = ({ cartCount }) => {
   const isHome1 = useIsTrue("/");
   const isHome1Dark = useIsTrue("/home-1-dark");
   const isHome2 = useIsTrue("/home-2");
@@ -18,26 +18,24 @@ const Navbar = () => {
 
   return (
     <div
-      className={`transition-all duration-500 sticky-header z-40 dark:bg-whiteColor-dark ${
-        isHome2 || isHome2Dark
-          ? "lg:border-b border-borderColor dark:border-borderColor-dark"
-          : ""
-      }`}
+      className={`transition-all duration-500 sticky-header z-40 dark:bg-whiteColor-dark ${isHome2 || isHome2Dark
+        ? "lg:border-b border-borderColor dark:border-borderColor-dark"
+        : ""
+        }`}
     >
       <nav>
         <div
-          className={`py-15px lg:py-0 px-15px ${
-            isHome1 ||
+          className={`py-15px lg:py-0 px-15px ${isHome1 ||
             isHome1Dark ||
             isHome4 ||
             isHome4Dark ||
             isHome5 ||
             isHome5Dark
-              ? "lg:container 3xl:container2-lg"
-              : isHome2 || isHome2Dark
+            ? "lg:container 3xl:container2-lg"
+            : isHome2 || isHome2Dark
               ? "container sm:container-fluid lg:container 3xl:container-secondary "
               : "lg:container 3xl:container-secondary-lg "
-          } 4xl:container mx-auto relative`}
+            } 4xl:container mx-auto relative`}
         >
           {isHome4 || isHome4Dark || isHome5 || isHome5Dark ? (
             <NavbarTop />
@@ -51,7 +49,7 @@ const Navbar = () => {
             {isHome2Dark ? <NavItems2 /> : <NavItems />}
 
             {/* navbar right */}
-            <NavbarRight isHome2Dark={isHome2Dark} />
+            <NavbarRight isHome2Dark={isHome2Dark} cartCount={cartCount} />
           </div>
         </div>
       </nav>

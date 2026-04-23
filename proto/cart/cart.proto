@@ -12,6 +12,7 @@ service CartService {
   rpc ListCart(ListCartRequest) returns (ListCartResponse);
   rpc DeleteCart(DeleteCartRequest) returns (DeleteCartResponse);
   rpc UpdateCartQuantity(UpdateCartQuantityRequest) returns (UpdateCartQuantityResponse);
+  rpc CartCount(CartCountRequest) returns (CartCountResponse);
 
 }
 
@@ -55,4 +56,12 @@ message UpdateCartQuantityRequest {
 
 message UpdateCartQuantityResponse {
   common.BaseResponse base = 1;
+}
+
+message CartCountRequest {
+}
+
+message CartCountResponse {
+  common.BaseResponse base = 1;
+  int32 count = 2 ; 
 }

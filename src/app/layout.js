@@ -15,6 +15,7 @@ import "./globals.css";
 import FixedShadow from "@/components/shared/others/FixedShadow";
 import PreloaderPrimary from "@/components/shared/others/PreloaderPrimary";
 import NextAuthProvider from "@/components/shared/others/NextAuthProvider";
+import TanstackProvider from "@/components/shared/others/TanstackProvider";
 import { Toaster } from "react-hot-toast";
 import GrpcSyncProvider from "@/components/shared/others/GrpcSyncProvider";
 
@@ -48,33 +49,35 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning={true}
       >
         <NextAuthProvider>
-          <GrpcSyncProvider>
-            {/* Kuncinya di sini: 
+          <TanstackProvider>
+            <GrpcSyncProvider>
+              {/* Kuncinya di sini: 
                Jika belum mounted (Server Side), jangan render komponen yang memanipulasi DOM.
             */}
-            {mounted ? (
-              <>
-                {/* <PreloaderPrimary /> */}
-                <Toaster
-                  position="top-center"
-                  reverseOrder={false}
-                  toastOptions={{
-                    style: { zIndex: 10000000 },
-                  }}
-                />
-                {children}
-                <div>
-                  <FixedShadow />
-                  <FixedShadow align={"right"} />
+              {mounted ? (
+                <>
+                  {/* <PreloaderPrimary /> */}
+                  <Toaster
+                    position="top-center"
+                    reverseOrder={false}
+                    toastOptions={{
+                      style: { zIndex: 10000000 },
+                    }}
+                  />
+                  {children}
+                  <div>
+                    <FixedShadow />
+                    <FixedShadow align={"right"} />
+                  </div>
+                </>
+              ) : (
+                /* Tampilan sementara (Server-Rendered) agar tidak kosong */
+                <div className="min-h-screen bg-bodyBg">
+                  {/* Kamu bisa masukkan skeleton loader sederhana di sini */}
                 </div>
-              </>
-            ) : (
-              /* Tampilan sementara (Server-Rendered) agar tidak kosong */
-              <div className="min-h-screen bg-bodyBg">
-                {/* Kamu bisa masukkan skeleton loader sederhana di sini */}
-              </div>
-            )}
-          </GrpcSyncProvider>
+              )}
+            </GrpcSyncProvider>
+          </TanstackProvider>
         </NextAuthProvider>
       </body>
     </html>

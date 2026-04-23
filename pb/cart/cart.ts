@@ -121,6 +121,24 @@ export interface UpdateCartQuantityResponse {
      */
     base?: BaseResponse;
 }
+/**
+ * @generated from protobuf message cart.CartCountRequest
+ */
+export interface CartCountRequest {
+}
+/**
+ * @generated from protobuf message cart.CartCountResponse
+ */
+export interface CartCountResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse;
+    /**
+     * @generated from protobuf field: int32 count = 2
+     */
+    count: number;
+}
 // @generated message type with reflection information, may provide speed optimized methods
 class AddCourseToCartRequest$Type extends MessageType<AddCourseToCartRequest> {
     constructor() {
@@ -595,6 +613,98 @@ class UpdateCartQuantityResponse$Type extends MessageType<UpdateCartQuantityResp
  * @generated MessageType for protobuf message cart.UpdateCartQuantityResponse
  */
 export const UpdateCartQuantityResponse = new UpdateCartQuantityResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CartCountRequest$Type extends MessageType<CartCountRequest> {
+    constructor() {
+        super("cart.CartCountRequest", []);
+    }
+    create(value?: PartialMessage<CartCountRequest>): CartCountRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<CartCountRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CartCountRequest): CartCountRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: CartCountRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message cart.CartCountRequest
+ */
+export const CartCountRequest = new CartCountRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CartCountResponse$Type extends MessageType<CartCountResponse> {
+    constructor() {
+        super("cart.CartCountResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse },
+            { no: 2, name: "count", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+        ]);
+    }
+    create(value?: PartialMessage<CartCountResponse>): CartCountResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.count = 0;
+        if (value !== undefined)
+            reflectionMergePartial<CartCountResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CartCountResponse): CartCountResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                case /* int32 count */ 2:
+                    message.count = reader.int32();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: CartCountResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* int32 count = 2; */
+        if (message.count !== 0)
+            writer.tag(2, WireType.Varint).int32(message.count);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message cart.CartCountResponse
+ */
+export const CartCountResponse = new CartCountResponse$Type();
 /**
  * @generated ServiceType for protobuf service cart.CartService
  */
@@ -602,5 +712,6 @@ export const CartService = new ServiceType("cart.CartService", [
     { name: "AddCourseToCart", options: {}, I: AddCourseToCartRequest, O: AddCourseToCartResponse },
     { name: "ListCart", options: {}, I: ListCartRequest, O: ListCartResponse },
     { name: "DeleteCart", options: {}, I: DeleteCartRequest, O: DeleteCartResponse },
-    { name: "UpdateCartQuantity", options: {}, I: UpdateCartQuantityRequest, O: UpdateCartQuantityResponse }
+    { name: "UpdateCartQuantity", options: {}, I: UpdateCartQuantityRequest, O: UpdateCartQuantityResponse },
+    { name: "CartCount", options: {}, I: CartCountRequest, O: CartCountResponse }
 ]);

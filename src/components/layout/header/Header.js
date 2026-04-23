@@ -9,7 +9,8 @@ import Aos from "aos";
 import stickyHeader from "@/libs/stickyHeader";
 import smoothScroll from "@/libs/smoothScroll";
 
-const Header = () => {
+const Header = ({ cartCount }) => {
+
   const isHome2 = useIsTrue("/home-2");
   const isHome2Dark = useIsTrue("/home-2-dark");
   useEffect(() => {
@@ -29,7 +30,7 @@ const Header = () => {
         {/* header top */}
         {isHome2Dark || isHome2 ? "" : <HeaderTop />}
         {/* navbar */}
-        <Navbar />
+        <Navbar cartCount={cartCount} />
         {/* mobile menu */}
         <MobileMenu />
       </div>

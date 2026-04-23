@@ -3,12 +3,42 @@ import Header from "@/components/layout/header/Header";
 import Scrollup from "../others/Scrollup";
 import CartContextProvider from "@/contexts/CartContext";
 import WishlistContextProvider from "@/contexts/WshlistContext";
-const PageWrapper = ({ children }) => {
+import { getCartClient } from "@/api/grpc/client";
+import { authOptions } from "@/libs/authOptions";
+import { getServerSession } from "next-auth";
+const PageWrapper = async ({ children }) => {
+  const session = await getServerSession(authOptions);
+  const accessToken = session?.accessToken;
+
+  // * 1. Default value untuk Guest
+  let cartCount = 0;
+
+  // * 2. Hanya panggil API jika ada accessToken (User sudah Login)
+  if (accessToken) {
+    try {
+      const client = getCartClient();
+      const res = await client.cartCount({}, {
+        meta: {
+          "authorization": `Bearer ${accessToken}`
+        }
+      });
+
+      // * Konversi aman: gRPC int64 (BigInt) ke Number JS
+      // * toString() menangani "1n" dan Number() mengubahnya jadi angka 1
+      cartCount = Number(res.response.count);
+
+    } catch (error) {
+      console.error("Error fetching cart count:", error);
+      // Jika API error, kita biarkan cartCount tetap 0 agar UI tidak pecah
+      cartCount = 0;
+    }
+  }
+
   return (
     <>
       <CartContextProvider>
         {/* header */}
-        <Header />
+        <Header cartCount={cartCount} />
 
         {/* main */}
         <WishlistContextProvider>{children}</WishlistContextProvider>
