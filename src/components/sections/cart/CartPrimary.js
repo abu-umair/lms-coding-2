@@ -2,11 +2,18 @@
 import CartProduct from "@/components/shared/cart/CartProduct";
 
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { getCartClient } from "@/api/grpc/client";
 const CartPrimary = ({ cartData }) => {
-  console.log("ini cart data saya: ", cartData);
-
-  // Ambil items dari response gRPC
-  const productsFromApi = cartData || [];
+  //* Gunakan useQuery agar TanStack "memegang" kendali data ini
+  const { data: productsFromApi } = useQuery({
+    queryKey: ["cart-data"],
+    queryFn: async () => {
+      const res = await getCartClient().listCart({}); // Tambahkan metadata auth jika perlu
+      return res.response.items || [];
+    },
+    initialData: cartData, //* Data awal dari server component
+  });
 
   // Hitung total harga berdasarkan data API
   // Karena 'quantity' di API Anda berupa string ("17"), pastikan di-parse saat kalkulasi
@@ -57,7 +64,7 @@ const CartPrimary = ({ cartData }) => {
                 productsFromApi.map((product, idx) => (
                   /* Map data API ke format yang dikenali komponen CartProduct */
                   <CartProduct
-                    key={product.cart_id || idx}
+                    key={product.cartId || idx}
                     product={{
                       id: product.courseId,
                       title: product.courseName,

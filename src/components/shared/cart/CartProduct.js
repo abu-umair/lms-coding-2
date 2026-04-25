@@ -6,15 +6,10 @@ import { useEffect, useState } from "react";
 import { useCartContext } from "@/contexts/CartContext";
 
 const CartProduct = ({ product }) => {
-  const { id, title, price, quantity: quantity1, image, isCourse } = product;
-  const { deleteProductFromCart } = useCartContext();
-  const [quantity, setQuantity] = useState(1);
-  useEffect(() => {
-    if (quantity1 > 0) {
-      setQuantity(quantity1);
-    }
-  }, [quantity1]);
-  const totalPrice = quantity * price;
+  console.log("product course", product);
+
+  const { id, title, price, quantity, image, isCourse } = product;
+
 
   return product ? (
     <tr className="border-b border-borderColor dark:border-borderColor-dark">
@@ -45,18 +40,17 @@ const CartProduct = ({ product }) => {
       <td className="py-15px md:py-5 border-r border-borderColor dark:border-borderColor-dark w-300px">
         <QuantityInput
           quantity={quantity}
-          setQuantity={setQuantity}
           type={"box"}
           product={product}
           disabled
         />
       </td>
       <td className="py-15px md:py-5 border-r border-borderColor dark:border-borderColor-dark">
-        Rp {totalPrice <= 0 ? "0" : totalPrice}
+        {/* Rp {totalPrice <= 0 ? "0" : totalPrice} */}
+        Rp 1000
       </td>
       <td className="py-15px md:py-5">
         <button
-          onClick={() => deleteProductFromCart(id, title)}
           className="hover:text-primaryColor"
         >
           <svg
