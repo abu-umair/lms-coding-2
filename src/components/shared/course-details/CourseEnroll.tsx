@@ -12,13 +12,12 @@ import { useForm } from "react-hook-form";
 import { getCartClient } from "@/api/grpc/client";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 const CourseEnroll = ({ type, course, userId }) => {
   const router = useRouter();
-
-
-
+  const queryClient = useQueryClient();
 
   // Data Dummy sebagai fallback
   const dummyCourse = {
@@ -73,9 +72,11 @@ const CourseEnroll = ({ type, course, userId }) => {
       {
         loadingMessage: "Memperbarui cart...",
         successMessage: "Cart berhasil diperbarui!",
-        // onSuccess: () => {
-
-        // },
+        onSuccess: () => {
+          // Memberitahu TanStack Query bahwa data dengan key 'cart-count' sudah basi
+          // Ini akan memicu Navbar untuk fetch ulang secara otomatis
+          queryClient.invalidateQueries({ queryKey: ["cart-count"] });
+        },
         useDefaultError: false,
         defaultError: (res) => {
           console.log(res);
@@ -123,6 +124,7 @@ const CourseEnroll = ({ type, course, userId }) => {
       </div>
       <div className="mb-5" data-aos="fade-up">
         <button
+          disabled={isLoading}
           onClick={() =>
             addProductToCart({
               course_id: course.id,
@@ -130,9 +132,10 @@ const CourseEnroll = ({ type, course, userId }) => {
               // new_quantity: 1, // Tambahkan ini
             })
           }
-          className="w-full text-size-15 text-whiteColor bg-primaryColor px-25px py-10px border mb-10px leading-1.8 border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark"
+          className={`w-full text-size-15 text-whiteColor bg-primaryColor px-25px py-10px border mb-10px leading-1.8 border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark 
+            ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          Add To Cart
+          {isLoading ? "Processing..." : "Add To Cart"}
         </button>
         <button className="w-full text-size-15 text-whiteColor bg-secondaryColor px-25px py-10px mb-10px leading-1.8 border border-secondaryColor hover:text-secondaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-secondaryColor dark:hover:bg-whiteColor-dark">
           Buy Now

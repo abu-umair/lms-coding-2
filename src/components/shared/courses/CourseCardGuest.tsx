@@ -92,7 +92,7 @@ const CourseCardGuest = ({ course, type }) => {
 
           {/* IMAGE SECTION */}
           <div className="relative mb-2">
-            <Link href={`/course-details/${slug}`} className="w-full overflow-hidden rounded block">
+            <Link href={`/course/details/${slug}`} className="w-full overflow-hidden rounded block">
               <Image
                 src={imageFileName || teacherImage2} //* Fallback image jika API null
                 alt={name}
