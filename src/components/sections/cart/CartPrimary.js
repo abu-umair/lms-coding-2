@@ -1,26 +1,21 @@
 "use client";
 import CartProduct from "@/components/shared/cart/CartProduct";
-import { useCartContext } from "@/contexts/CartContext";
-import useSweetAlert from "@/hooks/useSweetAlert";
-import addItemsToLocalstorage from "@/libs/addItemsToLocalstorage";
-import countTotalPrice from "@/libs/countTotalPrice";
+
 import Link from "next/link";
-const CartPrimary = () => {
-  const { cartProducts: currentProducts, setCartProducts } = useCartContext();
-  const creteAlert = useSweetAlert();
-  const cartProducts = currentProducts;
-  const totalPrice = countTotalPrice(cartProducts);
-  const isCartProduct = cartProducts?.length || false;
-  // update cart
-  const handleUpdateCart = () => {
-    creteAlert("success", "Success! Cart updated.");
-  };
-  // clear cart
-  const handleClearCart = () => {
-    addItemsToLocalstorage("cart", []);
-    setCartProducts([]);
-    creteAlert("success", "Success! Cart cleared.");
-  };
+const CartPrimary = ({ cartData }) => {
+  console.log("ini cart data saya: ", cartData);
+
+  // Ambil items dari response gRPC
+  const productsFromApi = cartData || [];
+
+  // Hitung total harga berdasarkan data API
+  // Karena 'quantity' di API Anda berupa string ("17"), pastikan di-parse saat kalkulasi
+  const totalPrice = productsFromApi.reduce((acc, item) => {
+    return acc + (item.course_price * parseInt(item.quantity));
+  }, 0);
+
+  const isCartProduct = productsFromApi.length > 0;
+
   return (
     <section>
       <div className="container py-50px lg:py-60px 2xl:py-20 3xl:py-100px">
@@ -59,8 +54,20 @@ const CartPrimary = () => {
                   </td>
                 </tr>
               ) : (
-                cartProducts?.map((product, idx) => (
-                  <CartProduct key={idx} product={product} />
+                productsFromApi.map((product, idx) => (
+                  /* Map data API ke format yang dikenali komponen CartProduct */
+                  <CartProduct
+                    key={product.cart_id || idx}
+                    product={{
+                      id: product.courseId,
+                      title: product.courseName,
+                      image: product.courseImageUrl,
+                      price: product.coursePrice,
+                      quantity: parseInt(product.quantity),
+                      cartId: product.cartId,
+                      isCourse: true
+                    }}
+                  />
                 ))
               )}
             </tbody>
@@ -76,102 +83,12 @@ const CartPrimary = () => {
               CONTINUE SHOPPING
             </Link>
           </div>
-          {isCartProduct && (
-            <div className="flex flex-wrap sm:flex-nowrap justify-between items-center gap-x-5 gap-y-10px">
-              <button
-                onClick={handleUpdateCart}
-                className="text-size-13 text-whiteColor dark:text-whiteColor-dark dark:hover:text-whiteColor leading-1 px-5 py-18px md:px-10 bg-blackColor dark:bg-blackColor-dark hover:bg-primaryColor dark:hover:bg-primaryColor"
-              >
-                UPDATE CART
-              </button>
-              <button
-                onClick={handleClearCart}
-                className="text-size-13 text-whiteColor dark:text-whiteColor-dark dark:hover:text-whiteColor leading-1 px-5 py-18px md:px-10 bg-blackColor dark:bg-blackColor-dark hover:bg-primaryColor dark:hover:bg-primaryColor"
-              >
-                CLEAR CART
-              </button>
-            </div>
-          )}
+
         </div>
 
         {/* cart input */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-30px">
-          <div>
-            <div className="px-30px pt-45px pb-50px leading-1.8 border border-borderColor dark:border-borderColor-dark rounded-5px">
-              {/* heading */}
-              <div className="flex gap-x-4">
-                <h3 className="text-lg whitespace-nowrap font-medium text-blackColor dark:text-blackColor-dark mb-22px">
-                  <span className="leading-1.2">Estimate Shipping And Tax</span>
-                </h3>
-                <div className="h-1px w-full bg-borderColor2 dark:bg-borderColor2-dark mt-2"></div>
-              </div>
-              <p className="text-contentColor dark:text-contentColor-dark mb-15px">
-                Enter your destination to get a shipping estimate.
-              </p>
-              {/* form */}
-              <form>
-                <div className="mb-5">
-                  <label className="text-blackColor dark:text-blackColor-dark">
-                    * Country
-                  </label>
-                  <select className="text-xs text-blackColor py-9px px-15px w-full rounded box-border border border-blackColor dark:border-blackColor-dark">
-                    <option defaultValue="USA">USA</option>
-                    <option defaultValue=" UK">UK</option>
-                    <option defaultValue="Canada">Canada</option>
-                    <option defaultValue="Russia">Russia</option>
-                    <option defaultValue="price-ascending">China</option>
-                  </select>
-                </div>
-                <div className="mb-5">
-                  <label
-                    className="text-blackColor dark:text-blackColor-dark"
-                    htmlFor="zip"
-                  >
-                    * Zip/Postal Code
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Zip/Postal Code"
-                    id="zip"
-                    className="text-xs text-blackColor py-11px px-15px w-full rounded box-border border border-borderColor dark:border-borderColor-dark focus:outline-none placeholder:text-placeholder placeholder:opacity-55"
-                  />
-                </div>
-                <div>
-                  <Link
-                    href="/dashboards/create-course"
-                    className="text-size-15 text-whiteColor bg-primaryColor px-25px py-10px border border-primaryColor hover:text-primaryColor hover:bg-whiteColor rounded group text-nowrap"
-                  >
-                    Calculate shipping
-                  </Link>
-                </div>
-              </form>
-            </div>
-          </div>
-          <div>
-            <div className="px-30px pt-45px pb-50px leading-1.8 border border-borderColor dark:border-borderColor-dark rounded-5px">
-              {/* heading */}
-              <div className="flex gap-x-4">
-                <h3 className="text-lg whitespace-nowrap font-medium text-blackColor dark:text-blackColor-dark mb-22px">
-                  <span className="leading-1.2">Cart Note</span>
-                </h3>
-                <div className="h-1px w-full bg-borderColor2 dark:bg-borderColor2-dark mt-2"></div>
-              </div>
-              <p className="text-contentColor dark:text-contentColor-dark mb-15px">
-                Special instructions for seller
-              </p>
-              {/* form */}
-              <form>
-                <div className="mb-5">
-                  <textarea
-                    className="text-xs text-blackColor py-11px px-15px w-full rounded box-border border border-borderColor2 dark:border-borderColor2-dark"
-                    cols="30"
-                    rows="4"
-                  ></textarea>
-                </div>
-              </form>
-            </div>
-          </div>
-          <div>
+        <div className="lg:flex lg:justify-end ">
+          <div className="lg:w-1/3 grid grid-cols-1 lg:grid-cols-1 flex-col-reverse gap-30px ">
             <div className="px-30px pt-45px pb-50px leading-1.8 border border-borderColor dark:border-borderColor-dark rounded-5px">
               {/* heading */}
               <div className="flex gap-x-4">
@@ -183,15 +100,14 @@ const CartPrimary = () => {
               <h4 className="text-sm font-bold text-blackColor dark:text-blackColor-dark mb-5 flex justify-between items-center">
                 <span className="leading-1.2">Cart Totals</span>
                 <span className="leading-1.2 text-lg font-medium">
-                  ${totalPrice ? totalPrice?.toFixed(2) : 0.0}
+                  Rp {totalPrice ? totalPrice : 0}
                 </span>
               </h4>
               <div>
                 <Link
                   href="/ecommerce/checkout"
-                  className={`text-size-13 text-whiteColor dark:text-whiteColor-dark dark:hover:text-whiteColor leading-1 w-full px-10px py-18px bg-blackColor dark:bg-blackColor-dark hover:bg-primaryColor dark:hover:bg-primaryColor : text-center  ${
-                    totalPrice ? "" : "pointer-events-none opacity-85"
-                  }`}
+                  className={`text-size-13 text-whiteColor dark:text-whiteColor-dark dark:hover:text-whiteColor leading-1 w-full px-10px py-18px bg-blackColor dark:bg-blackColor-dark hover:bg-primaryColor dark:hover:bg-primaryColor : text-center  ${totalPrice ? "" : "pointer-events-none opacity-85"
+                    }`}
                 >
                   PROCEED TO CHECKOUT
                 </Link>

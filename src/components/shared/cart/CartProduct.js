@@ -15,6 +15,7 @@ const CartProduct = ({ product }) => {
     }
   }, [quantity1]);
   const totalPrice = quantity * price;
+
   return product ? (
     <tr className="border-b border-borderColor dark:border-borderColor-dark">
       <td className="py-15px md:py-5 border-r border-borderColor dark:border-borderColor-dark">
@@ -22,6 +23,8 @@ const CartProduct = ({ product }) => {
           <Image
             loading="lazy"
             src={image}
+            width={80}   // Sesuaikan dengan max-w-20 (20 * 4px = 80px)
+            height={80}  // Sesuaikan rasio
             alt="product-1"
             className="max-w-20 w-full"
           />
@@ -32,11 +35,12 @@ const CartProduct = ({ product }) => {
           className="hover:text-primaryColor"
           href={`/${isCourse ? "courses" : "ecommerce/products"}/${id}`}
         >
-          {title.length > 30 ? title.slice(0, 30) : title}
+          {title}
+          {/* {title.length > 30 ? title.slice(0, 30) : title} */}
         </Link>
       </td>
       <td className="py-15px md:py-5 border-r border-borderColor dark:border-borderColor-dark">
-        <span className="amount">${price?.toFixed(2)}</span>
+        <span className="amount">Rp {price}</span>
       </td>
       <td className="py-15px md:py-5 border-r border-borderColor dark:border-borderColor-dark w-300px">
         <QuantityInput
@@ -44,30 +48,13 @@ const CartProduct = ({ product }) => {
           setQuantity={setQuantity}
           type={"box"}
           product={product}
+          disabled
         />
       </td>
       <td className="py-15px md:py-5 border-r border-borderColor dark:border-borderColor-dark">
-        ${totalPrice <= 0 ? "0.00" : totalPrice.toFixed(2)}
+        Rp {totalPrice <= 0 ? "0" : totalPrice}
       </td>
       <td className="py-15px md:py-5">
-        <button className="hover:text-primaryColor mr-0.5 md:mr-1">
-          <svg
-            width="24"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6 ionicon"
-            viewBox="0 0 512 512"
-          >
-            <title>Pencil</title>
-            <path
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="32"
-              d="M364.13 125.25L87 403l-23 45 44.99-23 277.76-277.13-22.62-22.62zM420.69 68.69l-22.62 22.62 22.62 22.63 22.62-22.63a16 16 0 000-22.62h0a16 16 0 00-22.62 0z"
-            ></path>
-          </svg>
-        </button>
         <button
           onClick={() => deleteProductFromCart(id, title)}
           className="hover:text-primaryColor"
