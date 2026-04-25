@@ -5,11 +5,23 @@ import { getCartClient } from "@/api/grpc/client";
 import toast from "react-hot-toast";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
 
-const QuantityInput = ({ quantity, type, product }) => {
+//* Import useCallback dan useState
+import { useCallback, useState, useEffect } from "react";
+import debounce from "lodash.debounce";
+
+const QuantityInput = ({ quantity: serverQuantity, type, product }) => {
   const { callApi, isLoading } = useGrpcApi();
 
   //* Inisialisasi Query Client
   const queryClient = useQueryClient();
+
+  //* 1. State Lokal untuk UI yang instan (Optimistic UI)
+  const [localQuantity, setLocalQuantity] = useState(serverQuantity);
+
+  //* Sinkronisasi jika data server berubah (misal dari tab lain)
+  useEffect(() => {
+    setLocalQuantity(serverQuantity);
+  }, [serverQuantity]);
 
   //* Deklarasi Mutation untuk update quantity
   const updateMutation = useMutation({
@@ -33,25 +45,33 @@ const QuantityInput = ({ quantity, type, product }) => {
     },
   });
 
-  const updateCartQuantityHandler = (cartId, action) => {
-    //* Cegah double click jika proses masih jalan
-    if (updateMutation.isPending) return;
+  //* 3. Fungsi Debounce (Menunggu user berhenti klik selama 500ms)
+  const debouncedUpdate = useCallback(
+    debounce((cartId, finalQty) => {
+      updateMutation.mutate({ cartId, newQuantity: finalQty });
+    }, 500),
+    []
+  );
 
-    let newQuantity = quantity;
+  const updateCartQuantityHandler = (action) => {
+
+    let nextQty = localQuantity;
 
     if (action === 'increment') {
-      newQuantity = quantity + 1;
-    } else if (action === 'decrement' && quantity > 1) {
-      newQuantity = quantity - 1;
+      nextQty = localQuantity + 1;
+    } else if (action === 'decrement' && localQuantity > 1) {
+      nextQty = localQuantity - 1;
     } else {
       return; // Jangan lakukan apa-apa jika decrement di angka 1
     }
 
-    //* Jalankan mutation
-    updateMutation.mutate({ cartId, newQuantity });
+    //* Update tampilan secara instan (UI kencang)
+    setLocalQuantity(nextQty);
+
+    //* Kirim ke API dengan debounce (Mencegah spam ke DB)
+    debouncedUpdate(product.cartId, nextQty);
   };
 
-  const isDecrementDisabled = quantity <= 1 || updateMutation.isPending;
 
   return (
     <div
@@ -61,7 +81,7 @@ const QuantityInput = ({ quantity, type, product }) => {
       <input
         type="number"
         //* Nilai input sekarang murni dari props (Single Source of Truth)
-        value={quantity}
+        value={localQuantity}
         readOnly
         className={`w-full focus:outline-none bg-transparent text-center ${type === "box" ? "" : "rounded-full"
           } `}
@@ -69,22 +89,20 @@ const QuantityInput = ({ quantity, type, product }) => {
       <div>
         <button
           //* Tambahkan visual feedback saat loading atau disabled
-          className={`absolute left-[10px] top-1/2 -translate-y-1/2 text-blackColor dark:text-blackColor-dark p-x-10px leading-1.8 w-5 inline-block ${isDecrementDisabled ? "opacity-30 cursor-not-allowed" : "opacity-100"
+          className={`absolute left-[10px] top-1/2 -translate-y-1/2 text-blackColor dark:text-blackColor-dark p-x-10px leading-1.8 w-5 inline-block 
+            localQuantity <= 1 ? "opacity-30 cursor-not-allowed" : "opacity-100 cursor-pointer"
             }`}
-          onClick={() => updateCartQuantityHandler(product.cartId, 'decrement')}
-          disabled={isDecrementDisabled}
-        >
-          -
+          onClick={() => updateCartQuantityHandler('decrement')}
+          disabled={localQuantity <= 1} //* Button tidak bisa diklik jika qty 1
+        > -
         </button>
         <button
-          className={`absolute top-1/2 -translate-y-1/2 right-[10px] text-blackColor dark:text-blackColor-dark p-x-10px leading-1.8 w-5 inline-block ${updateMutation.isPending ? "opacity-30 cursor-not-allowed" : "opacity-100"
+          className={`absolute top-1/2 -translate-y-1/2 right-[10px] text-blackColor dark:text-blackColor-dark p-x-10px leading-1.8 w-5 inline-block cursor-pointer hover:text-primaryColor
             }`}
-          onClick={() => updateCartQuantityHandler(product.cartId, 'increment')}
-          disabled={updateMutation.isPending}
-        >
-          +
+          onClick={() => updateCartQuantityHandler('increment')}
+        > +
         </button>
-      </div>
+      </div >
 
       {/* Opsi: Tambahkan loading spinner kecil jika sedang pending */}
       {/* {updateMutation.isPending && (
@@ -92,7 +110,7 @@ const QuantityInput = ({ quantity, type, product }) => {
           <span className="w-4 h-4 border-2 border-primaryColor border-t-transparent rounded-full animate-spin"></span>
         </div>
       )} */}
-    </div>
+    </div >
   );
 };
 

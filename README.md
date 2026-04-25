@@ -97,3 +97,15 @@ npm install react-confetti react-use
 npm install recharts
 
 ```
+
+## install Tanstack
+``` bash
+npm install @tanstack/react-query
+
+```
+
+## install Debounching
+``` bash
+npm install lodash.debounce
+
+```
