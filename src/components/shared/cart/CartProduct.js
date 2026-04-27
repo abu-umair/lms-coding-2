@@ -4,11 +4,69 @@ import Link from "next/link";
 import QuantityInput from "../inputs/QuantityInput";
 import { useEffect, useState } from "react";
 import { useCartContext } from "@/contexts/CartContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getCartClient } from "@/api/grpc/client";
+import useGrpcApi from "@/components/shared/others/useGrpcApi";
+import toast from "react-hot-toast";
 
 const CartProduct = ({ product }) => {
   console.log("product course", product);
 
-  const { id, title, price, quantity, image, isCourse } = product;
+  const { callApi } = useGrpcApi();
+  const queryClient = useQueryClient();
+
+  const { id, title, price, quantity, image, isCourse, cartId } = product;
+
+
+  //*1. Deklarasi Mutation untuk hapus item
+  const deleteMutation = useMutation({
+    mutationFn: async (id) => {
+      return await callApi(
+        //* Pastikan nama method di gRPC client Anda sesuai (misal: deleteCart)
+        getCartClient().deleteCart({
+          cartId: id,
+        }),
+        {
+          loadingMessage: "Menghapus item...",
+          successMessage: "Item berhasil dihapus",
+        }
+      );
+    },
+    onSuccess: () => {
+      //* 2. Refresh data keranjang dan hitungan di navbar setelah hapus berhasil
+      queryClient.invalidateQueries({ queryKey: ["cart-data"] });
+      queryClient.invalidateQueries({ queryKey: ["cart-count"] });
+    },
+  });
+
+  //* 3. Handler untuk tombol hapus
+  const handleDeleteConfirm = () => {
+    toast((t) => (
+      <div className="flex flex-col gap-3 p-1">
+        <div className="flex flex-col">
+          <p className="text-sm font-bold text-headingColor">Hapus Produk?</p>
+          <p className="text-xs text-contentColor">Course ini akan dihapus dari keranjang Anda.</p>
+        </div>
+        <div className="flex gap-2 justify-end">
+          <button
+            className="bg-red-500 text-white px-3 py-1.5 rounded text-xs hover:bg-red-600 transition-all shadow-sm"
+            onClick={() => {
+              toast.dismiss(t.id); //* Tutup toast konfirmasi
+              deleteMutation.mutate(cartId); //* Jalankan mutation hapus
+            }}
+          >
+            Ya, Hapus
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="text-xs px-3 py-1.5 border border-borderColor rounded hover:bg-gray-100 transition-all"
+          >
+            Batal
+          </button>
+        </div>
+      </div>
+    ), { duration: 5000 });
+  };
 
   const rowTotal = price * quantity;
 
@@ -53,6 +111,8 @@ const CartProduct = ({ product }) => {
       <td className="py-15px md:py-5">
         <button
           className="hover:text-primaryColor"
+          onClick={handleDeleteConfirm}
+          disabled={deleteMutation.isPending}
         >
           <svg
             width="25"
