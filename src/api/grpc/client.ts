@@ -8,6 +8,7 @@ import { ChapterLessonServiceClient, IChapterLessonServiceClient } from "@/../..
 import { WatchHistoryServiceClient, IWatchHistoryServiceClient } from "@/../../pb/watch_history/watch_history.client";
 import { EnrollmentServiceClient, IEnrollmentServiceClient } from "@/../../pb/enrollment/enrollment.client";
 import { CartServiceClient, ICartServiceClient } from "@/../../pb/cart/cart.client";
+import { OrderServiceClient, IOrderServiceClient } from "@/../../pb/order/order.client";
 import { DashboardUserServiceClient, IDashboardUserServiceClient } from "@/../../pb/dashboard_user/dashboard_user.client";
 
 
@@ -21,6 +22,7 @@ let chapterLessonClient: IChapterLessonServiceClient | null = null;
 let watchHistoryClient: IWatchHistoryServiceClient | null = null;
 let enrollmentClient: IEnrollmentServiceClient | null = null;
 let cartClient: ICartServiceClient | null = null;
+let orderClient: IOrderServiceClient | null = null;
 let dashboardUserClient: IDashboardUserServiceClient | null = null;
 
 const getWebTransport = () => {
@@ -80,6 +82,13 @@ export const getCartClient = () => {
         cartClient = new CartServiceClient(getWebTransport());
     }
     return cartClient
+}
+
+export const getOrderClient = () => {
+    if (orderClient === null) {
+        orderClient = new OrderServiceClient(getWebTransport());
+    }
+    return orderClient
 }
 
 export const getDashboardUserClient = () => {
