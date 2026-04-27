@@ -17,8 +17,12 @@ const CartPrimary = ({ cartData }) => {
 
   // Hitung total harga berdasarkan data API
   // Karena 'quantity' di API Anda berupa string ("17"), pastikan di-parse saat kalkulasi
+  //* Sinkronisasi Cart Totals: Menghitung total dari semua produk di cache TanStack
   const totalPrice = productsFromApi.reduce((acc, item) => {
-    return acc + (item.course_price * parseInt(item.quantity));
+    //* Pastikan menggunakan nama field yang benar dari gRPC (coursePrice / course_price)
+    const price = item.coursePrice || item.course_price || 0;
+    const qty = parseInt(item.quantity) || 0;
+    return acc + (price * qty);
   }, 0);
 
   const isCartProduct = productsFromApi.length > 0;

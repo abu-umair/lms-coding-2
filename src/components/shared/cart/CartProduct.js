@@ -10,6 +10,7 @@ const CartProduct = ({ product }) => {
 
   const { id, title, price, quantity, image, isCourse } = product;
 
+  const rowTotal = price * quantity;
 
   return product ? (
     <tr className="border-b border-borderColor dark:border-borderColor-dark">
@@ -47,7 +48,7 @@ const CartProduct = ({ product }) => {
       </td>
       <td className="py-15px md:py-5 border-r border-borderColor dark:border-borderColor-dark">
         {/* Rp {totalPrice <= 0 ? "0" : totalPrice} */}
-        Rp 1000
+        {rowTotal}
       </td>
       <td className="py-15px md:py-5">
         <button

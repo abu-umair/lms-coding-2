@@ -11,6 +11,7 @@ interface GrpcBaseResponse {
 }
 
 interface CallApiArgs<T extends object, U extends GrpcBaseResponse> {
+    showToast?: boolean;
     loadingMessage?: string;   // Pesan saat proses berjalan
     successMessage?: string;   // Pesan sukses (opsional)
     useDefaultError?: boolean; // Jika false, toast error otomatis tidak muncul
@@ -26,13 +27,17 @@ const useGrpcApi = () => {
         args?: CallApiArgs<T, U>
     ) => {
         const {
+            showToast = true, //* Default true agar fitur lama tidak rusak
             useDefaultError = true,
             loadingMessage = "Sedang memproses...",
             successMessage
         } = args || {};
 
         // 1. Munculkan Loading Toast
-        const toastId = toast.loading(loadingMessage);
+        let toastId: string | undefined;
+        if (showToast) {
+            toastId = toast.loading(loadingMessage);
+        }
 
         try {
             setIsLoading(true);
@@ -40,7 +45,7 @@ const useGrpcApi = () => {
 
             // 2. Cek Error Bisnis dari Backend (Contoh: Password Salah)
             if (res.response.base?.isError) {
-                toast.dismiss(toastId);
+                if (toastId) toast.dismiss(toastId);
 
                 if (!useDefaultError && args?.defaultError) {
                     // Jalankan logika custom di komponen (tanpa double toast)

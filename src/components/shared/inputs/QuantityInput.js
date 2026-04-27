@@ -32,6 +32,7 @@ const QuantityInput = ({ quantity: serverQuantity, type, product }) => {
           newQuantity: newQuantity,
         }),
         {
+          showToast: false,
           // loadingMessage: "Updating quantity...",
           // successMessage: "Quantity updated!",
           useDefaultError: false,
@@ -79,7 +80,7 @@ const QuantityInput = ({ quantity: serverQuantity, type, product }) => {
         }`}
     >
       <input
-        type="number"
+        type="text"
         //* Nilai input sekarang murni dari props (Single Source of Truth)
         value={localQuantity}
         readOnly
@@ -90,7 +91,7 @@ const QuantityInput = ({ quantity: serverQuantity, type, product }) => {
         <button
           //* Tambahkan visual feedback saat loading atau disabled
           className={`absolute left-[10px] top-1/2 -translate-y-1/2 text-blackColor dark:text-blackColor-dark p-x-10px leading-1.8 w-5 inline-block 
-            localQuantity <= 1 ? "opacity-30 cursor-not-allowed" : "opacity-100 cursor-pointer"
+            ${localQuantity <= 1 ? "opacity-30 cursor-not-allowed" : "opacity-100 cursor-pointer hover:text-primaryColor"
             }`}
           onClick={() => updateCartQuantityHandler('decrement')}
           disabled={localQuantity <= 1} //* Button tidak bisa diklik jika qty 1
@@ -103,13 +104,6 @@ const QuantityInput = ({ quantity: serverQuantity, type, product }) => {
         > +
         </button>
       </div >
-
-      {/* Opsi: Tambahkan loading spinner kecil jika sedang pending */}
-      {/* {updateMutation.isPending && (
-        <div className="absolute inset-0 bg-white/50 dark:bg-black/20 flex items-center justify-center">
-          <span className="w-4 h-4 border-2 border-primaryColor border-t-transparent rounded-full animate-spin"></span>
-        </div>
-      )} */}
     </div >
   );
 };
