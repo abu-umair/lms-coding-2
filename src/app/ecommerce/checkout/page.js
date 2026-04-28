@@ -4,6 +4,7 @@ import ThemeController from "@/components/shared/others/ThemeController";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
 import { authOptions } from "@/libs/authOptions";
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Checkout | Edurock - Education LMS Template",
@@ -26,9 +27,17 @@ const Checkout = async () => {
     ]);
     cartData = cartRes.response.items || [];
     userData = userRes.response || [];
+    console.log("cart data saya : ", cartData.length);
+
+
+    if (cartData.length == 0 || userData.length == 0) {
+      redirect("/");
+    }
   } catch (error) {
     // 1. Log error ke console server (untuk debugging)
     console.error("gRPC listCart Error:", error);
+
+
 
     // 2. Opsi: Lempar ke file error.js bawaan Next.js
     // throw error; 
@@ -36,6 +45,7 @@ const Checkout = async () => {
     // 3. Opsi: Biarkan kosong tapi tampilkan pesan (paling aman untuk UI)
     cartData = [];
     userData = [];
+    redirect("/");
   }
 
   return (

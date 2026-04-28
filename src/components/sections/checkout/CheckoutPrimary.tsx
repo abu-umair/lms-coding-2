@@ -30,8 +30,8 @@ const CheckoutPrimary = ({ cartData, userData }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<CheckoutFormData>({
     resolver: zodResolver(CheckoutSchema),
     defaultValues: {
-      user_full_name: "",
-      email: "",
+      user_full_name: fullName,
+      email: email,
       phone: "",
       address: "",
     }
@@ -66,8 +66,6 @@ const CheckoutPrimary = ({ cartData, userData }) => {
           //! delete cart ketika berhasil checkout/order
           // *task
           //*buat halaman setelah buat checkout/order
-          // *buat tidak bisa akses page checkout/order lewat link (harus dari cart)
-
           // router.push("/");
         },
         useDefaultError: false,
