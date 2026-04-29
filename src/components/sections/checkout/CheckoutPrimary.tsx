@@ -1,17 +1,22 @@
 "use client";
 
-import { getOrderClient } from "@/api/grpc/client";
+import { getCartClient, getOrderClient } from "@/api/grpc/client";
 import FormInput from "@/components/shared/form-input/FormInput";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
 import { useCartContext } from "@/contexts/CartContext";
 import countTotalPrice from "@/libs/countTotalPrice";
 import { CheckoutSchema, CheckoutFormData } from "@/libs/validationSchemaCheckout";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 const CheckoutPrimary = ({ cartData, userData }) => {
+  const router = useRouter();
   const { callApi, isLoading } = useGrpcApi();
+  const queryClient = useQueryClient();
+
 
   const { fullName, email } = userData;
 
@@ -23,7 +28,6 @@ const CheckoutPrimary = ({ cartData, userData }) => {
     const qty = Number(item.quantity);
     return acc + (price * qty); //? acc adalah penampung hasil sementara. dan 0 adalah nilai awal
   }, 0);
-  console.log(subtotal);
 
   const totalPrice = subtotal;
 
@@ -60,22 +64,35 @@ const CheckoutPrimary = ({ cartData, userData }) => {
       {
         // loadingMessage: "Memperbarui kata sandi...",
         // successMessage: "Kata sandi berhasil diperbarui!", // Otomatis muncul toast success
-        onSuccess: (res) => {
-          reset(),
-            console.log(res);
-          //! delete cart ketika berhasil checkout/order
+        onSuccess: async (res) => {
+          reset();
+          //* 1. Ambil semua cartId yang ada di keranjang saat ini
+          const cartIdsToDelete = cartData.map(item => item.cartId);
+
+          //* 2. Eksekusi penghapusan semua item cart secara paralel
+          try {
+            await Promise.all(
+              cartIdsToDelete.map(id =>
+                getCartClient().deleteCart({ cartId: id })
+              )
+            );
+
+            //* 3. Bersihkan cache TanStack Query agar UI sinkron
+            queryClient.invalidateQueries({ queryKey: ["cart-data"] });
+            queryClient.invalidateQueries({ queryKey: ["cart-count"] });
+
+            //* 4. Pindah ke halaman sukses atau invoice
+            router.replace(`/order/${res.response.id}`);
+          } catch (error) {
+            toast.error("Gagal checkout");
+          }
+
           // *task
           //*buat halaman setelah buat checkout/order
           // router.push("/");
         },
-        useDefaultError: false,
-        // defaultError: (res) => {
-        //   if (res.response.base?.statusCode !== "200") {
-        //     toast.error("Kata sandi lama salah!");
-        //   } else {
-        //     toast.error("Gagal memperbarui password.");
-        //   }
-        // }
+        useDefaultError: true,
+
       }
     );
   };
@@ -180,7 +197,7 @@ const CheckoutPrimary = ({ cartData, userData }) => {
                         >
                           <td className="p-10px md:p-15px">
                             {courseName.length > 12 ? courseName.slice(0, 12) : courseName}
-                            <span>{quantity}</span>
+                            <span> x {Number(quantity)}</span>
                           </td>
                           <td className="p-10px md:p-15px">
                             Rp {Number(coursePrice) * Number(quantity)}
