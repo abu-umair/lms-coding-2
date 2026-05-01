@@ -15,18 +15,19 @@ export const clearGrpcCache = () => {
 
 export const authInterceptor: RpcInterceptor = {
     interceptUnary(next: NextUnaryFn, method: MethodInfo, input: object, options: RpcOptions): UnaryCall {
-
+        const meta = options.meta ? { ...options.meta } : {};
         // 1. Logic Request: Pasang Token dari Cache
         // Kita tidak perlu getSession() di sini karena GrpcSyncProvider 
         // sudah menjamin cachedToken terisi saat aplikasi dimuat.
         if (cachedToken) {
-            options.meta = {
-                ...options.meta,
-                authorization: `Bearer ${cachedToken}`
-            };
+            meta["authorization"] = `Bearer ${cachedToken}`;
+            // options.meta = {
+            //     ...options.meta,
+            //     authorization: `Bearer ${cachedToken}`
+            // };
         } else {
             // Ini yang menyebabkan error Unauthenticated di Go
-            console.error("INTERCEPTOR ERROR: cachedToken masih KOSONG saat request dikirim!");
+            // console.error("INTERCEPTOR ERROR: cachedToken masih KOSONG saat request dikirim!");
         }
 
         // 2. Jalankan Request
@@ -43,6 +44,9 @@ export const authInterceptor: RpcInterceptor = {
         //     }
         // });
 
-        return call;
+        return next(method, input, {
+            ...options,
+            meta
+        });
     },
 };
