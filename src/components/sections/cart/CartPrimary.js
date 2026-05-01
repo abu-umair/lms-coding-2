@@ -88,7 +88,7 @@ const CartPrimary = ({ cartData }) => {
         <div className="flex flex-wrap sm:flex-nowrap justify-between items-center gap-x-5 gap-y-10px pt-22px pb-9 md:pt-30px md:pb-55px">
           <div>
             <Link
-              href={"/ecommerce/shop"}
+              href={"/courses"}
               className="text-size-13 text-whiteColor dark:text-whiteColor-dark dark:hover:text-whiteColor leading-1 px-5 py-18px md:px-10 bg-blackColor dark:bg-blackColor-dark hover:bg-primaryColor dark:hover:bg-primaryColor"
             >
               CONTINUE SHOPPING
@@ -116,7 +116,7 @@ const CartPrimary = ({ cartData }) => {
               </h4>
               <div>
                 <Link
-                  href="/ecommerce/checkout"
+                  href="/checkout"
                   className={`text-size-13 text-whiteColor dark:text-whiteColor-dark dark:hover:text-whiteColor leading-1 w-full px-10px py-18px bg-blackColor dark:bg-blackColor-dark hover:bg-primaryColor dark:hover:bg-primaryColor : text-center  ${totalPrice ? "" : "pointer-events-none opacity-85"
                     }`}
                 >
