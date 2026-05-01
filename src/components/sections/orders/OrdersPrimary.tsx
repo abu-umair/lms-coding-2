@@ -12,7 +12,6 @@ type OrderStatus = "unpaid";
 
 const OrdersPrimary = ({ orderData }) => {
     const router = useRouter();
-    alert(orderData);
     const { number, total, orderStatusCode, expiredAt, xenditInvoiceUrl } = orderData;
     const expiredAtTime = convertTimestampToTime(expiredAt);
 
@@ -86,13 +85,6 @@ const OrdersPrimary = ({ orderData }) => {
 
     return (
         <div className="min-h-screen relative overflow-hidden bg-[#f7f7f8]">
-            <Confetti
-                width={windowSize.width}
-                height={windowSize.height}
-                recycle={false}
-                numberOfPieces={220}
-            />
-
             {/* soft background */}
             <div className="pointer-events-none absolute inset-0">
 
