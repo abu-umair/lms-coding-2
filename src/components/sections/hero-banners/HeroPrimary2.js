@@ -5,8 +5,22 @@ import TriangleImage from "@/components/shared/animaited-images/TriangleImage";
 import PopupVideo from "@/components/shared/popup/PopupVideo";
 import Image from "next/image";
 import blogImage7 from "@/assets/images/blog/blog_7.png";
+import { log } from "node:console";
+import { convertStringToTime } from "@/utils/date";
 
 const HeroPrimary2 = ({ type, course }) => {
+  const {
+    imageFileName,
+    demoVideoSource,
+    updatedAt,
+    totalLesson,
+    categoryName,
+  } = course;
+  console.log(course);
+  const updateCourse = convertStringToTime(updatedAt);
+
+
+
   return (
     <section data-aos="fade-up">
       {/* banner section */}
@@ -44,10 +58,7 @@ const HeroPrimary2 = ({ type, course }) => {
                 data-aos="fade-up"
               >
                 <button className="text-sm text-whiteColor bg-primaryColor border border-primaryColor px-26px py-0.5 leading-23px font-semibold hover:text-primaryColor hover:bg-whiteColor rounded inline-block dark:hover:bg-whiteColor-dark dark:hover:text-whiteColor">
-                  Featured
-                </button>
-                <button className="text-sm text-whiteColor bg-indigo border border-indigo px-22px py-0.5 leading-23px font-semibold hover:text-indigo hover:bg-whiteColor rounded inline-block dark:hover:bg-whiteColor-dark dark:hover:text-indigo">
-                  Ux Design
+                  {categoryName}
                 </button>
               </div>
               {/* titile */}
@@ -68,11 +79,11 @@ const HeroPrimary2 = ({ type, course }) => {
                   </div>
                   <div>
                     <span className="text-sm text-black dark:text-blackColor-dark font medium">
-                      23 Lesson
+                      {Number(totalLesson)} Lesson
                     </span>
                   </div>
                 </div>
-                <div className="text-start md:text-end">
+                {/* <div className="text-start md:text-end">
                   <i className="icofont-star text-size-15 text-yellow"></i>{" "}
                   <i className="icofont-star text-size-15 text-yellow"></i>{" "}
                   <i className="icofont-star text-size-15 text-yellow"></i>{" "}
@@ -81,12 +92,12 @@ const HeroPrimary2 = ({ type, course }) => {
                   <span className="text-xs text-blackColor dark:text-blackColor-dark">
                     (44)
                   </span>
-                </div>
+                </div> */}
                 <div>
                   <p className="text-sm text-contentColor dark:text-contentColor-dark font-medium">
                     Last Update:{" "}
                     <span className="text-blackColor dark:text-blackColor-dark">
-                      Sep 29, 2024
+                      {updateCourse}
                     </span>
                   </p>
                 </div>
@@ -94,10 +105,16 @@ const HeroPrimary2 = ({ type, course }) => {
 
               {/* thumbnail */}
               {type === 3 ? (
-                <div className="overflow-hidden relative mb-5">
-                  <Image src={blogImage7} alt="" className="w-full" />
+                <div className="overflow-hidden relative mb-5 aspect-video">
+                  <Image
+                    src={imageFileName}
+                    alt="asdfasf"
+                    width={800}
+                    height={450}
+                    className="w-full h-full object-cover object-center"
+                  />
                   <div className="absolute top-0 right-0 left-0 bottom-0 flex items-center justify-center z-10">
-                    <PopupVideo />
+                    <upVideo videoUrl={demoVideoSource} />
                   </div>
                 </div>
               ) : (

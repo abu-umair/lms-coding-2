@@ -18,7 +18,9 @@ const getCourseData = cache(async (slug) => {
         "duration", "timezone", "thumbnail", "demo_video_storage",
         "demo_video_source", "instructor_id", "price", "discount",
         "capacity", "address", "seo_description", "certificate",
-        "message_for_reviewer", "is_approved", "status", "total_sold"
+        "message_for_reviewer", "is_approved", "status",
+        "total_sold", "total_lesson", "chapters",
+        "updated_at"
       ]
     },
     slug: slug
