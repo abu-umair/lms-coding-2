@@ -1,624 +1,98 @@
 "use client";
 
-import accordions from "@/libs/accordions";
+import { useState } from "react";
 import Link from "next/link";
-import { useEffect } from "react";
+import { formatDuration } from "@/utils/formatDuration";
+import PopupVideoPreview from "../popup/PopupVideoPreview";
 
-const CurriculumContent = () => {
-  useEffect(() => {
-    accordions();
-  }, []);
+const CurriculumContent = ({ chapters }) => {
+  // State untuk menyimpan index bab yang sedang terbuka
+  // Default: 0 (Bab pertama terbuka otomatis)
+  const [openIndex, setOpenIndex] = useState(0);
+
+  const toggleAccordion = (index) => {
+    // Jika mengklik bab yang sudah terbuka, maka tutup. Jika tidak, buka yang baru.
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
   return (
     <div>
-      <ul className="accordion-container curriculum">
-        {/* accordion  */}
-        <li className="accordion mb-25px overflow-hidden active">
-          <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark rounded-t-md">
-            {/* controller  */}
-            <div>
-              <div className="cursor-pointer accordion-controller flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px]">
-                <div className="flex items-center">
-                  <span>Intro Course content</span>
-                  <p className="text-xs text-headingColor dark:text-headingColor-dark px-10px py-0.5 ml-10px bg-borderColor dark:bg-borderColor-dark rounded-full">
-                    02hr 35min
-                  </p>
-                </div>
-                <svg
-                  className="transition-all duration-500 rotate-0"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="#212529"
+      <ul className="curriculum">
+        {chapters?.map((chapter, index) => {
+          const isOpen = openIndex === index;
+
+          return (
+            <li key={index} className={`accordion mb-25px overflow-hidden ${isOpen ? "active" : ""}`}>
+              <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark rounded-t-md">
+
+                {/* Header / Controller */}
+                <button
+                  onClick={() => toggleAccordion(index)}
+                  className="accordion-controller flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px] text-left"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                  ></path>
-                </svg>
-              </div>
-            </div>
-            {/* content  */}
-            <div className="accordion-content transition-all duration-500">
-              <div className="content-wrapper p-10px md:px-30px">
-                <ul>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center">
-                      <p>
-                        <i className="icofont-clock-time"></i> 22 minutes
-                      </p>
-                      <Link
-                        href="/lessons/1"
-                        className="bg-primaryColor text-whiteColor text-sm ml-5 rounded py-0.5"
-                      >
-                        <p className="px-10px">
-                          <i className="icofont-eye"></i> Preview
-                        </p>
-                      </Link>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center">
-                      <p>
-                        <i className="icofont-clock-time"></i> 22 minutes
-                      </p>
-                      <Link
-                        href="/lessons/2"
-                        className="bg-primaryColor text-whiteColor text-sm ml-5 rounded py-0.5"
-                      >
-                        <p className="px-10px">
-                          <i className="icofont-eye"></i> Preview
-                        </p>
-                      </Link>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-15px flex items-center justify-between flex-wrap">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-file-text mr-10px"></i>
-                        <span className="font-medium">Lesson 03 Exam :</span>
-                      </h4>
-                    </div>
-                    <div className="text-blackColor dark:text-blackColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"> </i> 20 Ques
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </li>
-        {/* accordion  */}
-        <li className="accordion mb-25px overflow-hidden">
-          <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark">
-            {/* controller  */}
-            <div>
-              <div className="cursor-pointer accordion-controller flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px]">
-                <div className="flex items-center">
-                  <span>Course Fundamentals</span>
-                  <p className="text-xs text-headingColor dark:text-headingColor-dark px-10px py-0.5 ml-10px bg-borderColor dark:bg-borderColor-dark rounded-full">
-                    1hr 35min
-                  </p>
-                </div>
-                <svg
-                  className="transition-all duration-500 rotate-0"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="#212529"
+                  <div className="flex items-center">
+                    <span className="capitalize">{chapter.title}</span>
+                  </div>
+
+                  {/* Icon Panah (SVG) */}
+                  <svg
+                    className={`transition-all duration-500 ${isOpen ? "rotate-180" : "rotate-0"
+                      }`}
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    fill="#212529"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                    ></path>
+                  </svg>
+                </button>
+
+                {/* Content Area dengan Animasi Smooth */}
+                <div
+                  className={`grid transition-all duration-500 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                  ></path>
-                </svg>
-              </div>
-            </div>
-            {/* content  */}
-            <div className="accordion-content transition-all duration-500 h-0">
-              <div className="content-wrapper p-10px md:px-30px">
-                <ul>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
+                  <div className="overflow-hidden">
+
+                    <div className="content-wrapper p-10px md:px-30px">
+                      <ul>
+                        {chapter.lessons?.map((lesson, lessonIdx) => (
+                          <li
+                            key={lessonIdx}
+                            className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark last:border-b-0"
+                          >
+                            <div>
+                              <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light flex items-center">
+                                <i className="icofont-video-alt mr-10px text-primaryColor"></i>
+                                {lesson.title}
+                              </h4>
+                            </div>
+                            <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center gap-4">
+                              <p className="flex items-center">
+                                <i className="icofont-clock-time mr-1"></i>{" "}
+                                {formatDuration(lesson.duration)}
+                              </p>
+
+                              {/* Tombol Preview (Hanya jika isPreview === 1) */}
+                              {lesson.isPreview === 1 && (
+                                <PopupVideoPreview videoUrl={lesson.storageLesson} />
+                              )}
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-15px flex items-center justify-between flex-wrap">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-file-text mr-10px"></i>
-                        <span className="font-medium">Lesson 03 Exam :</span>
-                      </h4>
-                    </div>
-                    <div className="text-blackColor dark:text-blackColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"> </i> 20 Ques
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </li>
-        {/* accordion  */}
-        <li className="accordion mb-25px overflow-hidden">
-          <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark">
-            {/* controller  */}
-            <div>
-              <div className="cursor-pointer accordion-controller flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px]">
-                <div className="flex items-center">
-                  <span>Course Core Concept</span>
-                  <p className="text-xs text-headingColor dark:text-headingColor-dark px-10px py-0.5 ml-10px bg-borderColor dark:bg-borderColor-dark rounded-full">
-                    3hr 10min
-                  </p>
+                  </div>
                 </div>
-                <svg
-                  className="transition-all duration-500 rotate-0"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="#212529"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                  ></path>
-                </svg>
               </div>
-            </div>
-            {/* content  */}
-            <div className="accordion-content transition-all duration-500 h-0">
-              <div className="content-wrapper p-10px md:px-30px">
-                <ul>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-15px flex items-center justify-between flex-wrap">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-file-text mr-10px"></i>
-                        <span className="font-medium">Lesson 03 Exam :</span>
-                      </h4>
-                    </div>
-                    <div className="text-blackColor dark:text-blackColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"> </i> 20 Ques
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </li>
-        {/* accordion  */}
-        <li className="accordion mb-25px overflow-hidden">
-          <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark">
-            {/* controller  */}
-            <div>
-              <div className="cursor-pointer accordion-controller flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px]">
-                <div className="flex items-center">
-                  <span>Course Key Features</span>
-                  <p className="text-xs text-headingColor dark:text-headingColor-dark px-10px py-0.5 ml-10px bg-borderColor dark:bg-borderColor-dark rounded-full">
-                    2hr 10min
-                  </p>
-                </div>
-                <svg
-                  className="transition-all duration-500 rotate-0"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="#212529"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                  ></path>
-                </svg>
-              </div>
-            </div>
-            {/* content  */}
-            <div className="accordion-content transition-all duration-500 h-0">
-              <div className="content-wrapper p-10px md:px-30px">
-                <ul>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-15px flex items-center justify-between flex-wrap">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-file-text mr-10px"></i>
-                        <span className="font-medium">Lesson 03 Exam :</span>
-                      </h4>
-                    </div>
-                    <div className="text-blackColor dark:text-blackColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"> </i> 20 Ques
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </li>
-        {/* accordion  */}
-        <li className="accordion mb-25px overflow-hidden">
-          <div className="bg-whiteColor border border-borderColor dark:bg-whiteColor-dark dark:border-borderColor-dark rounded-b-md">
-            {/* controller  */}
-            <div>
-              <div className="cursor-pointer accordion-controller flex justify-between items-center text-xl text-headingColor font-bold w-full px-5 py-18px dark:text-headingColor-dark font-hind leading-[20px]">
-                <div className="flex items-center">
-                  <span>Course Conclusion</span>
-                  <p className="text-xs text-headingColor dark:text-headingColor-dark px-10px py-0.5 ml-10px bg-borderColor dark:bg-borderColor-dark rounded-full">
-                    2hr 10min
-                  </p>
-                </div>
-                <svg
-                  className="transition-all duration-500 rotate-0"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="#212529"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                  ></path>
-                </svg>
-              </div>
-            </div>
-            {/* content  */}
-            <div className="accordion-content transition-all duration-500 h-0">
-              <div className="content-wrapper p-10px md:px-30px">
-                <ul>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-video-alt mr-10px"></i>
-                        <span className="font-medium">Video :</span>
-                        Lorem ipsum dolor sit amet.
-                      </h4>
-                    </div>
-                    <div className="text-contentColor dark:text-contentColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"></i>
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-15px flex items-center justify-between flex-wrap">
-                    <div>
-                      <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light">
-                        <i className="icofont-file-text mr-10px"></i>
-                        <span className="font-medium">Lesson 03 Exam :</span>
-                      </h4>
-                    </div>
-                    <div className="text-blackColor dark:text-blackColor-dark text-sm">
-                      <p>
-                        <i className="icofont-lock"> </i> 20 Ques
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </li>
+            </li>
+          );
+        })}
       </ul>
-    </div>
+    </div >
   );
 };
 
