@@ -13,30 +13,44 @@ import { getCartClient } from "@/api/grpc/client";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { formatToIDR } from "@/utils/number";
+import { formatDuration } from "@/utils/formatDuration";
 
 
 const CourseEnroll = ({ type, course, userId }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  console.log(course);
 
-  // Data Dummy sebagai fallback
-  const dummyCourse = {
-    id: 1,
-    title: "Mastering Next.js 14 for Beginners",
-    price: 49.99,
-    image: blogImag8, // Menggunakan import image yang sudah ada
-    name: "Mastering Next.js 14 for Beginners", // Seringkali 'title' dan 'name' tertukar
-    lesson: "45 Lessons",
-    categories: "Web Development",
-    instructor_id: 1,
-    // Tambahkan field lain yang dibutuhkan
-  };
 
-  // Gunakan data dari props 'course', jika tidak ada gunakan dummy
-  const currentCourse = course || dummyCourse;
+
+
+  const currentCourse = course;
 
   // Sekarang proses destructuring dari currentCourse
-  const { id, image, price, title, name } = currentCourse;
+  const {
+    imageFileName,
+    price,
+    discount,
+    duration,
+    totalLesson,
+    levelName,
+    languageName,
+    certificate,
+    instructorName,
+    title,
+    name,
+    demoVideoSource
+  } = currentCourse;
+  const basePrice = Number(price) + Number(discount);
+  // 2. Hitung Persentase Diskon
+  // Gunakan Math.round agar tidak muncul banyak angka di belakang koma (misal 68.123%)
+  const discountPercentage = basePrice > 0
+    ? Math.round((Number(discount) / basePrice) * 100)
+    : 0;
+  console.log('price:', course);
+
+
   const displayTitle = title || name || "Judul tidak ditemukan";
   const isEditMode = false;
   const { callApi, isLoading } = useGrpcApi();
@@ -97,9 +111,9 @@ const CourseEnroll = ({ type, course, userId }) => {
         ""
       ) : (
         <div className="overflow-hidden relative mb-5">
-          <Image src={image || blogImage7} alt="" className="w-full" />
+          <Image src={imageFileName} alt="" className="w-full" />
           <div className="absolute top-0 right-0 left-0 bottom-0 flex items-center justify-center z-10">
-            <PopupVideo />
+            <PopupVideo videoUrl={demoVideoSource} />
           </div>
         </div>
       )}
@@ -110,15 +124,14 @@ const CourseEnroll = ({ type, course, userId }) => {
           }`}
       >
         <div className="text-size-21 font-bold text-primaryColor font-inter leading-25px">
-          ${price ? price : "dummy"}{" "}
-          <del className="text-sm text-lightGrey4 font-semibold">/ $67.00</del>
+          {price ? formatToIDR(price) : "-"}{" "}
+          <del className="text-sm text-lightGrey4 font-semibold">/ {basePrice ? formatToIDR(basePrice) : "-"}</del>
         </div>
         <div>
           <a
-            href="#"
             className="uppercase text-sm font-semibold text-secondaryColor2 leading-27px px-2 bg-whitegrey1 dark:bg-whitegrey1-dark"
           >
-            68% OFF
+            {discountPercentage}% OFF
           </a>
         </div>
       </div>
@@ -141,9 +154,9 @@ const CourseEnroll = ({ type, course, userId }) => {
           Buy Now
         </button>
 
-        <span className="text-size-13 text-contentColor dark:text-contentColor-dark leading-1.8">
+        {/* <span className="text-size-13 text-contentColor dark:text-contentColor-dark leading-1.8">
           <i className="icofont-ui-rotation"></i> 45-Days Money-Back Guarantee
-        </span>
+        </span> */}
       </div>
       <ul>
         <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
@@ -151,83 +164,83 @@ const CourseEnroll = ({ type, course, userId }) => {
             Instructor:
           </p>
           <p className="text-xs text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
-            D. Willaim
+            {instructorName}
           </p>
         </li>
         <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
           <p className="text-sm font-medium text-contentColor dark:text-contentColor-dark leading-1.8">
-            Start Date
+            Tanggal Mulai
           </p>
           <p className="text-xs text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
-            05 Dec 2024
+            05 Dec 2024 (belum)
           </p>
         </li>
         <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
           <p className="text-sm font-medium text-contentColor dark:text-contentColor-dark leading-1.8">
-            Total Duration
+            Total Durasi
           </p>
           <p className="text-xs text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
-            08Hrs 32Min
+            {formatDuration(duration)}
           </p>
         </li>
         <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
           <p className="text-sm font-medium text-contentColor dark:text-contentColor-dark leading-1.8">
-            Enrolled
+            Peserta Terdaftar
           </p>
           <p className="text-xs text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
-            100
+            100+ (belum)
           </p>
         </li>
         <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
           <p className="text-sm font-medium text-contentColor dark:text-contentColor-dark leading-1.8">
-            Lectures
+            Total Materi
           </p>
           <p className="text-xs text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
-            30
+            {Number(totalLesson)}
           </p>
         </li>
         <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
           <p className="text-sm font-medium text-contentColor dark:text-contentColor-dark leading-1.8">
-            Skill Level
+            Tingkat Kesulitan
           </p>
           <p className="text-xs text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
-            Basic
+            {levelName}
           </p>
         </li>
         <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
           <p className="text-sm font-medium text-contentColor dark:text-contentColor-dark leading-1.8">
-            Language
+            Bahasa
           </p>
           <p className="text-xs text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
-            Spanish
+            {languageName}
           </p>
         </li>
-        <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
+        {/* <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
           <p className="text-sm font-medium text-contentColor dark:text-contentColor-dark leading-1.8">
-            Quiz
-          </p>
-          <p className="text-xs text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
-            Yes
-          </p>
-        </li>
-        <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
-          <p className="text-sm font-medium text-contentColor dark:text-contentColor-dark leading-1.8">
-            Certificate
+            Kuis Interaktif
           </p>
           <p className="text-xs text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
             Yes
+          </p>
+        </li> */}
+        <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
+          <p className="text-sm font-medium text-contentColor dark:text-contentColor-dark leading-1.8">
+            Sertifikat Resmi
+          </p>
+          <p className="text-xs capitalize text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
+            {certificate}
           </p>
         </li>
       </ul>
       <div className="mt-5" data-aos="fade-up">
         <p className="text-sm text-contentColor dark:text-contentColor-dark leading-1.8 text-center mb-5px">
-          More inquery about course
+          Ada Pertanyaan? Kami Siap Membantu!
         </p>
         <button
           type="submit"
           className="w-full text-xl text-primaryColor bg-whiteColor px-25px py-10px mb-10px font-bold leading-1.8 border border-primaryColor hover:text-whiteColor hover:bg-primaryColor inline-block rounded group dark:bg-whiteColor-dark dark:text-whiteColor dark:hover:bg-primaryColor"
         >
-          <i className="icofont-phone"></i> +47 333 78 901
+          <i className="icofont-phone"></i> +62 801-2345 (belum)
         </button>
       </div>
     </div>
