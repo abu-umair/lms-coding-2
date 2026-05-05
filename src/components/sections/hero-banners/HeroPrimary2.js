@@ -114,7 +114,7 @@ const HeroPrimary2 = ({ type, course }) => {
                     className="w-full h-full object-cover object-center"
                   />
                   <div className="absolute top-0 right-0 left-0 bottom-0 flex items-center justify-center z-10">
-                    <upVideo videoUrl={demoVideoSource} />
+                    <PopupVideo videoUrl={demoVideoSource} />
                   </div>
                 </div>
               ) : (
