@@ -12,6 +12,7 @@ import { useEffect } from "react";
 const CourseDetailsTab = ({ type, id, course }) => {
   const chapters = course?.chapters;
   const description = course?.description;
+  const { instructorName } = course;
 
 
   const { currentIdx, setCurrentIdx, handleTabClick } = useTab();
@@ -33,21 +34,21 @@ const CourseDetailsTab = ({ type, id, course }) => {
       ),
       content: <DescriptoinContent description={description} />,
     },
-    {
-      name: (
-        <>
-          <i className="icofont-star mr-2"></i> Reviews
-        </>
-      ),
-      content: <ReviewsContent />,
-    },
+    // {
+    //   name: (
+    //     <>
+    //       <i className="icofont-star mr-2"></i> Reviews
+    //     </>
+    //   ),
+    //   content: <ReviewsContent />,
+    // },
     {
       name: (
         <>
           <i className="icofont-teacher mr-2"></i> Instructor
         </>
       ),
-      content: <InstructorContent id={id} />,
+      content: <InstructorContent id={id} instructorName={instructorName} />,
     },
   ];
   useEffect(() => {

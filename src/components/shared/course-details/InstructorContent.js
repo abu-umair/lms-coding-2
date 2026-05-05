@@ -3,12 +3,12 @@ import Link from "next/link";
 import getAllCourses from "@/libs/getAllCourses";
 import getAllInstructors from "@/libs/getAllInstructors";
 
-const InstructorContent = ({ id }) => {
+const InstructorContent = ({ id, instructorName }) => {
   const { image, desig } = getAllInstructors()?.find(
     ({ id: idx }) => idx === id
   );
   // const { insName } = getAllCourses()?.find(({ id: idx }) => idx === id);
-  const insName = "InstructorDummy";
+  const insName = instructorName;
 
   return (
     <div>
@@ -29,26 +29,26 @@ const InstructorContent = ({ id }) => {
           {/* author name  */}
           <div className="mb-3">
             <h3 className="mb-7px">
-              <Link
-                href={`/instructors/${id}`}
+              <div
+                // href={`/instructors/${id}`}
                 className="text-xl font-bold text-blackColor2 dark:text-blackColor2-dark hover:text-primaryColor dark:hover:text-primaryColor"
               >
                 {insName ? insName : "Rosalina D. Willaim"}
-              </Link>
+              </div>
             </h3>
             <p className="text-xs text-contentColor2 dark:text-contentColor2-dark">
-              Blogger/  
+              Blogger/ (belum)
             </p>
           </div>
           {/* description  */}
           <p className="text-sm text-contentColor dark:text-contentColor-dark mb-15px leading-26px">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
+            (belum) Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the
             {"industry's"} standard dummy text ever since the 1500s, when an
             unknown printer took a galley
           </p>
           {/* social  */}
-          <div>
+          {/* <div>
             <ul className="flex gap-10px items-center">
               <li>
                 <a
@@ -83,7 +83,7 @@ const InstructorContent = ({ id }) => {
                 </a>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
