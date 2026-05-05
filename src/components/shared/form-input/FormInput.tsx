@@ -1,16 +1,49 @@
-import React, { useEffect, useState } from 'react'
-import { UseFormRegister, FieldErrors, Path } from 'react-hook-form';
+import dynamic from 'next/dynamic';
+import React, { useEffect, useState, ComponentProps } from 'react'
+import { UseFormRegister, FieldErrors, Path, Control, Controller } from 'react-hook-form';
+import "react-quill/dist/quill.snow.css"; // Import styles
 
+// Ambil tipe props secara dinamis
+type QuillProps = ComponentProps<typeof import('react-quill')>;
+
+const DynamicReactQuill = dynamic<QuillProps>(
+    async () => {
+        const { default: RQ } = await import("react-quill");
+        return RQ;
+    },
+    {
+        ssr: false,
+        loading: () => <div className="h-[210px] bg-gray-100 animate-pulse rounded-md" />
+    }
+);
+
+// 1. Tentukan module toolbar
+const modules = {
+    toolbar: [
+        [{ header: [1, 2, 3, 4, 5, 6, false] }], // Menambahkan 4, 5, 6
+        ["bold", "italic", "underline", "strike"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["clean"],
+    ],
+};
+
+// 2. Tentukan formats yang diizinkan
+const formats = [
+    "header",
+    "bold", "italic", "underline", "strike",
+    "list", "bullet",
+];
 
 interface FormInputProps<T extends Record<string, any>> {
     label?: string;
-    type: "text" | "password" | "checkbox" | "textarea" | "image" | "select" | 'hidden' | 'number'; //? type nya bisa text atau password
+    type: "text" | "password" | "checkbox" | "textarea" | "image" | "select" | 'hidden' | 'number' | 'editor'; //? type nya bisa text atau password
     placeholder?: string //?tidak wajib, (bisa dibuat optional)
     register: UseFormRegister<T>;
     name: Path<T>;
     errors: FieldErrors<T>;
     disabled?: boolean;
     className?: string;
+    control?: Control<T>;
     isInputCourse?: boolean;
     lableRequired?: boolean;
     watchValueImg?: any;
@@ -27,6 +60,7 @@ function FormInput<T extends Record<string, any>>({
     errors,
     disabled,
     className = "", // default string kosong
+    control,
     isInputCourse,
     lableRequired,
     watchValueImg,
@@ -71,6 +105,29 @@ function FormInput<T extends Record<string, any>>({
                     {...register(name)}
                 />
             )
+        }
+
+        // 1. Tipe Editor (ReactQuill)
+        if (type === "editor" && control) {
+            return (
+                <Controller
+                    name={name}
+                    control={control}
+                    render={({ field }) => (
+                        <DynamicReactQuill // Gunakan nama variabel yang baru
+                            theme="snow"
+                            modules={modules} // Masukkan modules
+                            formats={formats} // Masukkan formats
+                            value={field.value || ""}
+                            onChange={(content) => field.onChange(content)} // Pastikan onChange menangkap konten
+                            placeholder={placeholder}
+                            readOnly={disabled}
+                            className={`bg-white mb-6 pb-12  ${errorField ? 'border-red-500' : ''}`}
+                            style={{ height: '200px' }}
+                        />
+                    )}
+                />
+            );
         }
 
         // 3. Tipe Image/File

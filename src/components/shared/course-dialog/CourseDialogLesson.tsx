@@ -41,13 +41,15 @@ const isPreviewOptions = [
 
 
 export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, courseId, chapterId, onSuccessLessonAdd, initialData, nextOrder }: CourseDialogLessonProps) => {
+
     const [open, setOpen] = useState<boolean>(false);
     const { callApi, isLoading } = useGrpcApi();
 
 
+
     const isEditMode = !!initialData?.id;
 
-    const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<LessonFormData>({
+    const { register, handleSubmit, control, reset, watch, setValue, formState: { errors } } = useForm<LessonFormData>({
         resolver: zodResolver(getLessonSchema(isEditMode)) as any,
         defaultValues: {
             // instructor_id: "11",
@@ -180,12 +182,14 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                                     <FormInput
                                         label="Description"
                                         name="description"
-                                        type="textarea"
+                                        type="editor" // Ubah type menjadi 'editor'
                                         placeholder="Masukkan Description lesson"
                                         register={register}
+                                        control={control} // WAJIB dikirim untuk tipe editor
                                         errors={errors}
                                         disabled={isLoading}
                                         isInputCourse={true}
+                                    // lableRequired={true}
                                     />
 
                                     <FormInput

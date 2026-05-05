@@ -109,3 +109,26 @@ npm install @tanstack/react-query
 npm install lodash.debounce
 
 ```
+
+## menambahkan --turbo agar loadingnya devlopment cepat  (TETAPI TIDAK BISA)
+``` bash
+npm install lodash.debounce
+
+```
+
+## install react quil (text editor (WYSIWYG))
+``` bash
+npm install react-quill
+
+```
+
+
+pada course:
+untuk inputan course role instructor
+1. ubah diskon menjadi persentase, kemudian sistem menampilkan final harga, kemudian ubah di detail dan di home
+
+2. tambahkan 'Tanggal Mulai' untuk memulai pelajaran
+3. is_preview yang akan diinputkan oleh instructor
+4. pada bisa menambahkan field array utk kebutuhan Why search Is Important ? 
+5. menambahkan foto instructor
+
