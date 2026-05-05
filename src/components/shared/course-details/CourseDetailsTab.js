@@ -9,7 +9,10 @@ import CourseTabButton from "../buttons/CourseTabButton";
 import TabContentWrapper from "../wrappers/TabContentWrapper";
 import { useEffect } from "react";
 
-const CourseDetailsTab = ({ type, id, chapters }) => {
+const CourseDetailsTab = ({ type, id, course }) => {
+  const chapters = course?.chapters;
+  const description = course?.description;
+
 
   const { currentIdx, setCurrentIdx, handleTabClick } = useTab();
   const tabButtons = [
@@ -28,7 +31,7 @@ const CourseDetailsTab = ({ type, id, chapters }) => {
           <i className="icofont-paper mr-2"></i> Description
         </>
       ),
-      content: <DescriptoinContent />,
+      content: <DescriptoinContent description={description} />,
     },
     {
       name: (

@@ -17,7 +17,6 @@ const CourseDetailsPrimary = ({ type, course, userId }) => {
   cid = cid % 6 ? cid % 6 : 6;
 
   const lesson = course?.lesson || "333";
-  const chapters = course?.chapters;
   const insName = course?.categories || "test";
   const categories = course?.categories || "test";
   // Ambil ID untuk keperluan Tab (jika diperlukan)
@@ -225,7 +224,7 @@ const CourseDetailsPrimary = ({ type, course, userId }) => {
                   </>
                 )}
                 {/* course tab  */}
-                <CourseDetailsTab id={cid} type={type} chapters={chapters} />
+                <CourseDetailsTab id={cid} type={type} course={course} />
                 <div className="md:col-start-5 md:col-span-8 mb-5">
                   <h4
                     className="text-2xl font-bold text-blackColor dark:text-blackColor-dark mb-15px !leading-38px"
