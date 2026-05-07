@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 export const generateMetadata = ({ params }) => {
     const { status } = params;
-    if (status !== "success") {
+    if (status !== "success" && status !== "failure") {
         return notFound();
     }
 
@@ -46,12 +46,6 @@ const Orders = async ({ params }) => {
     if (!finalStatus.items || finalStatus.items.length === 0) {
         redirect("/");
     }
-
-
-    if (finalStatus.orderStatusCode !== ORDER_STATUS_PAID) {
-        redirect(`/order/${id}`)
-    }
-
 
     return (
         <PageWrapper>

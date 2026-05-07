@@ -2,7 +2,7 @@ import { getOrderClient } from "@/api/grpc/client";
 import OrderMain from "@/components/layout/main/OrderMain";
 import ThemeController from "@/components/shared/others/ThemeController";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
-import { ORDER_STATUS_PAID } from "@/constants/order";
+import { ORDER_STATUS_EXPIRED, ORDER_STATUS_PAID } from "@/constants/order";
 import { authOptions } from "@/libs/authOptions";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -40,6 +40,10 @@ const Orders = async ({ params }) => {
 
     if (finalStatus.orderStatusCode === ORDER_STATUS_PAID) {
         redirect(`/order/${id}/success`)
+    }
+
+    if (finalStatus.orderStatusCode === ORDER_STATUS_EXPIRED) {
+        redirect(`/order/${id}/failure`)
     }
 
     //* 3. Cek jika response tidak memiliki data atau ID tidak ditemukan
