@@ -91,7 +91,7 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
   }, []);
 
 
-  const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<CourseFormData>({
+  const { register, handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<CourseFormData>({
     resolver: zodResolver(getCourseSchema(isNextMode)) as any,
     defaultValues: {
 
@@ -578,14 +578,15 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
                           <FormInput
                             label="Course Description"
                             name="description"
-                            type="textarea"
-                            // placeholder=""
+                            type="editor" // Ubah type menjadi 'editor'
+                            placeholder="Masukkan Description lesson"
                             register={register}
+                            control={control} // WAJIB dikirim untuk tipe editor
                             errors={errors}
                             disabled={isLoading}
                             isInputCourse={true}
+                          // lableRequired={true}
                           />
-
                           <div className="mt-15px">
                             <ButtonPrimary
                               type={"submit"}

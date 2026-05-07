@@ -90,7 +90,7 @@ message CreateCourseRequest {
   optional string thumbnail = 12 [(buf.validate.field).string = { max_len: 255 }];
   optional string demo_video_storage = 13 [(buf.validate.field).string = { max_len: 255 }];
   optional string demo_video_source = 14 [(buf.validate.field).string = { max_len: 255 }];
-  optional string description = 15 [(buf.validate.field).string = { max_len: 255 }];
+  optional string description = 15 ;
   optional int32 capacity = 16 [(buf.validate.field).int32.gte = 0];
   optional string price = 17 [(buf.validate.field).string = { pattern: "^[0-9]+(\\.[0-9]{1,2})?$" }];
   optional string discount = 18 [(buf.validate.field).string = { pattern: "^[0-9]+(\\.[0-9]{1,2})?$" }];
@@ -168,7 +168,7 @@ message EditCourseRequest {
   optional string thumbnail = 12 [(buf.validate.field).string = { max_len: 255 }];
   optional string demo_video_storage = 13 [(buf.validate.field).string = { max_len: 255 }];
   optional string demo_video_source = 14 [(buf.validate.field).string = { max_len: 255 }];
-  optional string description = 15 [(buf.validate.field).string = { max_len: 255 }];
+  optional string description = 15 ;
   optional int32 capacity = 16 [(buf.validate.field).int32.gte = 0];
   optional string price = 17 [(buf.validate.field).string = { pattern: "^[0-9]+(\\.[0-9]{1,2})?$" }];
   optional string discount = 18 [(buf.validate.field).string = { pattern: "^[0-9]+(\\.[0-9]{1,2})?$" }];
@@ -297,6 +297,8 @@ message Lesson {
   int32 order_lesson = 5;
   string chapter_id = 6;
   string course_id = 7;
+  int32  is_preview = 8;
+
 }
 
 message Chapter {
@@ -388,5 +390,11 @@ message DetailCourseGuestResponse {
   optional string image_file_name = 33;
   repeated Chapter chapters = 34;
   optional int64 total_sold = 35;
+  optional int64 total_lesson = 36;
+  optional string category_name = 37;
+  optional string level_name = 38;
+  optional string language_name = 39;
+  optional string instructor_name = 40;
+
 
 }
