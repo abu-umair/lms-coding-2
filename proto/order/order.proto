@@ -88,7 +88,7 @@ string status_code = 4;
 double total = 5;
 google.protobuf.Timestamp created_at = 6;
 repeated ListOrderResponseItemCourse courses = 7;
-string xendit_invoice_url = 8;
+string flip_invoice_url = 8;
 }
 
 message ListOrderResponse {
@@ -119,7 +119,7 @@ message DetailOrderResponse {
   string notes = 7;
   string order_status_code = 8;
   google.protobuf.Timestamp created_at = 9;
-  string xendit_invoice_url = 10;
+  string flip_invoice_url = 10;
   repeated DetailOrderResponseItem items = 11;
   double total = 12;
   google.protobuf.Timestamp expired_at = 13;

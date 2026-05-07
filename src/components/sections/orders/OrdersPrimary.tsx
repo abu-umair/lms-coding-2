@@ -12,9 +12,9 @@ type OrderStatus = "unpaid";
 
 const OrdersPrimary = ({ orderData }) => {
     const router = useRouter();
-    const { number, total, orderStatusCode, expiredAt, xenditInvoiceUrl } = orderData;
+    const { number, total, orderStatusCode, expiredAt, flipInvoiceUrl } = orderData;
     const expiredAtTime = convertTimestampToTime(expiredAt);
-
+    const flipUrlFinal = `https://${flipInvoiceUrl}`;
 
     const status: OrderStatus = orderStatusCode;
 
@@ -77,7 +77,7 @@ const OrdersPrimary = ({ orderData }) => {
             primaryButton: "Cek Status",
             primaryAction: () => router.push("/orders"),
             secondaryButton: "Bayar Sekarang",
-            secondaryAction: () => router.push(xenditInvoiceUrl),
+            secondaryAction: () => router.push(flipUrlFinal),
         },
     } as const;
 
