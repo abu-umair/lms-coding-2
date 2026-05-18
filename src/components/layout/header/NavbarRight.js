@@ -1,23 +1,17 @@
-"use client";
 import React from "react";
 import DropdownCart from "./DropdownCart";
 import Link from "next/link";
 import MobileMenuOpen from "@/components/shared/buttons/MobileMenuOpen";
 import useIsTrue from "@/hooks/useIsTrue";
 import LoginButton from "./LoginButton";
-import { useSession } from 'next-auth/react';
 
-const NavbarRight = ({ cartCount }) => {
+
+const NavbarRight = ({ cartCount, verifiedAt, email, session }) => {
   const isHome4 = useIsTrue("/home-4");
   const isHome4Dark = useIsTrue("/home-4-dark");
   const isHome5 = useIsTrue("/home-5");
   const isHome5Dark = useIsTrue("/home-5-dark");
   const isHome2Dark = useIsTrue("/home-2-dark");
-
-  const { data: session, status } = useSession();
-  const isAuthenticated = status === 'authenticated';
-  const userRole = session?.user?.role;
-  const isUser = userRole === 'user';
 
 
   return (
@@ -27,7 +21,11 @@ const NavbarRight = ({ cartCount }) => {
           <li className="px-5 lg:px-10px 2xl:px-5 lg:py-4 2xl:py-26px 3xl:py-9 group">
             {/* dropdown menu */}
             {/* {isAuthenticated && isUser && <DropdownCart />} */}
-            <DropdownCart cartCount={cartCount} />
+            <DropdownCart
+              cartCount={cartCount}
+              verifiedAt={verifiedAt}
+              email={email}
+              session={session} />
           </li>
         )}
         {isHome4 || isHome4Dark || isHome5 || isHome5Dark ? (

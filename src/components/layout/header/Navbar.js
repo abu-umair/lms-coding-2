@@ -6,7 +6,7 @@ import NavbarRight from "./NavbarRight";
 import NavItems2 from "./NavItems2";
 import useIsTrue from "@/hooks/useIsTrue";
 import NavbarTop from "./NavbarTop";
-const Navbar = ({ cartCount }) => {
+const Navbar = ({ cartCount, verifiedAt, email, session }) => {
   const isHome1 = useIsTrue("/");
   const isHome1Dark = useIsTrue("/home-1-dark");
   const isHome2 = useIsTrue("/home-2");
@@ -49,7 +49,12 @@ const Navbar = ({ cartCount }) => {
             {isHome2Dark ? <NavItems2 /> : <NavItems />}
 
             {/* navbar right */}
-            <NavbarRight isHome2Dark={isHome2Dark} cartCount={cartCount} />
+            <NavbarRight
+              isHome2Dark={isHome2Dark}
+              cartCount={cartCount}
+              verifiedAt={verifiedAt}
+              email={email}
+              session={session} />
           </div>
         </div>
       </nav>

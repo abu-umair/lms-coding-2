@@ -6,9 +6,18 @@ import useIsTrue from "@/hooks/useIsTrue";
 import { useCartContext } from "@/contexts/CartContext";
 import { useQuery } from "@tanstack/react-query";
 import { getCartClient } from "@/api/grpc/client";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+
 
 const DropdownCart = ({ isHeaderTop, cartCount }) => {
   const { cartProducts, deleteProductFromCart } = useCartContext();
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === 'authenticated';
+  const email = session?.user?.email;
+  const verifiedAt = session?.user?.verifiedAt;
+  console.log("isi dari :", session);
+
 
   // calculate total price
   const totalPrice = countTotalPrice(cartProducts);
@@ -17,6 +26,18 @@ const DropdownCart = ({ isHeaderTop, cartCount }) => {
   const isHome5 = useIsTrue("/home-5");
   const isHome5Dark = useIsTrue("/home-5-dark");
   const totalProduct = cartProducts?.length;
+  const router = useRouter();
+  const userVerified = isAuthenticated && verifiedAt;
+  const userNotVerified = isAuthenticated && !verifiedAt;
+
+  let cartUrl = "/login";
+
+  if (userVerified) {
+    cartUrl = "/carts";
+  } else if (userNotVerified) {
+    cartUrl = `/auth/verify-email-required?email=${encodeURIComponent(email)}`;
+  }
+
 
   const { data: liveCartCount } = useQuery({
     queryKey: ["cart-count"],
@@ -26,11 +47,13 @@ const DropdownCart = ({ isHeaderTop, cartCount }) => {
     },
     // INI KUNCINYA: Gunakan data dari server sebagai nilai awal
     initialData: cartCount,
+    enabled: !!userVerified //?(true) 
+    //? hanya hit API jika user login dan sudah terverifikasi
   });
   return (
     <>
       <Link
-        href="/carts"
+        href={cartUrl}
         className={`relative ${isHeaderTop
           ? "block"
           : isHome4 || isHome4Dark || isHome5 || isHome5Dark
