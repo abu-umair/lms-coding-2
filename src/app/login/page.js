@@ -1,7 +1,7 @@
 import LoginMain from "@/components/layout/main/LoginMain";
 import ThemeController from "@/components/shared/others/ThemeController";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
-import GuestGuard from "@/components/auth/GuestGuard";
+// import GuestGuard from "@/components/auth/GuestGuard";
 
 
 export const metadata = {
@@ -15,17 +15,17 @@ const Login = ({ searchParams }) => {
 
 
   return (
-    <GuestGuard>
-      <PageWrapper>
-        <main>
-          <LoginMain
-            message={message}
-            email={email}
-          />
-          <ThemeController />
-        </main>
-      </PageWrapper>
-    </GuestGuard>
+    // <GuestGuard>
+    <PageWrapper>
+      <main>
+        <LoginMain
+          message={message}
+          email={email}
+        />
+        <ThemeController />
+      </main>
+    </PageWrapper>
+    // </GuestGuard>
   );
 };
 

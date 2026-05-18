@@ -227,7 +227,7 @@ const SidebarDashboard = () => {
       items: [
         {
           name: "Dashboard",
-          path: "/dashboards/instructor-dashboard",
+          path: "/dashboards/instructor/instructor-dashboard",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -248,7 +248,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "My Profile",
-          path: "/dashboards/instructor-profile",
+          path: "/dashboards/instructor/instructor-profile",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -269,7 +269,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "Message",
-          path: "/dashboards/instructor-message",
+          path: "/dashboards/instructor/instructor-message",
           tag: 12,
           icon: (
             <svg
@@ -291,7 +291,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "Wishlist",
-          path: "/dashboards/instructor-wishlist",
+          path: "/dashboards/instructor/instructor-wishlist",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -311,7 +311,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "Reviews",
-          path: "/dashboards/instructor-reviews",
+          path: "/dashboards/instructor/instructor-reviews",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -331,7 +331,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "My Quiz Attempts",
-          path: "/dashboards/instructor-my-quiz-attempts",
+          path: "/dashboards/instructor/instructor-my-quiz-attempts",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -353,7 +353,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "Order History",
-          path: "/dashboards/instructor-order-history",
+          path: "/dashboards/instructor/instructor-order-history",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -380,7 +380,7 @@ const SidebarDashboard = () => {
       items: [
         {
           name: "My Course",
-          path: "/dashboards/instructor-course",
+          path: "/dashboards/instructor/instructor-course",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -402,7 +402,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "Announcments",
-          path: "/dashboards/instructor-announcments",
+          path: "/dashboards/instructor/instructor-announcments",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -423,7 +423,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "Quiz Attempt",
-          path: "/dashboards/instructor-quiz-attempts",
+          path: "/dashboards/instructor/instructor-quiz-attempts",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -443,7 +443,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "Assignments",
-          path: "/dashboards/instructor-assignments",
+          path: "/dashboards/instructor/instructor-assignments",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -470,7 +470,7 @@ const SidebarDashboard = () => {
       items: [
         {
           name: "Settings",
-          path: "/dashboards/instructor-settings",
+          path: "/dashboards/instructor/instructor-settings",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -521,7 +521,7 @@ const SidebarDashboard = () => {
       items: [
         {
           name: "Dashboard",
-          path: "/dashboards/student-dashboard",
+          path: "/dashboards/student/student-dashboard",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -542,7 +542,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "My Profile",
-          path: "/dashboards/student-profile",
+          path: "/dashboards/student/student-profile",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -563,7 +563,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "Message",
-          path: "/dashboards/student-message",
+          path: "/dashboards/student/student-message",
           tag: 12,
           icon: (
             <svg
@@ -585,7 +585,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "Enrolled Courses",
-          path: "/dashboards/student-enrolled-courses",
+          path: "/dashboards/student/student-enrolled-courses",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -605,7 +605,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "Wishlist",
-          path: "/dashboards/student-wishlist",
+          path: "/dashboards/student/student-wishlist",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -625,7 +625,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "Reviews",
-          path: "/dashboards/student-reviews",
+          path: "/dashboards/student/student-reviews",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -645,7 +645,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "My Quiz Attempts",
-          path: "/dashboards/student-my-quiz-attempts",
+          path: "/dashboards/student/student-my-quiz-attempts",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -667,7 +667,7 @@ const SidebarDashboard = () => {
         },
         {
           name: "Assignments",
-          path: "/dashboards/student-assignments",
+          path: "/dashboards/student/student-assignments",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -688,7 +688,7 @@ const SidebarDashboard = () => {
         },
         {
           name: " Settings",
-          path: "/dashboards/student-settings",
+          path: "/dashboards/student/student-settings",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
