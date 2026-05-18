@@ -25,6 +25,23 @@ export default withAuth(
         }
 
         // -------------------------------------------------------------
+        // 2. VERIFY ERROR PAGE GUARD (Pindahan dari Server Component Anda)
+        // -------------------------------------------------------------
+        if (path.startsWith("/auth/verify-error") || path.startsWith("/auth/verify-required")) {
+            // Kasus A: User SUDAH login DAN SUDAH terverifikasi (userVerified)
+            if (token && token?.verifiedAt) {
+                return NextResponse.redirect(new URL("/", req.url));
+            }
+            // Kasus B: User BELUM login sama sekali (isGuest)
+            if (!token) {
+                return NextResponse.redirect(new URL("/login", req.url));
+            }
+            // Kasus C: User sudah login tapi BELUM verifikasi (isUnverifiedUser)
+            // Biarkan mereka tetap di halaman ini untuk melihat pesan error / klik kirim ulang email
+            return NextResponse.next();
+        }
+
+        // -------------------------------------------------------------
         // 2. EMAIL VERIFICATION GUARD (Laravel Style Global)
         // -------------------------------------------------------------
         // Semua yang masuk area dashboards wajib diverifikasi email-nya
@@ -62,7 +79,10 @@ export default withAuth(
             authorized: ({ token, req }) => {
                 const path = req.nextUrl.pathname;
                 // Izinkan halaman login & register diakses tanpa token (untuk GuestGuard)
-                if (path.startsWith("/login") || path.startsWith("/register")) {
+                if (path.startsWith("/login") ||
+                    path.startsWith("/register") ||
+                    path.startsWith("/auth/verify-error") ||
+                    path.startsWith("/auth/verify-required")) {
                     return true;
                 }
                 // Rute lainnya (dashboards) WAJIB punya token (wajib login)
@@ -77,6 +97,8 @@ export const config = {
     matcher: [
         "/dashboards/:path*",
         "/login",
-        "/register"
+        "/register",
+        "/auth/verify-error",
+        "/auth/verify-required"
     ],
 };
