@@ -8,12 +8,20 @@ export const metadata = {
   title: "Login/Register | Edurock - Education LMS Template",
   description: "Login/Register | Edurock - Education LMS Template",
 };
-const Login = () => {
+const Login = ({ searchParams }) => {
+
+  const message = searchParams.message;
+  const email = searchParams.email;
+
+
   return (
     <GuestGuard>
       <PageWrapper>
         <main>
-          <LoginMain />
+          <LoginMain
+            message={message}
+            email={email}
+          />
           <ThemeController />
         </main>
       </PageWrapper>

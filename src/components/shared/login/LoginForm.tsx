@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 
 
 
-const LoginForm = () => {
+const LoginForm = ({ email }) => {
   // const isAuthenticated = status === 'authenticated';
   // const [serverError, setServerError] = useState<string | null>(null);
   const router = useRouter();
@@ -27,7 +27,7 @@ const LoginForm = () => {
   } = useForm<LoginFormSchema>({
     resolver: zodResolver(LoginSchema), // <--- Jembatan Zod & Hook Form
     defaultValues: {
-      email: "",
+      email: email ?? "",
       password: "",
     },
   });
@@ -70,7 +70,7 @@ const LoginForm = () => {
 
         router.push("/dashboards/admin-dashboard");
       } else {
-        router.push("/");
+        router.push(`/auth/verify-email-required?email=${values.email}`);
       }
       router.refresh(); // Opsional: Memastikan data session terbaru terambil
     }

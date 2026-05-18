@@ -9,16 +9,26 @@ import shapImage3 from "@/assets/images/education/hero_shape3.png";
 import shapImage4 from "@/assets/images/education/hero_shape4.png";
 import shapImage5 from "@/assets/images/education/hero_shape5.png";
 import useTab from "@/hooks/useTab";
+import toast from "react-hot-toast";
 
-const LoginTab = () => {
+const LoginTab = ({ message, email }) => {
   const { currentIdx, handleTabClick } = useTab();
   const tabButtons = [
-    { name: "Login", content: <LoginForm /> },
+    { name: "Login", content: <LoginForm email={email} /> },
     {
       name: " Sing up",
       content: <SignUpForm />,
     },
   ];
+
+  if (message === "verified") {
+    toast.success("Email berhasil diverifikasi");
+  }
+
+  if (message === "already_verified") {
+    toast.success("Email Anda sudah terverifikasi");
+  }
+
   return (
     <section className="relative">
       <div className="container py-100px">
