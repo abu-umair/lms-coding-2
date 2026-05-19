@@ -6,17 +6,30 @@ import { useSession } from 'next-auth/react';
 const LoginButton = () => {
   const { data: session, status } = useSession();
   const isAuthenticated = status === 'authenticated';
+  const email = session?.user?.email;
   const userRole = session?.user?.role;
+  const verifiedAt = session?.user?.verifiedAt;
+  const isLoading = status === 'loading';
+  const userVerified = isAuthenticated && verifiedAt;
+  const userNotVerified = isAuthenticated && !verifiedAt;
 
   const isInstructor = userRole === 'instructor';
   const isUser = userRole === 'user';
   const isHome2Dark = useIsTrue("/home-2-dark");
 
-  const dashboardUrl = isAuthenticated && isInstructor
-    ? '/dashboards/instructor-dashboard'
-    : isAuthenticated && isUser
-      ? '/dashboards/student-dashboard'
-      : '/login';
+  if (isLoading) {
+    return (
+      <div className="w-[45px] h-[34px] animate-pulse bg-slate-200 rounded-standard mr-[7px] 2xl:mr-15px" />
+    );
+  }
+
+  let dashboardUrl = '/login';
+
+  if (userVerified) {
+    dashboardUrl = "/dashboards";
+  } else if (userNotVerified) {
+    dashboardUrl = `/auth/verify-email-required?email=${encodeURIComponent(email)}`;
+  }
 
 
   return (

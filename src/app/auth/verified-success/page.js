@@ -28,8 +28,9 @@ export default async function VerifiedSuccessPage({ searchParams }) {
         console.error("LOGOUT ERROR:", error);
     }
 
-    // redirect("message=logout")
-    redirect(`/auth/logout-handler?callbackUrl=/login?message=verified&email=${email}`);
+    // Bungkus URL tujuan akhir dengan encodeURIComponent agar karakter '&' tidak merusak query string
+    const targetUrl = `/login?message=verified&email=${encodeURIComponent(email)}`;
+    redirect(`/auth/logout-handler?callbackUrl=${encodeURIComponent(targetUrl)}`);
     // redirect(`/login?message=verified&email=${email}`);
 
 }
