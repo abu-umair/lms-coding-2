@@ -10,6 +10,7 @@ import shapImage4 from "@/assets/images/education/hero_shape4.png";
 import shapImage5 from "@/assets/images/education/hero_shape5.png";
 import useTab from "@/hooks/useTab";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 const LoginTab = ({ message, email }) => {
   const { currentIdx, handleTabClick } = useTab();
@@ -21,13 +22,15 @@ const LoginTab = ({ message, email }) => {
     },
   ];
 
-  if (message === "verified") {
-    toast.success("Email berhasil diverifikasi");
-  }
+  useEffect(() => {
+    if (message === "verified") {
+      toast.success("Email berhasil diverifikasi");
+    }
 
-  if (message === "already_verified") {
-    toast.success("Email Anda sudah terverifikasi");
-  }
+    if (message === "already_verified") {
+      toast.success("Email Anda sudah terverifikasi");
+    }
+  }, [message]);
 
   return (
     <section className="relative">
