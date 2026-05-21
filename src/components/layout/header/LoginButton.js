@@ -26,7 +26,17 @@ const LoginButton = () => {
   let dashboardUrl = '/login';
 
   if (userVerified) {
-    dashboardUrl = "/dashboards";
+    if (userRole === 'instructor') {
+      dashboardUrl = "/dashboards/instructor/instructor-dashboard";
+    } else if (userRole === 'user') {
+      dashboardUrl = "/dashboards/student/student-dashboard";
+    }
+    else if (userRole === 'admin') {
+      dashboardUrl = "/dashboards/admin/admin-dashboard";
+    } else {
+      dashboardUrl = "/dashboards";
+    }
+
   } else if (userNotVerified) {
     dashboardUrl = `/auth/verify-email-required?email=${encodeURIComponent(email)}`;
   }
