@@ -5,12 +5,15 @@ import YouTube from "react-youtube"; // Import library baru
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
 import { getWatchHistoryClient } from "@/api/grpc/client";
 import CourseProgressBar from "@/libs/CourseProgressBar";
+import DocumentViewer from "@/components/shared/lessons/DocumentViewer";
 
 
 const LessonPrimary = ({ course, history: initialHistory }) => {
   const { callApi, isLoading } = useGrpcApi();
   const [localHistory, setLocalHistory] = useState(initialHistory);
   const [activeLesson, setActiveLesson] = useState(null);
+  console.log("course penambahan", course);
+
 
   // *** TAMBAHAN 1: useRef untuk akses player di luar event YouTube ***
   const playerRef = useRef(null);
@@ -228,10 +231,14 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
   const handleNavigation = async (lesson) => {
     if (lesson) {
       // Simpan menit terakhir video lama jika perlu sebelum pindah
-      if (playerRef.current) {
-        const lastTime = playerRef.current.getCurrentTime();
-        // Simpan progress video yang sedang aktif SEBELUM pindah ke video baru
-        await touchLessonUpdateAt(activeLesson, lastTime);
+      if (activeLesson?.storageLesson && playerRef.current) {
+        try {
+          const lastTime = playerRef.current.getCurrentTime();
+          // Simpan progress video yang sedang aktif SEBELUM pindah ke video baru
+          await touchLessonUpdateAt(activeLesson, lastTime);
+        } catch (e) {
+          console.log("Abaikan penandaan waktu video");
+        }
       }
 
       setActiveLesson(lesson);
@@ -256,7 +263,7 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
               chapters={course?.chapters}
               onSelectLesson={(lesson) => {
                 // *** TAMBAHAN 5: Sebelum pindah, simpan menit terakhir video lama ***
-                if (playerRef.current) {
+                if (activeLesson?.storageLesson && playerRef.current) {
                   touchLessonUpdateAt(activeLesson, playerRef.current.getCurrentTime());
                 }
                 setActiveLesson(lesson)
@@ -284,7 +291,7 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
                 </a>
               </div>
 
-              <div className="aspect-[16/9]">
+              <div className={activeLesson?.filePath ? "w-full h-[70vh] rounded-lg overflow-hidden border border-borderColor" : "aspect-[16/9]"}>
                 {activeLesson?.storageLesson ? (
                   <YouTube
                     // *** TAMBAHAN 6: Gunakan fungsi getID agar dinamis ***
@@ -297,6 +304,18 @@ const LessonPrimary = ({ course, history: initialHistory }) => {
                     containerClassName="w-full h-full"
                     // Properti key memaksa player reload saat ganti lesson
                     key={activeLesson.id}
+                  />
+                ) : activeLesson?.filePath ? (
+                  // OPSI 2: KONTEN BERBENTUK DOKUMEN (PDF, WORD, DLL)
+                  // Asumsikan URL berkas mengarah ke storage nginx Anda, misal: http://localhost:3000/storage/...
+                  <DocumentViewer
+                    url={activeLesson.filePath}
+                    onComplete={() => {
+                      console.log("Dokumen dibaca, set otomatis complete!");
+                      // Otomatis tandai centang selesai di local state & database gRPC
+                      handleUpdateProgress(activeLesson, false, activeLesson.id);
+                      touchLessonUpdateAt(activeLesson, 0);
+                    }}
                   />
                 ) : (
                   <div className="flex items-center justify-center h-full text-white">
