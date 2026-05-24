@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { formatDuration } from "@/utils/formatDuration";
 import PopupVideoPreview from "../popup/PopupVideoPreview";
+import PopupPdfPreview from "../popup/PopupPdfPreview";
 
 const CurriculumContent = ({ chapters }) => {
   // State untuk menyimpan index bab yang sedang terbuka
@@ -59,30 +60,45 @@ const CurriculumContent = ({ chapters }) => {
 
                     <div className="content-wrapper p-10px md:px-30px">
                       <ul>
-                        {chapter.lessons?.map((lesson, lessonIdx) => (
-                          <li
-                            key={lessonIdx}
-                            className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark last:border-b-0"
-                          >
-                            <div>
-                              <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light flex items-center">
-                                <i className="icofont-video-alt mr-10px text-primaryColor"></i>
-                                {lesson.title}
-                              </h4>
-                            </div>
-                            <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center gap-4">
-                              <p className="flex items-center">
-                                <i className="icofont-clock-time mr-1"></i>{" "}
-                                {formatDuration(lesson.duration)}
-                              </p>
+                        {chapter.lessons?.map((lesson, lessonIdx) => {
 
-                              {/* Tombol Preview (Hanya jika isPreview === 1) */}
-                              {lesson.isPreview === 1 && (
-                                <PopupVideoPreview videoUrl={lesson.storageLesson} />
-                              )}
-                            </div>
-                          </li>
-                        ))}
+                          const videoUrl = lesson.storageLesson || "";
+                          const pdfUrl = lesson.filePath || "";
+                          const isPdfFile = pdfUrl.split(".").pop()?.toLowerCase() === "pdf";
+
+                          return (
+                            <li
+                              key={lessonIdx}
+                              className="py-4 flex items-center justify-between flex-wrap border-b border-borderColor dark:border-borderColor-dark last:border-b-0"
+                            >
+                              <div>
+                                <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light flex items-center">
+                                  <i className={`mr-10px text-primaryColor ${isPdfFile ? "icofont-file-pdf text-emerald-600" : "icofont-video-alt"}`}></i>
+                                  {lesson.title}
+                                </h4>
+                              </div>
+                              <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center gap-4">
+                                <p className="flex items-center">
+                                  <i className="icofont-clock-time mr-1"></i>{" "}
+                                  {formatDuration(lesson.duration)}
+                                </p>
+
+                                {/* Tombol Preview (Hanya jika isPreview === 1) */}
+                                {lesson.isPreview === 1 && (
+                                  <>
+                                    {isPdfFile ? (
+                                      // Jika file berakhiran .pdf, tampilkan preview PDF aman
+                                      <PopupPdfPreview fileUrl={pdfUrl} />
+                                    ) : (
+                                      // Jika bukan pdf (video), gunakan modal video bawaan
+                                      <PopupVideoPreview videoUrl={videoUrl} />
+                                    )}
+                                  </>
+                                )}
+                              </div>
+                            </li>
+                          )
+                        })}
                       </ul>
                     </div>
                   </div>
