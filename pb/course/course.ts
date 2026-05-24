@@ -945,6 +945,14 @@ export interface Lesson {
      * @generated from protobuf field: string course_id = 7
      */
     courseId: string;
+    /**
+     * @generated from protobuf field: int32 is_preview = 8
+     */
+    isPreview: number;
+    /**
+     * @generated from protobuf field: string file_path = 9
+     */
+    filePath: string;
 }
 /**
  * @generated from protobuf message course.Chapter
@@ -1226,6 +1234,26 @@ export interface DetailCourseGuestResponse {
      * @generated from protobuf field: optional int64 total_sold = 35
      */
     totalSold?: bigint;
+    /**
+     * @generated from protobuf field: optional int64 total_lesson = 36
+     */
+    totalLesson?: bigint;
+    /**
+     * @generated from protobuf field: optional string category_name = 37
+     */
+    categoryName?: string;
+    /**
+     * @generated from protobuf field: optional string level_name = 38
+     */
+    levelName?: string;
+    /**
+     * @generated from protobuf field: optional string language_name = 39
+     */
+    languageName?: string;
+    /**
+     * @generated from protobuf field: optional string instructor_name = 40
+     */
+    instructorName?: string;
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class GetAllCourseRequest$Type extends MessageType<GetAllCourseRequest> {
@@ -1617,7 +1645,7 @@ class CreateCourseRequest$Type extends MessageType<CreateCourseRequest> {
             { no: 12, name: "thumbnail", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
             { no: 13, name: "demo_video_storage", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
             { no: 14, name: "demo_video_source", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
-            { no: 15, name: "description", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
+            { no: 15, name: "description", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 16, name: "capacity", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/, options: { "buf.validate.field": { int32: { gte: 0 } } } },
             { no: 17, name: "price", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { pattern: "^[0-9]+(\\.[0-9]{1,2})?$" } } } },
             { no: 18, name: "discount", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { pattern: "^[0-9]+(\\.[0-9]{1,2})?$" } } } },
@@ -2220,7 +2248,7 @@ class EditCourseRequest$Type extends MessageType<EditCourseRequest> {
             { no: 12, name: "thumbnail", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
             { no: 13, name: "demo_video_storage", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
             { no: 14, name: "demo_video_source", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
-            { no: 15, name: "description", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
+            { no: 15, name: "description", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 16, name: "capacity", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/, options: { "buf.validate.field": { int32: { gte: 0 } } } },
             { no: 17, name: "price", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { pattern: "^[0-9]+(\\.[0-9]{1,2})?$" } } } },
             { no: 18, name: "discount", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { pattern: "^[0-9]+(\\.[0-9]{1,2})?$" } } } },
@@ -3302,7 +3330,9 @@ class Lesson$Type extends MessageType<Lesson> {
             { no: 4, name: "storage_lesson", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "order_lesson", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 6, name: "chapter_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 7, name: "course_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 7, name: "course_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "is_preview", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 9, name: "file_path", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<Lesson>): Lesson {
@@ -3314,6 +3344,8 @@ class Lesson$Type extends MessageType<Lesson> {
         message.orderLesson = 0;
         message.chapterId = "";
         message.courseId = "";
+        message.isPreview = 0;
+        message.filePath = "";
         if (value !== undefined)
             reflectionMergePartial<Lesson>(this, message, value);
         return message;
@@ -3343,6 +3375,12 @@ class Lesson$Type extends MessageType<Lesson> {
                     break;
                 case /* string course_id */ 7:
                     message.courseId = reader.string();
+                    break;
+                case /* int32 is_preview */ 8:
+                    message.isPreview = reader.int32();
+                    break;
+                case /* string file_path */ 9:
+                    message.filePath = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -3377,6 +3415,12 @@ class Lesson$Type extends MessageType<Lesson> {
         /* string course_id = 7; */
         if (message.courseId !== "")
             writer.tag(7, WireType.LengthDelimited).string(message.courseId);
+        /* int32 is_preview = 8; */
+        if (message.isPreview !== 0)
+            writer.tag(8, WireType.Varint).int32(message.isPreview);
+        /* string file_path = 9; */
+        if (message.filePath !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.filePath);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3892,7 +3936,12 @@ class DetailCourseGuestResponse$Type extends MessageType<DetailCourseGuestRespon
             { no: 32, name: "deleted_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 33, name: "image_file_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 34, name: "chapters", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Chapter },
-            { no: 35, name: "total_sold", kind: "scalar", opt: true, T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+            { no: 35, name: "total_sold", kind: "scalar", opt: true, T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 36, name: "total_lesson", kind: "scalar", opt: true, T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 37, name: "category_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 38, name: "level_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 39, name: "language_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 40, name: "instructor_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<DetailCourseGuestResponse>): DetailCourseGuestResponse {
@@ -4013,6 +4062,21 @@ class DetailCourseGuestResponse$Type extends MessageType<DetailCourseGuestRespon
                 case /* optional int64 total_sold */ 35:
                     message.totalSold = reader.int64().toBigInt();
                     break;
+                case /* optional int64 total_lesson */ 36:
+                    message.totalLesson = reader.int64().toBigInt();
+                    break;
+                case /* optional string category_name */ 37:
+                    message.categoryName = reader.string();
+                    break;
+                case /* optional string level_name */ 38:
+                    message.levelName = reader.string();
+                    break;
+                case /* optional string language_name */ 39:
+                    message.languageName = reader.string();
+                    break;
+                case /* optional string instructor_name */ 40:
+                    message.instructorName = reader.string();
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -4130,6 +4194,21 @@ class DetailCourseGuestResponse$Type extends MessageType<DetailCourseGuestRespon
         /* optional int64 total_sold = 35; */
         if (message.totalSold !== undefined)
             writer.tag(35, WireType.Varint).int64(message.totalSold);
+        /* optional int64 total_lesson = 36; */
+        if (message.totalLesson !== undefined)
+            writer.tag(36, WireType.Varint).int64(message.totalLesson);
+        /* optional string category_name = 37; */
+        if (message.categoryName !== undefined)
+            writer.tag(37, WireType.LengthDelimited).string(message.categoryName);
+        /* optional string level_name = 38; */
+        if (message.levelName !== undefined)
+            writer.tag(38, WireType.LengthDelimited).string(message.levelName);
+        /* optional string language_name = 39; */
+        if (message.languageName !== undefined)
+            writer.tag(39, WireType.LengthDelimited).string(message.languageName);
+        /* optional string instructor_name = 40; */
+        if (message.instructorName !== undefined)
+            writer.tag(40, WireType.LengthDelimited).string(message.instructorName);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

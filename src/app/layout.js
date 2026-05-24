@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
           <TanstackProvider>
             <GrpcSyncProvider>
               <>
-                <PreloaderPrimary />
+                {/* <PreloaderPrimary /> */}
                 <Toaster
                   position="top-center"
                   reverseOrder={false}

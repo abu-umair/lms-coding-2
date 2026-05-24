@@ -16,10 +16,10 @@ interface MyJwtPayload {
     email: string;
     full_name: string;
     role: string;
+    verified_at: boolean;
 }
 
 // URL endpoint login Laravel Anda
-const LARAVEL_LOGOUT_URL = "http://127.0.0.1:8000/api/auth/logout";
 
 //* login / sign 
 export const authOptions: NextAuthOptions = {
@@ -60,6 +60,7 @@ export const authOptions: NextAuthOptions = {
                         name: decoded.full_name,
                         email: decoded.email,
                         role: decoded.role,
+                        verifiedAt: decoded.verified_at,
                         accessToken: res.response.accessToken,
                     };
 
@@ -86,11 +87,12 @@ export const authOptions: NextAuthOptions = {
     },
 
     callbacks: {
-        async jwt({ token, user }) {
+        async jwt({ token, user, trigger, session }) {
             if (user) {
                 token.id = (user as any).id;
                 token.email = (user as any).email;
                 token.role = (user as any).role;
+                token.verifiedAt = (user as any).verifiedAt;
                 token.accessToken = (user as any).accessToken;
             }
             return token;
@@ -99,6 +101,7 @@ export const authOptions: NextAuthOptions = {
             (session.user as any).id = token.id;
             (session.user as any).email = token.email;
             (session.user as any).role = token.role;
+            (session.user as any).verifiedAt = token.verifiedAt;
             (session as any).accessToken = token.accessToken;
             return session;
         },

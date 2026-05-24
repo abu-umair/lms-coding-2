@@ -213,9 +213,9 @@ export interface ListOrderResponseItem {
      */
     courses: ListOrderResponseItemCourse[];
     /**
-     * @generated from protobuf field: string xendit_invoice_url = 8
+     * @generated from protobuf field: string flip_invoice_url = 8
      */
-    xenditInvoiceUrl: string;
+    flipInvoiceUrl: string;
 }
 /**
  * @generated from protobuf message order.ListOrderResponse
@@ -307,9 +307,9 @@ export interface DetailOrderResponse {
      */
     createdAt?: Timestamp;
     /**
-     * @generated from protobuf field: string xendit_invoice_url = 10
+     * @generated from protobuf field: string flip_invoice_url = 10
      */
-    xenditInvoiceUrl: string;
+    flipInvoiceUrl: string;
     /**
      * @generated from protobuf field: repeated order.DetailOrderResponseItem items = 11
      */
@@ -935,7 +935,7 @@ class ListOrderResponseItem$Type extends MessageType<ListOrderResponseItem> {
             { no: 5, name: "total", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
             { no: 6, name: "created_at", kind: "message", T: () => Timestamp },
             { no: 7, name: "courses", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListOrderResponseItemCourse },
-            { no: 8, name: "xendit_invoice_url", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 8, name: "flip_invoice_url", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<ListOrderResponseItem>): ListOrderResponseItem {
@@ -946,7 +946,7 @@ class ListOrderResponseItem$Type extends MessageType<ListOrderResponseItem> {
         message.statusCode = "";
         message.total = 0;
         message.courses = [];
-        message.xenditInvoiceUrl = "";
+        message.flipInvoiceUrl = "";
         if (value !== undefined)
             reflectionMergePartial<ListOrderResponseItem>(this, message, value);
         return message;
@@ -977,8 +977,8 @@ class ListOrderResponseItem$Type extends MessageType<ListOrderResponseItem> {
                 case /* repeated order.ListOrderResponseItemCourse courses */ 7:
                     message.courses.push(ListOrderResponseItemCourse.internalBinaryRead(reader, reader.uint32(), options));
                     break;
-                case /* string xendit_invoice_url */ 8:
-                    message.xenditInvoiceUrl = reader.string();
+                case /* string flip_invoice_url */ 8:
+                    message.flipInvoiceUrl = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -1013,9 +1013,9 @@ class ListOrderResponseItem$Type extends MessageType<ListOrderResponseItem> {
         /* repeated order.ListOrderResponseItemCourse courses = 7; */
         for (let i = 0; i < message.courses.length; i++)
             ListOrderResponseItemCourse.internalBinaryWrite(message.courses[i], writer.tag(7, WireType.LengthDelimited).fork(), options).join();
-        /* string xendit_invoice_url = 8; */
-        if (message.xenditInvoiceUrl !== "")
-            writer.tag(8, WireType.LengthDelimited).string(message.xenditInvoiceUrl);
+        /* string flip_invoice_url = 8; */
+        if (message.flipInvoiceUrl !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.flipInvoiceUrl);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1218,7 +1218,7 @@ class DetailOrderResponse$Type extends MessageType<DetailOrderResponse> {
             { no: 7, name: "notes", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "order_status_code", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 9, name: "created_at", kind: "message", T: () => Timestamp },
-            { no: 10, name: "xendit_invoice_url", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "flip_invoice_url", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "items", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => DetailOrderResponseItem },
             { no: 12, name: "total", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
             { no: 13, name: "expired_at", kind: "message", T: () => Timestamp }
@@ -1233,7 +1233,7 @@ class DetailOrderResponse$Type extends MessageType<DetailOrderResponse> {
         message.phoneNumber = "";
         message.notes = "";
         message.orderStatusCode = "";
-        message.xenditInvoiceUrl = "";
+        message.flipInvoiceUrl = "";
         message.items = [];
         message.total = 0;
         if (value !== undefined)
@@ -1272,8 +1272,8 @@ class DetailOrderResponse$Type extends MessageType<DetailOrderResponse> {
                 case /* google.protobuf.Timestamp created_at */ 9:
                     message.createdAt = Timestamp.internalBinaryRead(reader, reader.uint32(), options, message.createdAt);
                     break;
-                case /* string xendit_invoice_url */ 10:
-                    message.xenditInvoiceUrl = reader.string();
+                case /* string flip_invoice_url */ 10:
+                    message.flipInvoiceUrl = reader.string();
                     break;
                 case /* repeated order.DetailOrderResponseItem items */ 11:
                     message.items.push(DetailOrderResponseItem.internalBinaryRead(reader, reader.uint32(), options));
@@ -1323,9 +1323,9 @@ class DetailOrderResponse$Type extends MessageType<DetailOrderResponse> {
         /* google.protobuf.Timestamp created_at = 9; */
         if (message.createdAt)
             Timestamp.internalBinaryWrite(message.createdAt, writer.tag(9, WireType.LengthDelimited).fork(), options).join();
-        /* string xendit_invoice_url = 10; */
-        if (message.xenditInvoiceUrl !== "")
-            writer.tag(10, WireType.LengthDelimited).string(message.xenditInvoiceUrl);
+        /* string flip_invoice_url = 10; */
+        if (message.flipInvoiceUrl !== "")
+            writer.tag(10, WireType.LengthDelimited).string(message.flipInvoiceUrl);
         /* repeated order.DetailOrderResponseItem items = 11; */
         for (let i = 0; i < message.items.length; i++)
             DetailOrderResponseItem.internalBinaryWrite(message.items[i], writer.tag(11, WireType.LengthDelimited).fork(), options).join();

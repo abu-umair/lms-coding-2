@@ -18,5 +18,41 @@
         "titleBar.inactiveBackground": "#586f6b99",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "peacock.color": "#586f6b"
+    "peacock.color": "#586f6b",
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "statement_timeout": 30000,
+                "connectionTimeoutMillis": 10000,
+                "idleTimeoutMillis": 6000000,
+                "max": 5
+            },
+            "ssh": "Enabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "sshOptions": {
+                "port": 22,
+                "host": "43.133.150.177",
+                "username": "developer",
+                "password": "mantapsungai"
+            },
+            "driver": "PostgreSQL",
+            "name": "Server Postgres lms",
+            "database": "be_lms_go",
+            "username": "developer",
+            "password": "mantapsungai"
+        },
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Local postgres LMS",
+            "database": "be_lms_go",
+            "username": "postgres",
+            "password": "12345"
+        }
+    ]
 }

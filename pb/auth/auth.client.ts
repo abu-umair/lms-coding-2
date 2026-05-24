@@ -6,6 +6,14 @@ import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { AuthService } from "./auth";
 import type { GetProfileUserResponse } from "./auth";
 import type { GetProfileUserRequest } from "./auth";
+import type { ChangePasswordPublicResponse } from "./auth";
+import type { ChangePasswordPublicRequest } from "./auth";
+import type { ForgotPasswordResponse } from "./auth";
+import type { ForgotPasswordRequest } from "./auth";
+import type { RequestVerifyResponse } from "./auth";
+import type { RequestVerifyRequest } from "./auth";
+import type { VerifyEmailResponse } from "./auth";
+import type { VerifyEmailRequest } from "./auth";
 import type { RequestOTPResponse } from "./auth";
 import type { RequestOTPRequest } from "./auth";
 import type { VerifyResponse } from "./auth";
@@ -55,6 +63,24 @@ export interface IAuthServiceClient {
      * @generated from protobuf rpc: RequestOTP
      */
     requestOTP(input: RequestOTPRequest, options?: RpcOptions): UnaryCall<RequestOTPRequest, RequestOTPResponse>;
+    /**
+     * Email link (web)
+     *
+     * @generated from protobuf rpc: VerifyEmail
+     */
+    verifyEmail(input: VerifyEmailRequest, options?: RpcOptions): UnaryCall<VerifyEmailRequest, VerifyEmailResponse>;
+    /**
+     * @generated from protobuf rpc: RequestVerify
+     */
+    requestVerify(input: RequestVerifyRequest, options?: RpcOptions): UnaryCall<RequestVerifyRequest, RequestVerifyResponse>;
+    /**
+     * @generated from protobuf rpc: ForgotPassword
+     */
+    forgotPassword(input: ForgotPasswordRequest, options?: RpcOptions): UnaryCall<ForgotPasswordRequest, ForgotPasswordResponse>;
+    /**
+     * @generated from protobuf rpc: ChangePasswordPublic
+     */
+    changePasswordPublic(input: ChangePasswordPublicRequest, options?: RpcOptions): UnaryCall<ChangePasswordPublicRequest, ChangePasswordPublicResponse>;
     /**
      * user
      *
@@ -121,12 +147,42 @@ export class AuthServiceClient implements IAuthServiceClient, ServiceInfo {
         return stackIntercept<RequestOTPRequest, RequestOTPResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * Email link (web)
+     *
+     * @generated from protobuf rpc: VerifyEmail
+     */
+    verifyEmail(input: VerifyEmailRequest, options?: RpcOptions): UnaryCall<VerifyEmailRequest, VerifyEmailResponse> {
+        const method = this.methods[7], opt = this._transport.mergeOptions(options);
+        return stackIntercept<VerifyEmailRequest, VerifyEmailResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: RequestVerify
+     */
+    requestVerify(input: RequestVerifyRequest, options?: RpcOptions): UnaryCall<RequestVerifyRequest, RequestVerifyResponse> {
+        const method = this.methods[8], opt = this._transport.mergeOptions(options);
+        return stackIntercept<RequestVerifyRequest, RequestVerifyResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: ForgotPassword
+     */
+    forgotPassword(input: ForgotPasswordRequest, options?: RpcOptions): UnaryCall<ForgotPasswordRequest, ForgotPasswordResponse> {
+        const method = this.methods[9], opt = this._transport.mergeOptions(options);
+        return stackIntercept<ForgotPasswordRequest, ForgotPasswordResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: ChangePasswordPublic
+     */
+    changePasswordPublic(input: ChangePasswordPublicRequest, options?: RpcOptions): UnaryCall<ChangePasswordPublicRequest, ChangePasswordPublicResponse> {
+        const method = this.methods[10], opt = this._transport.mergeOptions(options);
+        return stackIntercept<ChangePasswordPublicRequest, ChangePasswordPublicResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * user
      *
      * @generated from protobuf rpc: GetProfileUser
      */
     getProfileUser(input: GetProfileUserRequest, options?: RpcOptions): UnaryCall<GetProfileUserRequest, GetProfileUserResponse> {
-        const method = this.methods[7], opt = this._transport.mergeOptions(options);
+        const method = this.methods[11], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetProfileUserRequest, GetProfileUserResponse>("unary", this._transport, method, opt, input);
     }
 }

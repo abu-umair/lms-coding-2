@@ -1,0 +1,78 @@
+-- SELECT *
+-- FROM orders;
+-- SELECT * FROM user_roles;
+SELECT * FROM users;
+-- SELECT * FROM user_otps;
+-- SELECT * FROM courses;
+-- SELECT * FROM course_levels;
+-- SELECT * FROM course_categories;
+-- SELECT * FROM course_languages;
+-- SELECT * FROM course_chapters;
+-- SELECT * FROM course_chapter_lessons;
+-- DELETE FROM users WHERE email = 'wawanleite@gmail.com';
+-- DELETE FROM users WHERE email = 'mrdwnw93@gmail.com';
+-- DELETE FROM users WHERE email = 'ruangqurra@gmail.com';
+-- DELETE FROM users
+-- WHERE email IN (
+--     'ruangqurra@gmail.com',
+--     'wawanleite@gmail.com',
+--     'mrdwnw93@gmail.com',
+--     'm.ridwan@abudzar.sch.id'-- SELECT * FROM users;
+-- DELETE FROM users WHERE email = 'wawanleite@gmail.com';
+-- DELETE FROM users WHERE email = 'mrd-- SELECT * FROM user_roles;
+-- SELECT * FROM users;
+-- SELECT * FROM user_otps;
+-- SELECT * FROM courses;
+-- SELECT * FROM course_levels;
+-- SELECT * FROM course_categories;
+-- SELECT * FROM course_languages;
+-- SELECT * FROM course_chapters;
+-- SELECT * FROM course_chapter_lessons;
+-- DELETE FROM users WHERE email = 'wawanleite@gmail.com';
+-- DELETE FROM users WHERE email = 'mrdwnw93@gmail.com';
+-- DELETE FROM users WHERE email = 'ruangqurra@gmail.com';
+-- DELETE FROM users
+-- WHERE email IN (
+--     'ruangqurra@gmail.com',
+--     'wawanleite@gmail.com',
+--     'mrdwnw93@gmail.com',
+--     'm.ridwan@abudzar.sch.id'-- SELECT * FROM users;
+-- DELETE FROM users WHERE email = 'wawanleite@gmail.com';
+-- DELETE FROM users WHERE email = 'mrdwnw93@gmail.com';
+-- DEstudents3-- SELECT *
+-- FROM orders;
+-- SELECT * FROM user_roles;
+SELECT * FROM users;LETE FROM users WHERE email = 'ruangqurra@gmail.com';
+-- DELETE FROM users
+-- WHERE email IN (
+--         'ruangqurra@gmail.com',
+--         'wawanleite@gmail.com',
+--         'mrdwnw93@gmail.com',
+--         'm.ridwan@abudzar.sch.id'
+--     );
+-- SELECT *
+-- FROM orders;
+-- );
+-- DELETE FROM user_otps
+-- WHERE email IN (
+--         'ruangqurra@gmail.com',
+--         'wawanleite@gmail.com',
+--         'mrdwnw93@gmail.com',
+--         'm.ridwan@abudzar.sch.id'
+--     );
+-- wnw93@gmail.com';
+-- DELETE FROM users WHERE email = 'ruangqurra@gmail.com';
+-- DELETE FROM users
+-- WHERE email IN (
+--     'ruangqurra@gmail.com',
+--     'wawanleite@gmail.com',
+--     'mrdwnw93@gmail.com',
+--     'm.ridwan@abudzar.sch.id'
+-- );
+-- DELETE FROM user_otps
+-- WHERE email IN (
+--     'ruangqurra@gmail.com',
+--     'wawanleite@gmail.com',
+--     'mrdwnw93@gmail.com',
+--     'm.ridwan@abudzar.sch.id'
+-- );

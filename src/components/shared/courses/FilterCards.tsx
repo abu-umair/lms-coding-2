@@ -9,7 +9,7 @@ const FilterCards = async ({ type }) => {
     // 1. Tambahkan bagian Pagination & Sort
     pagination: {
       currentPage: 1,
-      itemPerPage: 6,
+      itemPerPage: 60,
       sort: {
         field: "id",
         direction: "asc"

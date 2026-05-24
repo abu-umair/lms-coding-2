@@ -12,8 +12,8 @@ import { OrderServiceClient, IOrderServiceClient } from "@/../../pb/order/order.
 import { DashboardUserServiceClient, IDashboardUserServiceClient } from "@/../../pb/dashboard_user/dashboard_user.client";
 
 
-
-const GoGrpc_LOGIN_URL = 'http://localhost:8080';
+const GoGrpc_LOGIN_URL = process.env.NEXT_PUBLIC_GRPC_LOGIN_URL
+// const GoGrpc_LOGIN_URL = 'http://127.0.0.1:8080';
 let webTransport: GrpcWebFetchTransport | null = null;
 let authClient: IAuthServiceClient | null = null;
 let courseClient: ICourseServiceClient | null = null;

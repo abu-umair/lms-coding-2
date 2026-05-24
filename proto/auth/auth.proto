@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package auth;
 
+// import "common/request_status.proto";
 import "common/base_response.proto";
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
@@ -17,6 +18,11 @@ service AuthService {
   rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
   rpc Verify(VerifyRequest) returns (VerifyResponse);
   rpc RequestOTP(RequestOTPRequest) returns (RequestOTPResponse);
+  // Email link (web)
+  rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse);
+  rpc RequestVerify(RequestVerifyRequest) returns (RequestVerifyResponse);
+  rpc ForgotPassword(ForgotPasswordRequest) returns (ForgotPasswordResponse);
+  rpc ChangePasswordPublic(ChangePasswordPublicRequest) returns (ChangePasswordPublicResponse);
   
   //user 
   rpc GetProfileUser(GetProfileUserRequest) returns (GetProfileUserResponse);
@@ -105,5 +111,49 @@ message RequestOTPRequest {
 }
 
 message RequestOTPResponse { 
+  common.BaseResponse base = 1;
+}
+
+message VerifyEmailRequest { 
+  string code_otp = 1 [(buf.validate.field).string = { min_len: 6, max_len: 255 }];
+  string email = 2 [(buf.validate.field).string = { email: true, min_len: 1, max_len: 255 }];
+}
+
+message VerifyEmailResponse { 
+  common.BaseResponse base = 1;
+
+}
+
+message RequestVerifyRequest { 
+  string email = 1 [(buf.validate.field).string = { email: true, min_len: 1, max_len: 255 }];
+
+}
+
+message RequestVerifyResponse { 
+  common.BaseResponse base = 1;
+  // common.RequestStatus status = 2;
+  // int32 retry_after_seconds = 3;
+}
+
+message ForgotPasswordRequest { 
+  string email = 1 [(buf.validate.field).string = { email: true, min_len: 1, max_len: 255 }];
+
+}
+
+message ForgotPasswordResponse { 
+  common.BaseResponse base = 1;
+  // common.RequestStatus status = 2;
+  // int32 retry_after_seconds = 3;
+}
+
+// ChangePasswordWithEmail
+message ChangePasswordPublicRequest { 
+  string code_otp = 1 [(buf.validate.field).string = { min_len: 6, max_len: 255 }];
+  string email = 2 [(buf.validate.field).string = { email: true, min_len: 1, max_len: 255 }];
+  string new_password = 3 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+  string new_password_confirmation = 4 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+}
+
+message ChangePasswordPublicResponse { 
   common.BaseResponse base = 1;
 }

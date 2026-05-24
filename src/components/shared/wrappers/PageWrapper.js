@@ -6,9 +6,15 @@ import WishlistContextProvider from "@/contexts/WshlistContext";
 import { getCartClient } from "@/api/grpc/client";
 import { authOptions } from "@/libs/authOptions";
 import { getServerSession } from "next-auth";
+
 const PageWrapper = async ({ children }) => {
   const session = await getServerSession(authOptions);
   const accessToken = session?.accessToken;
+  const verifiedAt = session?.verifiedAt;
+  const email = session?.email;
+  console.log("ini session : ", session);
+  console.log("ini accessToken : ", accessToken);
+
 
   // * 1. Default value untuk Guest
   let cartCount = 0;
@@ -22,6 +28,7 @@ const PageWrapper = async ({ children }) => {
           "authorization": `Bearer ${accessToken}`
         }
       });
+
 
       // * Konversi aman: gRPC int64 (BigInt) ke Number JS
       // * toString() menangani "1n" dan Number() mengubahnya jadi angka 1
@@ -38,7 +45,11 @@ const PageWrapper = async ({ children }) => {
     <>
       <CartContextProvider>
         {/* header */}
-        <Header cartCount={cartCount} />
+        <Header
+          cartCount={cartCount}
+          verifiedAt={verifiedAt}
+          email={email}
+          session={session} />
 
         {/* main */}
         <WishlistContextProvider>{children}</WishlistContextProvider>

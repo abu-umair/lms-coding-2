@@ -50,22 +50,23 @@ const SignUpForm = () => {
           });
 
           if (result?.ok) {
-            const currentSession = await getSession();
-            const role = (currentSession?.user as any)?.role;
+            router.push(`/auth/verify-email-required?email=${encodeURIComponent(values.email)}`);
+            //   const currentSession = await getSession();
+            //   const role = (currentSession?.user as any)?.role;
 
-            // Logika Pengalihan Role
-            if (role === "admin") {
-              toast.success("Selamat datang, Admin!");
-              router.push("/dashboards/admin-dashboard");
-            } else {
-              router.push("/");
-            }
+            //   // Logika Pengalihan Role
+            //   if (role === "admin") {
+            //     toast.success("Selamat datang, Admin!");
+            //     router.push("/dashboards/admin-dashboard");
+            //   } else {
+            //     router.push("/");
+            //   }
 
-            router.refresh();
-          } else {
-            // Jika auto-login gagal (jarang terjadi tapi mungkin), arahkan ke login manual
-            toast.error("Gagal masuk otomatis. Silakan login manual.");
-            router.push("/login");
+            //   router.refresh();
+            // } else {
+            //   // Jika auto-login gagal (jarang terjadi tapi mungkin), arahkan ke login manual
+            //   toast.error("Gagal masuk otomatis. Silakan login manual.");
+            //   router.push("/login");
           }
         },
         // Jika ada error spesifik dari gRPC backend (misal email duplikat)
@@ -206,7 +207,8 @@ const SignUpForm = () => {
           register={register}
           errors={errors}
           disabled={isLoading}
-          className='flex items-center'
+          isInputCourse={false}
+        // className='flex items-center border border-borderColor dark:border-borderColor-dark rounded py-10px px-15px'
         />
 
 

@@ -16,9 +16,9 @@ const DashboardCoursesTab = ({ courses }) => {
 
   //* Memfilter data berdasarkan properti 'status' dari API Anda
   //* Sesuaikan string status ("PUBLISHED", dll) dengan response backend Anda
-  const publishCourses = courses?.filter((course) => course.status === "publish" && course.isApproved === "approved");
-  const pendingCourses = courses?.filter((course) => course.status === "pending" && course.isApproved !== "rejected");
-  const draftCourses = courses?.filter((course) => course.status === "draft" && course.isApproved !== "rejected");
+  const publishCourses = courses?.filter((course) => course.isApproved === "approved" && course.status === "publish");
+  const pendingCourses = courses?.filter((course) => course.isApproved === "pending" && course.status === "publish");
+  const draftCourses = courses?.filter((course) => course.isApproved !== "rejected" && (course.status === "draft" || course.status == null));
 
   const tabbuttons = [
     {

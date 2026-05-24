@@ -63,6 +63,8 @@ message CreateChapterLessonRequest {
   optional string downloadable = 14 [(buf.validate.field).string = { max_len: 255 }];
   optional int32  is_preview = 15 [(buf.validate.field).int32.gte = 0];
   optional string status = 16 [(buf.validate.field).string = { max_len: 255 }];
+  string id = 17 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+
 }
 
 message CreateChapterLessonResponse {

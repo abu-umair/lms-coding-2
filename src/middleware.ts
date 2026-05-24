@@ -27,7 +27,7 @@ export default withAuth(
         // -------------------------------------------------------------
         // 2. VERIFY ERROR PAGE GUARD (Pindahan dari Server Component Anda)
         // -------------------------------------------------------------
-        if (path.startsWith("/auth/verify-error") || path.startsWith("/auth/verify-required")) {
+        if (path.startsWith("/auth/verify-error") || path.startsWith("/auth/verify-email-required")) {
             // Kasus A: User SUDAH login DAN SUDAH terverifikasi (userVerified)
             if (token && token?.verifiedAt) {
                 return NextResponse.redirect(new URL("/", req.url));
@@ -45,10 +45,12 @@ export default withAuth(
         // 2. EMAIL VERIFICATION GUARD (Laravel Style Global)
         // -------------------------------------------------------------
         // Semua yang masuk area dashboards wajib diverifikasi email-nya
-        if (path.startsWith("/dashboards") && !token?.verifiedAt) {
+        const isProtectedZone = path.startsWith("/dashboards") || path.startsWith("/order");
+
+        if (isProtectedZone && !token?.verifiedAt) {
             const email = token?.email || "";
             return NextResponse.redirect(
-                new URL("/", req.url)
+                new URL(`/auth/verify-email-required?email=${encodeURIComponent(email)}`, req.url)
             );
         }
 
@@ -82,10 +84,10 @@ export default withAuth(
                 if (path.startsWith("/login") ||
                     path.startsWith("/register") ||
                     path.startsWith("/auth/verify-error") ||
-                    path.startsWith("/auth/verify-required")) {
+                    path.startsWith("/auth/verify-email-required")) {
                     return true;
                 }
-                // Rute lainnya (dashboards) WAJIB punya token (wajib login)
+                // Rute lainnya (dashboards dan order) WAJIB punya token (wajib login)
                 return !!token;
             },
         },
@@ -96,9 +98,10 @@ export default withAuth(
 export const config = {
     matcher: [
         "/dashboards/:path*",
+        "/order/:path*",
         "/login",
         "/register",
         "/auth/verify-error",
-        "/auth/verify-required"
+        "/auth/verify-email-required"
     ],
 };

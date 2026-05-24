@@ -56,8 +56,8 @@ const useGrpcApi = () => {
                 }
 
                 // Lempar objek 'res' agar masuk ke blok catch dan menghentikan alur selanjutnya
-                // throw res;
-                throw res.response.base?.isError;
+                throw res;
+                // throw res.response.base?.isError;
             }
 
             // 3. Jika Benar-benar Sukses

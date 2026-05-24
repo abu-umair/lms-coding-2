@@ -75,6 +75,8 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
   const { data: session, status: authStatus } = useSession();
   const [existingImageUrl, setExistingImageUrl] = useState<string | null>(null);
   const [lastOrder, setLastOrder] = useState(0);
+  const GoGrpc_API_URL = process.env.NEXT_PUBLIC_GRPC_FIBER;
+
 
   const isNextMode = !!courseId; //?untuk melanjutkan input ketika form pertama telah dimasukan
   console.log(getAllChapters);
@@ -314,7 +316,7 @@ const CreateCoursePrimary = ({ getAllChapters }: { getAllChapters: getChapters[]
       console.log(formData);
 
       const toastId = toast.loading("wait...");
-      const uploadResponse = await axios.post<uploadImageResponse>('http://127.0.0.1:3000/course/upload', formData);
+      const uploadResponse = await axios.post<uploadImageResponse>(`${GoGrpc_API_URL}/course/upload`, formData);
       toast.dismiss(toastId);
 
       if (uploadResponse.status !== 200) {

@@ -10,6 +10,7 @@ import { LoginSchema, LoginFormSchema } from "@/libs/validationSchemaLogin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "@/components/shared/form-input/FormInput";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 
 
@@ -59,18 +60,19 @@ const LoginForm = ({ email }) => {
       // Ambil data session terbaru secara paksa (AWAIT)
       const currentSession = await getSession();
       const role = (currentSession?.user as any)?.role;
+      const verifiedAt = (currentSession?.user as any)?.verifiedAt;
 
       // 4. Jika sukses
       toast.success("Berhasil Masuk!");
 
-      // Login sukses, redirect ke halaman utama atau dashboard
-      if (role === "admin") {
-        toast.success("Admin Masuk!");
-        toast.success(role);
-
-        router.push("/dashboards/admin-dashboard");
+      // 2. Cek apakah user sudah memverifikasi emailnya
+      if (!verifiedAt) {
+        // Jika belum terverifikasi, baru arahkan ke halaman verifikasi
+        router.push(`/auth/verify-email-required?email=${encodeURIComponent(values.email)}`);
       } else {
-        router.push(`/auth/verify-email-required?email=${values.email}`);
+        // Jika SUDAH terverifikasi, langsung lempar ke rute induk /dashboards
+        // Nanti file app/dashboards/page.tsx yang akan mengarahkan otomatis berdasarkan role
+        router.push("/dashboards");
       }
       router.refresh(); // Opsional: Memastikan data session terbaru terambil
     }
@@ -116,22 +118,22 @@ const LoginForm = ({ email }) => {
         />
 
         {/* ... (Remember me & Forgot Password) ... */}
-        <div className="text-contentColor dark:text-contentColor-dark flex items-center justify-between">
-          <div className="flex items-center">
+        <div className="text-contentColor dark:text-contentColor-dark flex items-center justify-end">
+          {/* <div className="flex items-center">
             <input
               type="checkbox"
               id="remember"
               className="w-18px h-18px mr-2 block box-content"
             />
             <label htmlFor="remember"> Remember me</label>
-          </div>
-          <div>
-            <a
-              href="#"
+          </div> */}
+          <div className="">
+            <Link
+              href="/forgot-password"
               className="hover:text-primaryColor relative after:absolute after:left-0 after:bottom-0.5 after:w-0 after:h-0.5 after:bg-primaryColor after:transition-all after:duration-300 hover:after:w-full"
             >
               Forgot your password?
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -145,7 +147,7 @@ const LoginForm = ({ email }) => {
           </button>
         </div>
         {/* other login */}
-        <div>
+        {/* <div>
           <p className="text-contentColor dark:text-contentColor-dark text-center relative mb-15px before:w-2/5 before:h-1px before:bg-borderColor4 dark:before:bg-borderColor2-dark before:absolute before:left-0 before:top-4 after:w-2/5 after:h-1px after:bg-borderColor4 dark:after:bg-borderColor2-dark after:absolute after:right-0 after:top-4">
             or Log-in with
           </p>
@@ -163,7 +165,7 @@ const LoginForm = ({ email }) => {
           >
             <i className="icofont-google-plus"></i> Google
           </button>
-        </div>
+        </div> */}
       </form>
     </div>
   );

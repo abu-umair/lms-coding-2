@@ -37,3 +37,30 @@ export const convertTimestampToTime = (timestamp: Timestamp | undefined) => {
 
     return `${formattedDate} ${formattedTime}`
 }
+
+//*format string 
+export const convertStringToTime = (timestamp: any) => {
+    if (!timestamp) {
+        return
+    }
+    const date = new Date(timestamp);
+
+    // Cek jika hasil parsing date valid
+    if (isNaN(date.getTime())) {
+        return "Format Tanggal Salah";
+    }
+
+    const formattedDate = date.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    })
+
+    // const formattedTime = date.toLocaleTimeString('id-ID', {
+    //     hour: '2-digit',
+    //     minute: '2-digit',
+    //     hour12: false, //?karena indonesia menggunakan 24 jam
+    // })
+
+    return `${formattedDate}`
+}

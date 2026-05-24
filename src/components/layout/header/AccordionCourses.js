@@ -94,7 +94,7 @@ const AccordionCourses = () => {
         {
           name: "Create Coure",
           status: "Career",
-          path: "/dashboards/create-course",
+          path: "/dashboards/instructor/create-course",
         },
         {
           name: "Instructor",

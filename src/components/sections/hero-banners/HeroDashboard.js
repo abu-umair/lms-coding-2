@@ -109,7 +109,7 @@ const HeroDashboard = () => {
           )}
           <div>
             <Link
-              href={`/dashboards/create-course`}
+              href={`/dashboards/instructor/create-course`}
               onClick={() => {
                 clearCourseId();
                 setModeCreate();

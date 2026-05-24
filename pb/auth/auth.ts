@@ -219,6 +219,98 @@ export interface RequestOTPResponse {
      */
     base?: BaseResponse;
 }
+/**
+ * @generated from protobuf message auth.VerifyEmailRequest
+ */
+export interface VerifyEmailRequest {
+    /**
+     * @generated from protobuf field: string code_otp = 1
+     */
+    codeOtp: string;
+    /**
+     * @generated from protobuf field: string email = 2
+     */
+    email: string;
+}
+/**
+ * @generated from protobuf message auth.VerifyEmailResponse
+ */
+export interface VerifyEmailResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse;
+}
+/**
+ * @generated from protobuf message auth.RequestVerifyRequest
+ */
+export interface RequestVerifyRequest {
+    /**
+     * @generated from protobuf field: string email = 1
+     */
+    email: string;
+}
+/**
+ * @generated from protobuf message auth.RequestVerifyResponse
+ */
+export interface RequestVerifyResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse; // common.RequestStatus status = 2;
+    // int32 retry_after_seconds = 3;
+}
+/**
+ * @generated from protobuf message auth.ForgotPasswordRequest
+ */
+export interface ForgotPasswordRequest {
+    /**
+     * @generated from protobuf field: string email = 1
+     */
+    email: string;
+}
+/**
+ * @generated from protobuf message auth.ForgotPasswordResponse
+ */
+export interface ForgotPasswordResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse; // common.RequestStatus status = 2;
+    // int32 retry_after_seconds = 3;
+}
+/**
+ * ChangePasswordWithEmail
+ *
+ * @generated from protobuf message auth.ChangePasswordPublicRequest
+ */
+export interface ChangePasswordPublicRequest {
+    /**
+     * @generated from protobuf field: string code_otp = 1
+     */
+    codeOtp: string;
+    /**
+     * @generated from protobuf field: string email = 2
+     */
+    email: string;
+    /**
+     * @generated from protobuf field: string new_password = 3
+     */
+    newPassword: string;
+    /**
+     * @generated from protobuf field: string new_password_confirmation = 4
+     */
+    newPasswordConfirmation: string;
+}
+/**
+ * @generated from protobuf message auth.ChangePasswordPublicResponse
+ */
+export interface ChangePasswordPublicResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse;
+}
 // @generated message type with reflection information, may provide speed optimized methods
 class RegisterRequest$Type extends MessageType<RegisterRequest> {
     constructor() {
@@ -1075,6 +1167,410 @@ class RequestOTPResponse$Type extends MessageType<RequestOTPResponse> {
  * @generated MessageType for protobuf message auth.RequestOTPResponse
  */
 export const RequestOTPResponse = new RequestOTPResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class VerifyEmailRequest$Type extends MessageType<VerifyEmailRequest> {
+    constructor() {
+        super("auth.VerifyEmailRequest", [
+            { no: 1, name: "code_otp", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "6", maxLen: "255" } } } },
+            { no: 2, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255", email: true } } } }
+        ]);
+    }
+    create(value?: PartialMessage<VerifyEmailRequest>): VerifyEmailRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.codeOtp = "";
+        message.email = "";
+        if (value !== undefined)
+            reflectionMergePartial<VerifyEmailRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: VerifyEmailRequest): VerifyEmailRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string code_otp */ 1:
+                    message.codeOtp = reader.string();
+                    break;
+                case /* string email */ 2:
+                    message.email = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: VerifyEmailRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string code_otp = 1; */
+        if (message.codeOtp !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.codeOtp);
+        /* string email = 2; */
+        if (message.email !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.email);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message auth.VerifyEmailRequest
+ */
+export const VerifyEmailRequest = new VerifyEmailRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class VerifyEmailResponse$Type extends MessageType<VerifyEmailResponse> {
+    constructor() {
+        super("auth.VerifyEmailResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse }
+        ]);
+    }
+    create(value?: PartialMessage<VerifyEmailResponse>): VerifyEmailResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<VerifyEmailResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: VerifyEmailResponse): VerifyEmailResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: VerifyEmailResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message auth.VerifyEmailResponse
+ */
+export const VerifyEmailResponse = new VerifyEmailResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class RequestVerifyRequest$Type extends MessageType<RequestVerifyRequest> {
+    constructor() {
+        super("auth.RequestVerifyRequest", [
+            { no: 1, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255", email: true } } } }
+        ]);
+    }
+    create(value?: PartialMessage<RequestVerifyRequest>): RequestVerifyRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.email = "";
+        if (value !== undefined)
+            reflectionMergePartial<RequestVerifyRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: RequestVerifyRequest): RequestVerifyRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string email */ 1:
+                    message.email = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: RequestVerifyRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string email = 1; */
+        if (message.email !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.email);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message auth.RequestVerifyRequest
+ */
+export const RequestVerifyRequest = new RequestVerifyRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class RequestVerifyResponse$Type extends MessageType<RequestVerifyResponse> {
+    constructor() {
+        super("auth.RequestVerifyResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse }
+        ]);
+    }
+    create(value?: PartialMessage<RequestVerifyResponse>): RequestVerifyResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<RequestVerifyResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: RequestVerifyResponse): RequestVerifyResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: RequestVerifyResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message auth.RequestVerifyResponse
+ */
+export const RequestVerifyResponse = new RequestVerifyResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ForgotPasswordRequest$Type extends MessageType<ForgotPasswordRequest> {
+    constructor() {
+        super("auth.ForgotPasswordRequest", [
+            { no: 1, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255", email: true } } } }
+        ]);
+    }
+    create(value?: PartialMessage<ForgotPasswordRequest>): ForgotPasswordRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.email = "";
+        if (value !== undefined)
+            reflectionMergePartial<ForgotPasswordRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ForgotPasswordRequest): ForgotPasswordRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string email */ 1:
+                    message.email = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ForgotPasswordRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string email = 1; */
+        if (message.email !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.email);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message auth.ForgotPasswordRequest
+ */
+export const ForgotPasswordRequest = new ForgotPasswordRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ForgotPasswordResponse$Type extends MessageType<ForgotPasswordResponse> {
+    constructor() {
+        super("auth.ForgotPasswordResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse }
+        ]);
+    }
+    create(value?: PartialMessage<ForgotPasswordResponse>): ForgotPasswordResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<ForgotPasswordResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ForgotPasswordResponse): ForgotPasswordResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ForgotPasswordResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message auth.ForgotPasswordResponse
+ */
+export const ForgotPasswordResponse = new ForgotPasswordResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ChangePasswordPublicRequest$Type extends MessageType<ChangePasswordPublicRequest> {
+    constructor() {
+        super("auth.ChangePasswordPublicRequest", [
+            { no: 1, name: "code_otp", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "6", maxLen: "255" } } } },
+            { no: 2, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255", email: true } } } },
+            { no: 3, name: "new_password", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 4, name: "new_password_confirmation", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } }
+        ]);
+    }
+    create(value?: PartialMessage<ChangePasswordPublicRequest>): ChangePasswordPublicRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.codeOtp = "";
+        message.email = "";
+        message.newPassword = "";
+        message.newPasswordConfirmation = "";
+        if (value !== undefined)
+            reflectionMergePartial<ChangePasswordPublicRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ChangePasswordPublicRequest): ChangePasswordPublicRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string code_otp */ 1:
+                    message.codeOtp = reader.string();
+                    break;
+                case /* string email */ 2:
+                    message.email = reader.string();
+                    break;
+                case /* string new_password */ 3:
+                    message.newPassword = reader.string();
+                    break;
+                case /* string new_password_confirmation */ 4:
+                    message.newPasswordConfirmation = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ChangePasswordPublicRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string code_otp = 1; */
+        if (message.codeOtp !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.codeOtp);
+        /* string email = 2; */
+        if (message.email !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.email);
+        /* string new_password = 3; */
+        if (message.newPassword !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.newPassword);
+        /* string new_password_confirmation = 4; */
+        if (message.newPasswordConfirmation !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.newPasswordConfirmation);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message auth.ChangePasswordPublicRequest
+ */
+export const ChangePasswordPublicRequest = new ChangePasswordPublicRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ChangePasswordPublicResponse$Type extends MessageType<ChangePasswordPublicResponse> {
+    constructor() {
+        super("auth.ChangePasswordPublicResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse }
+        ]);
+    }
+    create(value?: PartialMessage<ChangePasswordPublicResponse>): ChangePasswordPublicResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<ChangePasswordPublicResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ChangePasswordPublicResponse): ChangePasswordPublicResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ChangePasswordPublicResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message auth.ChangePasswordPublicResponse
+ */
+export const ChangePasswordPublicResponse = new ChangePasswordPublicResponse$Type();
 /**
  * @generated ServiceType for protobuf service auth.AuthService
  */
@@ -1086,5 +1582,9 @@ export const AuthService = new ServiceType("auth.AuthService", [
     { name: "GetProfile", options: {}, I: GetProfileRequest, O: GetProfileResponse },
     { name: "Verify", options: {}, I: VerifyRequest, O: VerifyResponse },
     { name: "RequestOTP", options: {}, I: RequestOTPRequest, O: RequestOTPResponse },
+    { name: "VerifyEmail", options: {}, I: VerifyEmailRequest, O: VerifyEmailResponse },
+    { name: "RequestVerify", options: {}, I: RequestVerifyRequest, O: RequestVerifyResponse },
+    { name: "ForgotPassword", options: {}, I: ForgotPasswordRequest, O: ForgotPasswordResponse },
+    { name: "ChangePasswordPublic", options: {}, I: ChangePasswordPublicRequest, O: ChangePasswordPublicResponse },
     { name: "GetProfileUser", options: {}, I: GetProfileUserRequest, O: GetProfileUserResponse }
 ]);

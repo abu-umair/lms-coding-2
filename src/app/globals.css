@@ -71,7 +71,13 @@
 html {
   scroll-behavior: smooth;
 }
+.description-content h4 {
+  @apply text-size-26 font-bold text-blackColor dark:text-blackColor-dark mb-15px !leading-14;
+}
 
+.description-content p {
+  @apply text-lg text-darkdeep4 mb-5 !leading-30px;
+}
 /* Custom Scrollbar untuk Sidebar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 5px;

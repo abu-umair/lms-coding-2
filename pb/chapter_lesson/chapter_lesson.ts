@@ -180,6 +180,10 @@ export interface CreateChapterLessonRequest {
      * @generated from protobuf field: optional string status = 16
      */
     status?: string;
+    /**
+     * @generated from protobuf field: string id = 17
+     */
+    id: string;
 }
 /**
  * @generated from protobuf message chapter_lesson.CreateChapterLessonResponse
@@ -698,13 +702,15 @@ class CreateChapterLessonRequest$Type extends MessageType<CreateChapterLessonReq
             { no: 13, name: "file_type", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
             { no: 14, name: "downloadable", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
             { no: 15, name: "is_preview", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/, options: { "buf.validate.field": { int32: { gte: 0 } } } },
-            { no: 16, name: "status", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } }
+            { no: 16, name: "status", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
+            { no: 17, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } }
         ]);
     }
     create(value?: PartialMessage<CreateChapterLessonRequest>): CreateChapterLessonRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.title = "";
         message.orderLesson = 0;
+        message.id = "";
         if (value !== undefined)
             reflectionMergePartial<CreateChapterLessonRequest>(this, message, value);
         return message;
@@ -761,6 +767,9 @@ class CreateChapterLessonRequest$Type extends MessageType<CreateChapterLessonReq
                     break;
                 case /* optional string status */ 16:
                     message.status = reader.string();
+                    break;
+                case /* string id */ 17:
+                    message.id = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -822,6 +831,9 @@ class CreateChapterLessonRequest$Type extends MessageType<CreateChapterLessonReq
         /* optional string status = 16; */
         if (message.status !== undefined)
             writer.tag(16, WireType.LengthDelimited).string(message.status);
+        /* string id = 17; */
+        if (message.id !== "")
+            writer.tag(17, WireType.LengthDelimited).string(message.id);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

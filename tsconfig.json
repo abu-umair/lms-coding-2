@@ -1,23 +1,30 @@
 {
   "compilerOptions": {
+    "target": "ES2020",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2020"
+    ],
+    "module": "ESNext",
     "paths": {
       "@/*": [
         "./src/*"
       ]
     },
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    // "lib": [
+    //   "dom",
+    //   "dom.iterable",
+    //   "esnext"
+    // ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
     "noEmit": true,
     "incremental": true,
-    "module": "esnext",
+    // "module": "esnext",
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -31,8 +38,17 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "src/components/auth/AuthGuard.tsx", "src/components/shared/buttons/ButtonPrimary.tsx", "src/components/shared/dashboards/PasswordContent.tsx", "src/components/shared/lessons/LessonAccordion.tsx", "src/components/shared/courses/CourseCard.tsx", "src/components/auth/CourseGuard"  ],
+    "**/*.tsx",
+    "src/components/shared/buttons/ButtonPrimary.tsx",
+    "src/components/shared/dashboards/PasswordContent.tsx",
+    "src/components/shared/lessons/LessonAccordion.tsx",
+    "src/components/shared/courses/CourseCard.tsx",
+    "src/components/auth/CourseGuard",
+    "src/app/order/[id]/page.js",
+    "src/app/auth/verify-email/page.js",
+    "src/app/auth/verify-email-required/page.js",
+    "src/app/auth/verified-success/page.js"
+, "src/app/dashboards/page.js"  ],
   "exclude": [
     "node_modules"
   ]
