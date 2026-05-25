@@ -15,6 +15,20 @@ interface getLessons {
     id?: string;
     title?: string;
     orderLesson?: number;
+    slug?: string;
+    description?: string;
+    // filePath?: string;
+    //     storageLesson?: string;
+    //     lessonType?: string;
+    //     volume?: string;
+    //     duration?: string;
+    //     fileType?: string;
+    //     downloadable?: string;
+    //     isPreview?: number;
+    //     status?: string;
+    //     instructorId?: string;
+    //     courseId?: string;
+    //     chapterId?: string;
 }
 
 const ChapterItem = ({
@@ -52,7 +66,7 @@ const ChapterItem = ({
                     "chapter_id",
                     "slug",
                     "description",
-                    "file_path",
+                    // "file_path",
                     "storage_lesson",
                     "lesson_type",
                     "volume",
@@ -133,6 +147,7 @@ const ChapterItem = ({
                         instructorId: instructorId,
                         title: lesson.title,
                         orderLesson: newOrder,
+                        // filePath: lesson.filePath || "",
                         // Masukkan field lain yang wajib ada di payload edit Anda
                     }), {
                         useDefaultError: false,

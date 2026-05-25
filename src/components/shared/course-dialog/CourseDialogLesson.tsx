@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
 import { getChapterLessonClient } from "@/api/grpc/client";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 
 
@@ -27,6 +28,8 @@ interface CourseDialogLessonProps {
     title?: string;
     description?: string;
     storage_lesson?: string;
+    file_path?: string;
+    lesson_type?: string;
     // duration?: string;
     is_preview?: number;
     onSuccessLessonAdd?: () => void;
@@ -39,17 +42,29 @@ const isPreviewOptions = [
     { value: '1', label: "Yes" },
 ];
 
+interface uploadFileResponse {
+    course_id?: string;
+    lesson_id?: string;
+    file_name: string;
+    message: string;
+    success: boolean;
+}
+
 
 export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, courseId, chapterId, onSuccessLessonAdd, initialData, nextOrder }: CourseDialogLessonProps) => {
 
     const [open, setOpen] = useState<boolean>(false);
     const { callApi, isLoading } = useGrpcApi();
+    // const [existingFileUrl, setExistingFileUrl] = useState<string | null>(null);
+
+    const GoGrpc_API_URL = process.env.NEXT_PUBLIC_GRPC_FIBER;
 
 
 
     const isEditMode = !!initialData?.id;
 
     const { register, handleSubmit, control, reset, watch, setValue, formState: { errors } } = useForm<LessonFormData>({
+
         resolver: zodResolver(getLessonSchema(isEditMode)) as any,
         defaultValues: {
             // instructor_id: "11",
@@ -57,11 +72,16 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
             slug: "",
             description: "",
             storage_lesson: "",
+            file_path: null,
+            lesson_type: "video",
             duration: null,
             is_preview: null,
             // status: "",
         }
     });
+
+    const lessonType = watch("lesson_type");
+    const watchDocument = watch("file_path");
 
     useEffect(() => {
         if (open) {
@@ -72,8 +92,10 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                 setValue("slug", initialData.slug);
                 setValue("description", initialData.description);
                 setValue("storage_lesson", initialData.storageLesson);
+                setValue("file_path", initialData.filePath);
                 setValue("duration", initialData.duration);
                 setValue("is_preview", initialData.isPreview);
+                setValue("lesson_type", initialData.lessonType);
                 // Set values lainnya jika ada
             } else {
                 reset({
@@ -92,12 +114,55 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
         console.log(initialData);
         console.log('chapter' + chapterId);
 
+        let finalDocumentFileName = "";
+        let currentLessonId = initialData?.id;
+
+        if (values.file_path && values.file_path[0] instanceof File) {
+            // ADA FILE BARU: Upload ke server
+            const formData = new FormData();
+            formData.append('document', values.file_path[0]);
+            formData.append('course_id', courseId);
+            if (initialData?.id) {
+                formData.append('lesson_id', initialData.id);
+            }
+
+            console.log(formData);
+
+            const toastId = toast.loading("wait...");
+            const uploadResponse = await axios.post<uploadFileResponse>(`${GoGrpc_API_URL}/course/upload/lesson/document`, formData);
+            toast.dismiss(toastId);
+
+            if (uploadResponse.status !== 200) {
+                toast.error("Upload File Gagal");
+
+                return
+            }
+
+            finalDocumentFileName = uploadResponse.data.file_name;
+            currentLessonId = uploadResponse.data.lesson_id || initialData.id || 'random';
+        }
+        // else {
+        //     if (existingFileUrl) {
+        //         // menghapus bagian "http://localhost:3000/storage/58f983da-6160-48bf-ad0a-8699c6c97de9/course/"
+        //         // split('/') akan memecah string berdasarkan karakter "/"
+        //         // pop() akan mengambil elemen paling terakhir dari hasil pecahan tersebut
+        //         finalDocumentFileName = existingFileUrl.split('/').pop() || "";
+        //         console.log(finalDocumentFileName);
+        //     } else {
+        //         finalDocumentFileName = "";
+        //     }
+
+        // }
+
+        console.log(currentLessonId);
+        console.log(finalDocumentFileName);
+
         const finalOrder = isEditMode
             ? initialData.orderLesson
             : nextOrder;
 
         const lessonPayload = {
-            id: isEditMode ? initialData.id : "",
+            id: isEditMode ? initialData.id : currentLessonId,
             instructorId: instructorId,
             courseId: courseId,
             chapterId: chapterId,
@@ -107,8 +172,10 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
             slug: values.slug,
             description: values.description,
             storageLesson: values.storage_lesson,
+            filePath: finalDocumentFileName,
             duration: String(values.duration),
             isPreview: Number(values.is_preview),
+            lessonType: values.lesson_type,
             // status: "",
         };
 
@@ -152,12 +219,62 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                 <div className="py-4">
                     <div className="xl:col-start-1 xl:col-span-4" >
                         <form
-                            onSubmit={handleSubmit(onSubmit, (err) => console.log("Validasi Gagal:", err))}
+                            // onSubmit={handleSubmit(onSubmit, (err) => console.log("Validasi Gagal:", err))}
+                            onSubmit={handleSubmit(onSubmit)}
                             className="p-10px md:p-10 lg:p-5 2xl:p-10 bg-darkdeep3 dark:bg-transparent text-sm text-blackColor dark:text-blackColor-dark leading-1.8"
                         // data-aos="fade-up"
                         >
                             <div className="grid grid-cols-1 mb-15px gap-15px">
                                 <div>
+
+                                    <div className="mb-8">
+                                        <label className="mb-3 block font-semibold text-blackColor dark:text-blackColor-dark">
+                                            Jenis Lesson
+                                        </label>
+
+                                        <div className="grid grid-cols-2 gap-4">
+
+                                            {/* VIDEO */}
+                                            <button
+                                                type="button"
+                                                onClick={() => setValue("lesson_type", "video")}
+                                                className={`rounded-2xl border p-5 text-left transition-all 
+                                                    ${lessonType === "video"
+                                                        ? "border-blue-500 bg-blue-50 shadow-md"
+                                                        : "border-gray-200 bg-white"}
+                                                        `}>
+                                                <div className="text-3xl mb-2">🎥</div>
+
+                                                <h3 className="font-semibold text-lg">
+                                                    Video Lesson
+                                                </h3>
+
+                                                <p className="text-sm text-gray-500 mt-1">
+                                                    YouTube, Vimeo, atau video tutorial.
+                                                </p>
+                                            </button>
+
+                                            {/* DOCUMENT */}
+                                            <button
+                                                type="button"
+                                                onClick={() => setValue("lesson_type", "document")}
+                                                className={`rounded-2xl border p-5 text-left transition-all 
+                                                    ${lessonType === "document" ? "border-blue-500 bg-blue-50 shadow-md" :
+                                                        "border-gray-200 bg-white"}`}
+                                            >
+                                                <div className="text-3xl mb-2">📄</div>
+
+                                                <h3 className="font-semibold text-lg">
+                                                    Document Lesson
+                                                </h3>
+
+                                                <p className="text-sm text-gray-500 mt-1">
+                                                    PDF, DOCX, atau modul pembelajaran.
+                                                </p>
+                                            </button>
+
+                                        </div>
+                                    </div>
                                     <FormInput
                                         label="Title Course"
                                         name="title"
@@ -192,26 +309,55 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                                     // lableRequired={true}
                                     />
 
-                                    <FormInput
-                                        label="Video URL"
-                                        name="storage_lesson"
-                                        type="text"
-                                        placeholder="https://www.youtube.com/watch?....."
-                                        register={register}
-                                        errors={errors}
-                                        disabled={isLoading}
-                                        isInputCourse={true}
-                                    />
-                                    <FormInput
-                                        label="Durasi Video"
-                                        name="duration"
-                                        type="number"
-                                        placeholder="masukkan durasi video dalam menit"
-                                        register={register}
-                                        errors={errors}
-                                        disabled={isLoading}
-                                        isInputCourse={true}
-                                    />
+
+                                    {lessonType === "video" && (
+                                        <>
+                                            <FormInput
+                                                label="Video URL"
+                                                name="storage_lesson"
+                                                type="text"
+                                                placeholder="https://www.youtube.com/watch?....."
+                                                register={register}
+                                                errors={errors}
+                                                disabled={isLoading}
+                                                isInputCourse={true}
+                                            />
+
+                                            <FormInput
+                                                label="Durasi Video"
+                                                name="duration"
+                                                type="number"
+                                                placeholder="Masukkan durasi video dalam menit"
+                                                register={register}
+                                                errors={errors}
+                                                disabled={isLoading}
+                                                isInputCourse={true}
+                                            />
+                                        </>
+                                    )}
+
+                                    {lessonType === "document" && (
+                                        <>
+                                            <FormInput
+                                                label="Upload Document"
+                                                name="file_path"
+                                                type="file"
+                                                register={register}
+                                                errors={errors}
+                                                disabled={isLoading}
+                                                isInputCourse={true}
+
+                                                // TAMBAHAN
+                                                watchValueFile={watchDocument}
+                                                accept=".pdf,.doc,.docx,.ppt,.pptx,.zip"
+                                            />
+
+                                            <p className="text-sm text-gray-500 mt-2">
+                                                Supported format:
+                                                PDF, DOCX, PPTX, ZIP
+                                            </p>
+                                        </>
+                                    )}
 
                                     <FormInput
                                         label="Preview Video"

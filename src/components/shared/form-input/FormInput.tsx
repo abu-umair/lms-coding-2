@@ -3,6 +3,7 @@ import React, { useEffect, useState, ComponentProps } from 'react'
 import { UseFormRegister, FieldErrors, Path, Control, Controller } from 'react-hook-form';
 import "react-quill/dist/quill.snow.css"; // Import styles
 import ImageInput from './ImageInput';
+import FileInput from './FileInput';
 
 // Ambil tipe props secara dinamis
 type QuillProps = ComponentProps<typeof import('react-quill')>;
@@ -35,9 +36,10 @@ const formats = [
     "list", "bullet",
 ];
 
+
 interface FormInputProps<T extends Record<string, any>> {
     label?: string;
-    type: "text" | "password" | "checkbox" | "textarea" | "image" | "select" | 'hidden' | 'number' | 'editor'; //? type nya bisa text atau password
+    type: "text" | "file" | "password" | "checkbox" | "textarea" | "image" | "select" | 'hidden' | 'number' | 'editor'; //? type nya bisa text atau password
     placeholder?: string //?tidak wajib, (bisa dibuat optional)
     register: UseFormRegister<T>;
     name: Path<T>;
@@ -50,6 +52,9 @@ interface FormInputProps<T extends Record<string, any>> {
     watchValueImg?: any;
     initialImageUrl?: string | null;
     options?: { value: string; label: string }[];
+    watchValueFile?: any;
+    initialFileUrl?: string | null;
+    accept?: string;
 }
 
 function FormInput<T extends Record<string, any>>({
@@ -67,6 +72,9 @@ function FormInput<T extends Record<string, any>>({
     watchValueImg,
     initialImageUrl,
     options,
+    watchValueFile,
+    initialFileUrl,
+    accept,
 }: FormInputProps<T>) {
 
     // Ambil error spesifik untuk field ini
@@ -127,6 +135,21 @@ function FormInput<T extends Record<string, any>>({
                             style={{ height: '200px' }}
                         />
                     )}
+                />
+            );
+        }
+
+        // FILE INPUT
+        if (type === "file" && isInputCourse) {
+            return (
+                <FileInput
+                    name={name}
+                    register={register}
+                    watchValueFile={watchValueFile}
+                    initialFileUrl={initialFileUrl}
+                    disabled={disabled}
+                    errorField={errorField}
+                    accept={accept}
                 />
             );
         }
