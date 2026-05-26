@@ -117,6 +117,11 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
         let finalDocumentFileName = "";
         let currentLessonId = initialData?.id;
 
+        if (values.file_path && values.file_path[0] instanceof File && values.storage_lesson) {
+            toast.error("File dan storage lesson ada datanya, Mohon dipilih salah satu saja");
+            return
+        }
+
         if (values.file_path && values.file_path[0] instanceof File) {
             // ADA FILE BARU: Upload ke server
             const formData = new FormData();
@@ -139,20 +144,16 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
             }
 
             finalDocumentFileName = uploadResponse.data.file_name;
-            currentLessonId = uploadResponse.data.lesson_id || initialData.id || 'random';
+            currentLessonId = uploadResponse.data.lesson_id || initialData.id;
         }
-        // else {
-        //     if (existingFileUrl) {
-        //         // menghapus bagian "http://localhost:3000/storage/58f983da-6160-48bf-ad0a-8699c6c97de9/course/"
-        //         // split('/') akan memecah string berdasarkan karakter "/"
-        //         // pop() akan mengambil elemen paling terakhir dari hasil pecahan tersebut
-        //         finalDocumentFileName = existingFileUrl.split('/').pop() || "";
-        //         console.log(finalDocumentFileName);
-        //     } else {
-        //         finalDocumentFileName = "";
-        //     }
+        else {
+            if (values.storage_lesson && !isEditMode) {
+                currentLessonId = crypto.randomUUID();
+            }
 
-        // }
+        }
+        alert(currentLessonId)
+        alert(finalDocumentFileName)
 
         console.log(currentLessonId);
         console.log(finalDocumentFileName);
@@ -172,7 +173,7 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
             slug: values.slug,
             description: values.description,
             storageLesson: values.storage_lesson,
-            filePath: finalDocumentFileName,
+            filePath: finalDocumentFileName || undefined,
             duration: String(values.duration),
             isPreview: Number(values.is_preview),
             lessonType: values.lesson_type,
@@ -349,12 +350,13 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
 
                                                 // TAMBAHAN
                                                 watchValueFile={watchDocument}
+                                                initialFileUrl={initialData?.filePath} // Kirim path file lama dari database ke sini
                                                 accept=".pdf,.doc,.docx,.ppt,.pptx,.zip"
                                             />
 
                                             <p className="text-sm text-gray-500 mt-2">
                                                 Supported format:
-                                                PDF, DOCX, PPTX, ZIP
+                                                PDF, TXT
                                             </p>
                                         </>
                                     )}

@@ -16,12 +16,17 @@ export const getLessonSchema = (isEdit: boolean) => {
         description: z.string().min(1, "description diisi"),
         storage_lesson: z.string().optional(),
         file_path: z
-            .custom<FileList>()
+            .any() // Gunakan z.any() terlebih dahulu agar bisa menerima FileList ataupun String (data lama)
             .optional()
+            .nullable()
             .refine(
                 (files) => {
-                    if (!files || files.length === 0) return true;
-                    return ALLOWED_MIME_TYPES.includes(files[0].type);
+                    // Jika tidak ada file, atau datanya berupa string (data dari DB), lolos validasi tipe berkas
+                    if (!files || typeof files === "string" || files.length === 0) return true;
+                    if (files instanceof FileList) {
+                        return ALLOWED_MIME_TYPES.includes(files[0]?.type);
+                    }
+                    return true;
                 },
                 {
                     message: "Format file tidak didukung! Hanya diperbolehkan file .pdf dan .txt",
@@ -29,8 +34,12 @@ export const getLessonSchema = (isEdit: boolean) => {
             )
             .refine(
                 (files) => {
-                    if (!files || files.length === 0) return true;
-                    return files[0].size <= MAX_FILE_SIZE;
+                    // Jika tidak ada file, atau datanya berupa string (data dari DB), lolos validasi ukuran
+                    if (!files || typeof files === "string" || files.length === 0) return true;
+                    if (files instanceof FileList) {
+                        return files[0]?.size <= MAX_FILE_SIZE;
+                    }
+                    return true;
                 },
                 {
                     message: "Ukuran file terlalu besar! Maksimal diperbolehkan 5MB",

@@ -66,7 +66,7 @@ const ChapterItem = ({
                     "chapter_id",
                     "slug",
                     "description",
-                    // "file_path",
+                    "file_path",
                     "storage_lesson",
                     "lesson_type",
                     "volume",

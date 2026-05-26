@@ -21,8 +21,13 @@ export default function FileInput({
         if (file) {
             setFileName(file.name);
         } else if (initialFileUrl) {
-            const split = initialFileUrl.split("/");
-            setFileName(split[split.length - 1]);
+            // Cek jika mengandung karakter "/" berarti berbentuk URL/Path, jika tidak langsung ambil string-nya
+            if (initialFileUrl.includes("/")) {
+                const split = initialFileUrl.split("/");
+                setFileName(split[split.length - 1]);
+            } else {
+                setFileName(initialFileUrl); // Jika hanya nama file saja langsung di-set
+            }
         } else {
             setFileName(null);
         }
