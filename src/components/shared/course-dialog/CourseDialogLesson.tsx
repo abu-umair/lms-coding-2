@@ -73,7 +73,7 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
             description: "",
             storage_lesson: "",
             file_path: null,
-            lesson_type: "video",
+            // lesson_type: "", 
             duration: null,
             is_preview: null,
             // status: "",
@@ -281,114 +281,120 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
 
                                         </div>
                                     </div>
-                                    <FormInput
-                                        label="Title Course"
-                                        name="title"
-                                        type="text"
-                                        placeholder="Masukkan Title Course"
-                                        register={register}
-                                        errors={errors}
-                                        disabled={isLoading}
-                                        isInputCourse={true}
-                                        lableRequired={true}
-                                    />
-                                    <FormInput
-                                        label="Slug Course"
-                                        name="slug"
-                                        type="text"
-                                        placeholder="Masukkan Slug Lesson"
-                                        register={register}
-                                        errors={errors}
-                                        disabled={isLoading}
-                                        isInputCourse={true}
-                                    />
-                                    <FormInput
-                                        label="Description"
-                                        name="description"
-                                        type="editor" // Ubah type menjadi 'editor'
-                                        placeholder="Masukkan Description lesson"
-                                        register={register}
-                                        control={control} // WAJIB dikirim untuk tipe editor
-                                        errors={errors}
-                                        disabled={isLoading}
-                                        isInputCourse={true}
-                                    // lableRequired={true}
-                                    />
-
-
-                                    {lessonType === "video" && (
+                                    {(lessonType === "video" || lessonType === "document") && (
                                         <>
-                                            <FormInput
-                                                label="Video URL"
-                                                name="storage_lesson"
-                                                type="text"
-                                                placeholder="https://www.youtube.com/watch?....."
-                                                register={register}
-                                                errors={errors}
-                                                disabled={isLoading}
-                                                isInputCourse={true}
-                                            />
+                                            <div className="space-y-4 animate-fadeIn">
+                                                <FormInput
+                                                    label="Title Course"
+                                                    name="title"
+                                                    type="text"
+                                                    placeholder="Masukkan Title Course"
+                                                    register={register}
+                                                    errors={errors}
+                                                    disabled={isLoading}
+                                                    isInputCourse={true}
+                                                    lableRequired={true}
+                                                />
+                                                <FormInput
+                                                    label="Slug Course"
+                                                    name="slug"
+                                                    type="text"
+                                                    placeholder="Masukkan Slug Lesson"
+                                                    register={register}
+                                                    errors={errors}
+                                                    disabled={isLoading}
+                                                    isInputCourse={true}
+                                                />
+                                                <FormInput
+                                                    label="Description"
+                                                    name="description"
+                                                    type="editor" // Ubah type menjadi 'editor'
+                                                    placeholder="Masukkan Description lesson"
+                                                    register={register}
+                                                    control={control} // WAJIB dikirim untuk tipe editor
+                                                    errors={errors}
+                                                    disabled={isLoading}
+                                                    isInputCourse={true}
+                                                // lableRequired={true}
+                                                />
 
-                                            <FormInput
-                                                label="Durasi Video"
-                                                name="duration"
-                                                type="number"
-                                                placeholder="Masukkan durasi video dalam menit"
-                                                register={register}
-                                                errors={errors}
-                                                disabled={isLoading}
-                                                isInputCourse={true}
-                                            />
+
+                                                {lessonType === "video" && (
+                                                    <>
+                                                        <FormInput
+                                                            label="Video URL"
+                                                            name="storage_lesson"
+                                                            type="text"
+                                                            placeholder="https://www.youtube.com/watch?....."
+                                                            register={register}
+                                                            errors={errors}
+                                                            disabled={isLoading}
+                                                            isInputCourse={true}
+                                                        />
+
+                                                        <FormInput
+                                                            label="Durasi Video"
+                                                            name="duration"
+                                                            type="number"
+                                                            placeholder="Masukkan durasi video dalam menit"
+                                                            register={register}
+                                                            errors={errors}
+                                                            disabled={isLoading}
+                                                            isInputCourse={true}
+                                                        />
+                                                    </>
+                                                )}
+
+                                                {lessonType === "document" && (
+                                                    <>
+                                                        <FormInput
+                                                            label="Upload Document"
+                                                            name="file_path"
+                                                            type="file"
+                                                            register={register}
+                                                            errors={errors}
+                                                            disabled={isLoading}
+                                                            isInputCourse={true}
+
+                                                            // TAMBAHAN
+                                                            watchValueFile={watchDocument}
+                                                            initialFileUrl={initialData?.filePath} // Kirim path file lama dari database ke sini
+                                                            accept=".pdf,.doc,.docx,.ppt,.pptx,.zip"
+                                                        />
+
+                                                        <p className="text-sm text-gray-500 mt-2">
+                                                            Supported format:
+                                                            PDF, TXT
+                                                        </p>
+                                                    </>
+                                                )}
+
+                                                <FormInput
+                                                    label="Preview Video"
+                                                    name="is_preview"
+                                                    type="select"
+                                                    placeholder="Jadikan Preview Video"
+                                                    options={isPreviewOptions}
+                                                    register={register}
+                                                    errors={errors}
+                                                    disabled={isLoading}
+                                                    isInputCourse={true}
+                                                />
+
+                                            </div>
+                                            <div className="mt-15px">
+                                                <ButtonPrimary
+                                                    type={"submit"}
+                                                    disabled={isLoading}
+
+                                                >
+                                                    {isLoading ? 'Sedang Memproses..' : 'Update Chapter'}
+                                                </ButtonPrimary>
+                                            </div>
                                         </>
                                     )}
-
-                                    {lessonType === "document" && (
-                                        <>
-                                            <FormInput
-                                                label="Upload Document"
-                                                name="file_path"
-                                                type="file"
-                                                register={register}
-                                                errors={errors}
-                                                disabled={isLoading}
-                                                isInputCourse={true}
-
-                                                // TAMBAHAN
-                                                watchValueFile={watchDocument}
-                                                initialFileUrl={initialData?.filePath} // Kirim path file lama dari database ke sini
-                                                accept=".pdf,.doc,.docx,.ppt,.pptx,.zip"
-                                            />
-
-                                            <p className="text-sm text-gray-500 mt-2">
-                                                Supported format:
-                                                PDF, TXT
-                                            </p>
-                                        </>
-                                    )}
-
-                                    <FormInput
-                                        label="Preview Video"
-                                        name="is_preview"
-                                        type="select"
-                                        placeholder="Jadikan Preview Video"
-                                        options={isPreviewOptions}
-                                        register={register}
-                                        errors={errors}
-                                        disabled={isLoading}
-                                        isInputCourse={true}
-                                    />
-
                                 </div>
 
-                            </div>
-                            <div className="mt-15px">
-                                <ButtonPrimary
-                                    type={"submit"}
-                                    disabled={isLoading}
-
-                                >
-                                    {isLoading ? 'Sedang Memproses..' : 'Update Chapter'}
-                                </ButtonPrimary>
                             </div>
                         </form>
                     </div>
