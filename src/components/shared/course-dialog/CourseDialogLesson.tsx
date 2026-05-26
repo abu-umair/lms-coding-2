@@ -152,8 +152,6 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
             }
 
         }
-        alert(currentLessonId)
-        alert(finalDocumentFileName)
 
         console.log(currentLessonId);
         console.log(finalDocumentFileName);
@@ -173,7 +171,7 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
             slug: values.slug,
             description: values.description,
             storageLesson: values.storage_lesson,
-            filePath: finalDocumentFileName || undefined,
+            filePath: finalDocumentFileName || "",
             duration: String(values.duration),
             isPreview: Number(values.is_preview),
             lessonType: values.lesson_type,
@@ -238,7 +236,10 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                                             {/* VIDEO */}
                                             <button
                                                 type="button"
-                                                onClick={() => setValue("lesson_type", "video")}
+                                                onClick={() => {
+                                                    setValue("lesson_type", "video")
+                                                    setValue("file_path", null); //Kosongkan file_path jika pilih Video
+                                                }}
                                                 className={`rounded-2xl border p-5 text-left transition-all 
                                                     ${lessonType === "video"
                                                         ? "border-blue-500 bg-blue-50 shadow-md"
@@ -258,7 +259,11 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                                             {/* DOCUMENT */}
                                             <button
                                                 type="button"
-                                                onClick={() => setValue("lesson_type", "document")}
+                                                onClick={() => {
+                                                    setValue("lesson_type", "document")
+                                                    setValue("storage_lesson", ""); // Kosongkan video URL jika pilih Dokumen
+                                                    setValue("duration", null);     // Kosongkan durasi jika pilih Dokumen
+                                                }}
                                                 className={`rounded-2xl border p-5 text-left transition-all 
                                                     ${lessonType === "document" ? "border-blue-500 bg-blue-50 shadow-md" :
                                                         "border-gray-200 bg-white"}`}
