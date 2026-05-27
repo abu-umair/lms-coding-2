@@ -19,7 +19,7 @@ export default function DocumentViewer({ url, onComplete }: DocumentViewerProps)
         if (url) {
             onComplete();
         }
-    }, [url]);
+    }, [url, onComplete]);
 
     // Fitur Fullscreen menggunakan HTML5 Fullscreen API
     const toggleFullscreen = () => {

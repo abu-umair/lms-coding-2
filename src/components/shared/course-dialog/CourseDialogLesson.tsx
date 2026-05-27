@@ -117,12 +117,18 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
         let finalDocumentFileName = "";
         let currentLessonId = initialData?.id;
 
-        if (values.file_path && values.file_path[0] instanceof File && values.storage_lesson) {
-            toast.error("File dan storage lesson ada datanya, Mohon dipilih salah satu saja");
-            return
-        }
+        console.log("ini value path : ", values.file_path)
 
+        // if (values.file_path && values.file_path[0] instanceof File && values.storage_lesson) {
+        //     toast.error("File dan storage lesson ada datanya, Mohon dipilih salah satu saja");
+        //     return
+        // }
+        // *jika ada file
         if (values.file_path && values.file_path[0] instanceof File) {
+            if (isEditMode) {
+                values.storage_lesson = "";
+                values.duration = null;
+            }
             // ADA FILE BARU: Upload ke server
             const formData = new FormData();
             formData.append('document', values.file_path[0]);
@@ -146,11 +152,13 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
             finalDocumentFileName = uploadResponse.data.file_name;
             currentLessonId = uploadResponse.data.lesson_id || initialData.id;
         }
-        else {
-            if (values.storage_lesson && !isEditMode) {
+        // *jika ada storage lesson
+        else if (values.storage_lesson) {
+            if (isEditMode) {
+                finalDocumentFileName = 'delete file';
+            } else {
                 currentLessonId = crypto.randomUUID();
             }
-
         }
 
         console.log(currentLessonId);
@@ -240,10 +248,10 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                                                     setValue("lesson_type", "video")
                                                     setValue("file_path", null); //Kosongkan file_path jika pilih Video
                                                 }}
-                                                className={`rounded-2xl border p-5 text-left transition-all 
+                                                className={`rounded-2xl border p-5 text-left transition-all hover:bg-primaryColor/30
                                                     ${lessonType === "video"
-                                                        ? "border-blue-500 bg-blue-50 shadow-md"
-                                                        : "border-gray-200 bg-white"}
+                                                        ? "border-blue-500 bg-primaryColor/30 shadow-md"
+                                                        : "border-gray-200 bg-whiteColor "}
                                                         `}>
                                                 <div className="text-3xl mb-2">🎥</div>
 
@@ -264,9 +272,9 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                                                     setValue("storage_lesson", ""); // Kosongkan video URL jika pilih Dokumen
                                                     setValue("duration", null);     // Kosongkan durasi jika pilih Dokumen
                                                 }}
-                                                className={`rounded-2xl border p-5 text-left transition-all 
-                                                    ${lessonType === "document" ? "border-blue-500 bg-blue-50 shadow-md" :
-                                                        "border-gray-200 bg-white"}`}
+                                                className={`rounded-2xl border p-5 text-left transition-all hover:bg-primaryColor/30
+                                                    ${lessonType === "document" ? "border-blue-500 bg-primaryColor/30 shadow-md" :
+                                                        "border-gray-200 bg-whiteColor"}`}
                                             >
                                                 <div className="text-3xl mb-2">📄</div>
 
