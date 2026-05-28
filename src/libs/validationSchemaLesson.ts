@@ -14,6 +14,7 @@ export const getLessonSchema = (isEdit: boolean) => {
     return baseLessonSchema.extend({
         slug: z.string().min(1, "Slug diisi"),
         description: z.string().min(1, "description diisi"),
+        pages: z.any().optional().or(z.literal("")),
         storage_lesson: z.string().optional(),
         file_path: z
             .any() // Gunakan z.any() terlebih dahulu agar bisa menerima FileList ataupun String (data lama)

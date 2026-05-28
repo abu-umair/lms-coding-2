@@ -299,6 +299,7 @@ message Lesson {
   string course_id = 7;
   int32  is_preview = 8;
   string file_path = 9;
+  string pages = 10;
 
 }
 

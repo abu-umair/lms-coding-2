@@ -29,6 +29,7 @@ interface CourseDialogLessonProps {
     description?: string;
     storage_lesson?: string;
     file_path?: string;
+    pages?: string;
     lesson_type?: string;
     // duration?: string;
     is_preview?: number;
@@ -74,6 +75,7 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
             storage_lesson: "",
             file_path: null,
             // lesson_type: "", 
+            pages: null,
             duration: null,
             is_preview: null,
             // status: "",
@@ -93,6 +95,7 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                 setValue("description", initialData.description);
                 setValue("storage_lesson", initialData.storageLesson);
                 setValue("file_path", initialData.filePath);
+                setValue("pages", initialData.pages);
                 setValue("duration", initialData.duration);
                 setValue("is_preview", initialData.isPreview);
                 setValue("lesson_type", initialData.lessonType);
@@ -180,6 +183,7 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
             description: values.description,
             storageLesson: values.storage_lesson,
             filePath: finalDocumentFileName || "",
+            pages: String(values.pages),
             duration: String(values.duration),
             isPreview: Number(values.is_preview),
             lessonType: values.lesson_type,
@@ -247,6 +251,8 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                                                 onClick={() => {
                                                     setValue("lesson_type", "video")
                                                     setValue("file_path", null); //Kosongkan file_path jika pilih Video
+                                                    setValue("pages", null);     // Kosongkan durasi jika pilih Dokumen
+
                                                 }}
                                                 className={`rounded-2xl border p-5 text-left transition-all hover:bg-primaryColor/30
                                                     ${lessonType === "video"
@@ -355,7 +361,7 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
 
                                                 {lessonType === "document" && (
                                                     <>
-                                                        <FormInput
+                                                        <><FormInput
                                                             label="Upload Document"
                                                             name="file_path"
                                                             type="file"
@@ -367,13 +373,25 @@ export const CourseDialogLesson = ({ trigger, title, id: id1, instructorId, cour
                                                             // TAMBAHAN
                                                             watchValueFile={watchDocument}
                                                             initialFileUrl={initialData?.filePath} // Kirim path file lama dari database ke sini
-                                                            accept=".pdf,.doc,.docx,.ppt,.pptx,.zip"
+                                                            accept=".pdf,.txt"
                                                         />
 
-                                                        <p className="text-sm text-gray-500 mt-2">
-                                                            Supported format:
-                                                            PDF, TXT
-                                                        </p>
+                                                            <p className="text-sm text-gray-500 mt-2">
+                                                                Supported format:
+                                                                PDF, TXT
+                                                            </p>
+                                                        </>
+
+                                                        <FormInput
+                                                            label="Pages"
+                                                            name="pages"
+                                                            type="number"
+                                                            placeholder="Masukkan jumlah lembar/halaman dokumen"
+                                                            register={register}
+                                                            errors={errors}
+                                                            disabled={isLoading}
+                                                            isInputCourse={true}
+                                                        />
                                                     </>
                                                 )}
 

@@ -111,6 +111,10 @@ export interface LessonInfo {
      * @generated from protobuf field: optional string description = 17
      */
     description?: string;
+    /**
+     * @generated from protobuf field: optional string pages = 18
+     */
+    pages?: string;
 }
 /**
  * @generated from protobuf message chapter_lesson.CreateChapterLessonRequest
@@ -184,6 +188,10 @@ export interface CreateChapterLessonRequest {
      * @generated from protobuf field: string id = 17
      */
     id: string;
+    /**
+     * @generated from protobuf field: optional string pages = 18
+     */
+    pages?: string;
 }
 /**
  * @generated from protobuf message chapter_lesson.CreateChapterLessonResponse
@@ -288,6 +296,10 @@ export interface DetailChapterLessonResponse {
      */
     courseId?: string;
     /**
+     * @generated from protobuf field: optional string pages = 25
+     */
+    pages?: string;
+    /**
      * @generated from protobuf field: optional string created_at = 19
      */
     createdAt?: string;
@@ -384,6 +396,10 @@ export interface EditChapterLessonRequest {
      * @generated from protobuf field: optional string instructor_id = 17
      */
     instructorId?: string;
+    /**
+     * @generated from protobuf field: optional string pages = 18
+     */
+    pages?: string;
 }
 /**
  * @generated from protobuf message chapter_lesson.EditChapterLessonResponse
@@ -544,7 +560,8 @@ class LessonInfo$Type extends MessageType<LessonInfo> {
             { no: 14, name: "downloadable", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
             { no: 15, name: "is_preview", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/, options: { "buf.validate.field": { int32: { gte: 0 } } } },
             { no: 16, name: "status", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
-            { no: 17, name: "description", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
+            { no: 17, name: "description", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 18, name: "pages", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<LessonInfo>): LessonInfo {
@@ -610,6 +627,9 @@ class LessonInfo$Type extends MessageType<LessonInfo> {
                 case /* optional string description */ 17:
                     message.description = reader.string();
                     break;
+                case /* optional string pages */ 18:
+                    message.pages = reader.string();
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -673,6 +693,9 @@ class LessonInfo$Type extends MessageType<LessonInfo> {
         /* optional string description = 17; */
         if (message.description !== undefined)
             writer.tag(17, WireType.LengthDelimited).string(message.description);
+        /* optional string pages = 18; */
+        if (message.pages !== undefined)
+            writer.tag(18, WireType.LengthDelimited).string(message.pages);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -703,7 +726,8 @@ class CreateChapterLessonRequest$Type extends MessageType<CreateChapterLessonReq
             { no: 14, name: "downloadable", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
             { no: 15, name: "is_preview", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/, options: { "buf.validate.field": { int32: { gte: 0 } } } },
             { no: 16, name: "status", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
-            { no: 17, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } }
+            { no: 17, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 18, name: "pages", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } }
         ]);
     }
     create(value?: PartialMessage<CreateChapterLessonRequest>): CreateChapterLessonRequest {
@@ -771,6 +795,9 @@ class CreateChapterLessonRequest$Type extends MessageType<CreateChapterLessonReq
                 case /* string id */ 17:
                     message.id = reader.string();
                     break;
+                case /* optional string pages */ 18:
+                    message.pages = reader.string();
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -834,6 +861,9 @@ class CreateChapterLessonRequest$Type extends MessageType<CreateChapterLessonReq
         /* string id = 17; */
         if (message.id !== "")
             writer.tag(17, WireType.LengthDelimited).string(message.id);
+        /* optional string pages = 18; */
+        if (message.pages !== undefined)
+            writer.tag(18, WireType.LengthDelimited).string(message.pages);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -974,6 +1004,7 @@ class DetailChapterLessonResponse$Type extends MessageType<DetailChapterLessonRe
             { no: 16, name: "status", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
             { no: 17, name: "instructor_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
             { no: 18, name: "course_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 25, name: "pages", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
             { no: 19, name: "created_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 20, name: "created_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 21, name: "deleted_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
@@ -1049,6 +1080,9 @@ class DetailChapterLessonResponse$Type extends MessageType<DetailChapterLessonRe
                     break;
                 case /* optional string course_id */ 18:
                     message.courseId = reader.string();
+                    break;
+                case /* optional string pages */ 25:
+                    message.pages = reader.string();
                     break;
                 case /* optional string created_at */ 19:
                     message.createdAt = reader.string();
@@ -1152,6 +1186,9 @@ class DetailChapterLessonResponse$Type extends MessageType<DetailChapterLessonRe
         /* optional string deleted_at = 24; */
         if (message.deletedAt !== undefined)
             writer.tag(24, WireType.LengthDelimited).string(message.deletedAt);
+        /* optional string pages = 25; */
+        if (message.pages !== undefined)
+            writer.tag(25, WireType.LengthDelimited).string(message.pages);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1182,7 +1219,8 @@ class EditChapterLessonRequest$Type extends MessageType<EditChapterLessonRequest
             { no: 14, name: "downloadable", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
             { no: 15, name: "is_preview", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/, options: { "buf.validate.field": { int32: { gte: 0 } } } },
             { no: 16, name: "status", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } },
-            { no: 17, name: "instructor_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } }
+            { no: 17, name: "instructor_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 18, name: "pages", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } }
         ]);
     }
     create(value?: PartialMessage<EditChapterLessonRequest>): EditChapterLessonRequest {
@@ -1249,6 +1287,9 @@ class EditChapterLessonRequest$Type extends MessageType<EditChapterLessonRequest
                 case /* optional string instructor_id */ 17:
                     message.instructorId = reader.string();
                     break;
+                case /* optional string pages */ 18:
+                    message.pages = reader.string();
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -1312,6 +1353,9 @@ class EditChapterLessonRequest$Type extends MessageType<EditChapterLessonRequest
         /* optional string instructor_id = 17; */
         if (message.instructorId !== undefined)
             writer.tag(17, WireType.LengthDelimited).string(message.instructorId);
+        /* optional string pages = 18; */
+        if (message.pages !== undefined)
+            writer.tag(18, WireType.LengthDelimited).string(message.pages);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

@@ -34,7 +34,7 @@ const LessonItem = ({
                         ${snapshot.isDragging ? "bg-gray-50 dark:bg-gray-800 shadow-md" : ""
                         }`}>
                     <div className="flex items-center">
-                        <i className="icofont-video-alt mr-10px text-primaryColor"></i>
+                        <i className={`${initialData.lessonType == "video" ? "icofont-video-alt" : "icofont-file-text"} mr-10px text-primaryColor`}></i>
                         <Link href="/lessons/1" className="font-medium text-contentColor dark:text-contentColor-dark hover:text-primaryColor">
                             {initialData.title}
                         </Link>

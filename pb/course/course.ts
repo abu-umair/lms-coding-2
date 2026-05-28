@@ -953,6 +953,10 @@ export interface Lesson {
      * @generated from protobuf field: string file_path = 9
      */
     filePath: string;
+    /**
+     * @generated from protobuf field: string pages = 10
+     */
+    pages: string;
 }
 /**
  * @generated from protobuf message course.Chapter
@@ -3332,7 +3336,8 @@ class Lesson$Type extends MessageType<Lesson> {
             { no: 6, name: "chapter_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "course_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "is_preview", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 9, name: "file_path", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 9, name: "file_path", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "pages", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<Lesson>): Lesson {
@@ -3346,6 +3351,7 @@ class Lesson$Type extends MessageType<Lesson> {
         message.courseId = "";
         message.isPreview = 0;
         message.filePath = "";
+        message.pages = "";
         if (value !== undefined)
             reflectionMergePartial<Lesson>(this, message, value);
         return message;
@@ -3381,6 +3387,9 @@ class Lesson$Type extends MessageType<Lesson> {
                     break;
                 case /* string file_path */ 9:
                     message.filePath = reader.string();
+                    break;
+                case /* string pages */ 10:
+                    message.pages = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -3421,6 +3430,9 @@ class Lesson$Type extends MessageType<Lesson> {
         /* string file_path = 9; */
         if (message.filePath !== "")
             writer.tag(9, WireType.LengthDelimited).string(message.filePath);
+        /* string pages = 10; */
+        if (message.pages !== "")
+            writer.tag(10, WireType.LengthDelimited).string(message.pages);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

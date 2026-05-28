@@ -44,6 +44,7 @@ message LessonInfo {
   optional int32  is_preview = 15 [(buf.validate.field).int32.gte = 0];
   optional string status = 16 [(buf.validate.field).string = { max_len: 255 }];
   optional string description = 17 ;
+  optional string pages = 18 ;
 }
 
 message CreateChapterLessonRequest {
@@ -64,6 +65,7 @@ message CreateChapterLessonRequest {
   optional int32  is_preview = 15 [(buf.validate.field).int32.gte = 0];
   optional string status = 16 [(buf.validate.field).string = { max_len: 255 }];
   string id = 17 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+  optional string pages = 18 [(buf.validate.field).string = { max_len: 255 }];
 
 }
 
@@ -96,6 +98,8 @@ message DetailChapterLessonResponse {
   optional string status = 16 [(buf.validate.field).string = { max_len: 255 }];
   optional string instructor_id = 17 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
   optional string course_id = 18 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+  optional string pages = 25 [(buf.validate.field).string = { max_len: 255 }];
+
   
   optional string created_at = 19;
   optional string created_by = 20;
@@ -123,6 +127,8 @@ message EditChapterLessonRequest {
   optional int32 is_preview = 15 [(buf.validate.field).int32.gte = 0];
   optional string status = 16 [(buf.validate.field).string = { max_len: 255 }];
   optional string instructor_id = 17 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+  optional string pages = 18 [(buf.validate.field).string = { max_len: 255 }];
+
 }
 
 message EditChapterLessonResponse {

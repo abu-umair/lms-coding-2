@@ -73,14 +73,14 @@ const CurriculumContent = ({ chapters }) => {
                             >
                               <div>
                                 <h4 className="text-blackColor dark:text-blackColor-dark leading-1 font-light flex items-center">
-                                  <i className={`mr-10px text-primaryColor ${isPdfFile ? "icofont-file-pdf text-emerald-600" : "icofont-video-alt"}`}></i>
+                                  <i className={`mr-10px text-primaryColor ${isPdfFile ? "icofont-file-text text-emerald-600" : "icofont-video-alt"}`}></i>
                                   {lesson.title}
                                 </h4>
                               </div>
                               <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center gap-4">
                                 <p className="flex items-center">
-                                  <i className="icofont-clock-time mr-1"></i>{" "}
-                                  {formatDuration(lesson.duration)}
+                                  <i className={`${isPdfFile ? "icofont-paper" : "icofont-clock-time"} mr-1`}></i>{" "}
+                                  {isPdfFile ? lesson.pages : formatDuration(lesson.duration)}
                                 </p>
 
                                 {/* Tombol Preview (Hanya jika isPreview === 1) */}
