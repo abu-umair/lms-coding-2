@@ -6,7 +6,9 @@ import FilterCards from "@/components/shared/courses/FilterCards";
 import HeadingPrimaryXl from "@/components/shared/headings/HeadingPrimaryXl ";
 const CoursesFilter = () => {
   return (
-    <section>
+    <section
+      id="courses"
+    >
       <div className="pt-50px pb-10 md:pt-70px md:pb-50px lg:pt-20 2xl:pt-100px 2xl:pb-70px bg-whiteColor dark:bg-whiteColor-dark overflow-hidden">
         <div className="filter-container container">
           <div className="flex gap-15px lg:gap-30px flex-wrap lg:flex-nowrap items-center ">

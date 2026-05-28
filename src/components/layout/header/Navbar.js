@@ -1,12 +1,12 @@
 "use client";
 import { usePathname } from "next/navigation";
-import NavItems from "./NavItems";
+import NavItemsSingle from "./NavItemsSingle";
 import NavbarLogo from "./NavbarLogo";
 import NavbarRight from "./NavbarRight";
 import NavItems2 from "./NavItems2";
 import useIsTrue from "@/hooks/useIsTrue";
 import NavbarTop from "./NavbarTop";
-const Navbar = ({ cartCount, verifiedAt, email, session }) => {
+const Navbar = ({ cartCount, isAuthenticated, userVerified, userNotVerified, role, verifyUrl }) => {
   const isHome1 = useIsTrue("/");
   const isHome1Dark = useIsTrue("/home-1-dark");
   const isHome2 = useIsTrue("/home-2");
@@ -46,15 +46,19 @@ const Navbar = ({ cartCount, verifiedAt, email, session }) => {
             {/* navbar left */}
             <NavbarLogo />
             {/* Main menu */}
-            {isHome2Dark ? <NavItems2 /> : <NavItems />}
+            {/* {isHome2Dark ? <NavItems2 /> : <NavItems />} */}
+            <NavItemsSingle />
 
             {/* navbar right */}
             <NavbarRight
               isHome2Dark={isHome2Dark}
               cartCount={cartCount}
-              verifiedAt={verifiedAt}
-              email={email}
-              session={session} />
+              isAuthenticated={isAuthenticated}
+              userVerified={userVerified}
+              userNotVerified={userNotVerified}
+              verifyUrl={verifyUrl}
+              role={role}
+            />
           </div>
         </div>
       </nav>

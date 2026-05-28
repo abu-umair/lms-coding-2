@@ -9,11 +9,15 @@ import { getServerSession } from "next-auth";
 
 const PageWrapper = async ({ children }) => {
   const session = await getServerSession(authOptions);
+  const email = session?.user?.email;
   const accessToken = session?.accessToken;
-  const verifiedAt = session?.verifiedAt;
-  const email = session?.email;
-  console.log("ini session : ", session);
-  console.log("ini accessToken : ", accessToken);
+  const verifiedAt = session?.user?.verifiedAt;
+  const role = session?.user?.role;
+  const isAuthenticated = session;
+  const userVerified = isAuthenticated && verifiedAt;
+  const userNotVerified = isAuthenticated && !verifiedAt;
+  const verifyUrl = `/auth/verify-email-required?email=${encodeURIComponent(email)}`;
+
 
 
   // * 1. Default value untuk Guest
@@ -47,9 +51,12 @@ const PageWrapper = async ({ children }) => {
         {/* header */}
         <Header
           cartCount={cartCount}
-          verifiedAt={verifiedAt}
-          email={email}
-          session={session} />
+          isAuthenticated={isAuthenticated}
+          userVerified={userVerified}
+          userNotVerified={userNotVerified}
+          verifyUrl={verifyUrl}
+          role={role}
+        />
 
         {/* main */}
         <WishlistContextProvider>{children}</WishlistContextProvider>

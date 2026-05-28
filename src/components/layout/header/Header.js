@@ -10,10 +10,11 @@ import stickyHeader from "@/libs/stickyHeader";
 import smoothScroll from "@/libs/smoothScroll";
 
 
-const Header = ({ cartCount, verifiedAt, email, session }) => {
+const Header = ({ cartCount, isAuthenticated, userVerified, userNotVerified, verifyUrl, role }) => {
 
   const isHome2 = useIsTrue("/home-2");
   const isHome2Dark = useIsTrue("/home-2-dark");
+
 
 
 
@@ -36,11 +37,20 @@ const Header = ({ cartCount, verifiedAt, email, session }) => {
         {/* navbar */}
         <Navbar
           cartCount={cartCount}
-          verifiedAt={verifiedAt}
-          email={email}
-          session={session} />
+          isAuthenticated={isAuthenticated}
+          userVerified={userVerified}
+          userNotVerified={userNotVerified}
+          verifyUrl={verifyUrl}
+          role={role}
+        />
         {/* mobile menu */}
-        <MobileMenu />
+        <MobileMenu
+          isAuthenticated={isAuthenticated}
+          userVerified={userVerified}
+          userNotVerified={userNotVerified}
+          verifyUrl={verifyUrl}
+          role={role}
+        />
       </div>
     </header>
   );

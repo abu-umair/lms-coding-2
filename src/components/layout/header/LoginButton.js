@@ -1,44 +1,27 @@
 import useIsTrue from "@/hooks/useIsTrue";
 import Link from "next/link";
 import React from "react";
-import { useSession } from 'next-auth/react';
 
-const LoginButton = () => {
-  const { data: session, status } = useSession();
-  const isAuthenticated = status === 'authenticated';
-  const email = session?.user?.email;
-  const userRole = session?.user?.role;
-  const verifiedAt = session?.user?.verifiedAt;
-  const isLoading = status === 'loading';
-  const userVerified = isAuthenticated && verifiedAt;
-  const userNotVerified = isAuthenticated && !verifiedAt;
+const LoginButton = ({ isAuthenticated, userVerified, userNotVerified, verifyUrl, role }) => {
 
-  const isInstructor = userRole === 'instructor';
-  const isUser = userRole === 'user';
   const isHome2Dark = useIsTrue("/home-2-dark");
-
-  if (isLoading) {
-    return (
-      <div className="w-[45px] h-[34px] animate-pulse bg-slate-200 rounded-standard mr-[7px] 2xl:mr-15px" />
-    );
-  }
 
   let dashboardUrl = '/login';
 
   if (userVerified) {
-    if (userRole === 'instructor') {
+    if (role === 'instructor') {
       dashboardUrl = "/dashboards/instructor/instructor-dashboard";
-    } else if (userRole === 'user') {
+    } else if (role === 'user') {
       dashboardUrl = "/dashboards/student/student-dashboard";
     }
-    else if (userRole === 'admin') {
+    else if (role === 'admin') {
       dashboardUrl = "/dashboards/admin/admin-dashboard";
     } else {
       dashboardUrl = "/dashboards";
     }
 
   } else if (userNotVerified) {
-    dashboardUrl = `/auth/verify-email-required?email=${encodeURIComponent(email)}`;
+    dashboardUrl = verifyUrl;
   }
 
 

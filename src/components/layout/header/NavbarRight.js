@@ -6,12 +6,13 @@ import useIsTrue from "@/hooks/useIsTrue";
 import LoginButton from "./LoginButton";
 
 
-const NavbarRight = ({ cartCount, verifiedAt, email, session }) => {
+const NavbarRight = ({ cartCount, isAuthenticated, userVerified, userNotVerified, role, verifyUrl }) => {
   const isHome4 = useIsTrue("/home-4");
   const isHome4Dark = useIsTrue("/home-4-dark");
   const isHome5 = useIsTrue("/home-5");
   const isHome5Dark = useIsTrue("/home-5-dark");
   const isHome2Dark = useIsTrue("/home-2-dark");
+
 
 
   return (
@@ -23,35 +24,48 @@ const NavbarRight = ({ cartCount, verifiedAt, email, session }) => {
             {/* {isAuthenticated && isUser && <DropdownCart />} */}
             <DropdownCart
               cartCount={cartCount}
-              verifiedAt={verifiedAt}
-              email={email}
-              session={session} />
+              isAuthenticated={isAuthenticated}
+              userVerified={userVerified}
+              userNotVerified={userNotVerified}
+              verifyUrl={verifyUrl}
+            />
           </li>
         )}
         {isHome4 || isHome4Dark || isHome5 || isHome5Dark ? (
           ""
         ) : (
           <li className="hidden lg:block">
-            <LoginButton />
+            <LoginButton
+              isAuthenticated={isAuthenticated}
+              userVerified={userVerified}
+              userNotVerified={userNotVerified}
+              verifyUrl={verifyUrl}
+              role={role}
+            />
           </li>
         )}
         <li className="hidden lg:block">
           <Link
-            href="/courses"
+            href={!isAuthenticated ? "/login" : userNotVerified ? verifyUrl : "/#courses"}
             className="text-size-12 2xl:text-size-15 text-whiteColor bg-primaryColor block border-primaryColor border hover:text-primaryColor hover:bg-white px-15px py-2 rounded-standard dark:hover:bg-whiteColor-dark dark: dark:hover:text-whiteColor"
           >
-            {isHome2Dark
+            {
+              !isAuthenticated
+                ? "Login" :
+                userNotVerified ? "Verify Email" : "Get Courses"
+            }
+            {/* {isHome2Dark
               ? "Get Started Free"
               : isHome4 || isHome4Dark || isHome5 || isHome5Dark
                 ? "Get Start Here"
-                : "Get Start"}
+                : "Get Start"} */}
           </Link>
         </li>
         <li className="block lg:hidden">
           <MobileMenuOpen />
         </li>
       </ul>
-    </div>
+    </div >
   );
 };
 

@@ -1,7 +1,25 @@
 import Link from "next/link";
 import React from "react";
 
-const MobileMyAccount = () => {
+const MobileMyAccount = ({ isAuthenticated, userVerified, userNotVerified, verifyUrl, role }) => {
+  let dashboardUrl = '/login';
+
+  if (userVerified) {
+    if (role === 'instructor') {
+      dashboardUrl = "/dashboards/instructor/instructor-dashboard";
+    } else if (role === 'user') {
+      dashboardUrl = "/dashboards/student/student-dashboard";
+    }
+    else if (role === 'admin') {
+      dashboardUrl = "/dashboards/admin/admin-dashboard";
+    } else {
+      dashboardUrl = "/dashboards";
+    }
+
+  } else if (userNotVerified) {
+    dashboardUrl = verifyUrl;
+  }
+
   return (
     <div>
       <ul className="accordion-container mt-9 mb-30px pb-9 border-b border-borderColor dark:border-borderColor-dark">
@@ -10,7 +28,7 @@ const MobileMyAccount = () => {
           <div className="accordion-controller flex items-center justify-between">
             <Link
               className="leading-1 text-darkdeep1 font-medium group-hover:text-secondaryColor dark:text-whiteColor dark:hover:text-secondaryColor"
-              href="#"
+              href={dashboardUrl}
             >
               My Account
             </Link>
@@ -19,11 +37,10 @@ const MobileMyAccount = () => {
             </button>
           </div>
           {/*  accordion content */}
-          <div className="accordion-content h-0 overflow-hidden transition-all duration-500 shadow-standard">
+          {/* <div className="accordion-content h-0 overflow-hidden transition-all duration-500 shadow-standard">
             <div className="content-wrapper">
               <ul>
                 <li>
-                  {/*  accordion header */}
                   <div className="flex items-center gap-1">
                     <Link
                       href="/login"
@@ -41,7 +58,6 @@ const MobileMyAccount = () => {
                   </div>
                 </li>
                 <li>
-                  {/*  accordion header */}
                   <div className="flex items-center justify-between">
                     <Link
                       href="/login"
@@ -50,11 +66,10 @@ const MobileMyAccount = () => {
                       My Account
                     </Link>
                   </div>
-                  {/*  accordion content */}
                 </li>
               </ul>
             </div>
-          </div>
+          </div> */}
         </li>
       </ul>
     </div>
