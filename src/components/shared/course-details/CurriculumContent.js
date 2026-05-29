@@ -78,11 +78,6 @@ const CurriculumContent = ({ chapters }) => {
                                 </h4>
                               </div>
                               <div className="text-blackColor dark:text-blackColor-dark text-sm flex items-center gap-4">
-                                <p className="flex items-center">
-                                  <i className={`${isPdfFile ? "icofont-paper" : "icofont-clock-time"} mr-1`}></i>{" "}
-                                  {isPdfFile ? lesson.pages : formatDuration(lesson.duration)}
-                                </p>
-
                                 {/* Tombol Preview (Hanya jika isPreview === 1) */}
                                 {lesson.isPreview === 1 && (
                                   <>
@@ -95,6 +90,13 @@ const CurriculumContent = ({ chapters }) => {
                                     )}
                                   </>
                                 )}
+
+                                <p className="flex items-center">
+                                  <i className={`${isPdfFile ? "icofont-paper" : "icofont-clock-time"} mr-1`}></i>{" "}
+                                  {isPdfFile ? lesson.pages : formatDuration(lesson.duration)}
+                                </p>
+
+
                               </div>
                             </li>
                           )
