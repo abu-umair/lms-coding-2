@@ -52,10 +52,10 @@ const CourseDetailsTab = ({ type, id, course }) => {
     },
   ];
   useEffect(() => {
-    if (type === 2) {
+    if (type === 1) {
       setCurrentIdx(1);
     }
-    if (type === 3) {
+    if (type === 2) {
       setCurrentIdx(2);
     }
   }, [, type, setCurrentIdx]);
