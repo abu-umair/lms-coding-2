@@ -70,6 +70,36 @@ export interface LoginResponse {
     accessToken: string;
 }
 /**
+ * @generated from protobuf message auth.LoginWithGoogleRequest
+ */
+export interface LoginWithGoogleRequest {
+    /**
+     * @generated from protobuf field: string email = 1
+     */
+    email: string;
+    /**
+     * @generated from protobuf field: string full_name = 2
+     */
+    fullName: string;
+    /**
+     * @generated from protobuf field: optional string avatar = 3
+     */
+    avatar?: string;
+}
+/**
+ * @generated from protobuf message auth.LoginWithGoogleResponse
+ */
+export interface LoginWithGoogleResponse {
+    /**
+     * @generated from protobuf field: common.BaseResponse base = 1
+     */
+    base?: BaseResponse;
+    /**
+     * @generated from protobuf field: string access_token = 2
+     */
+    accessToken: string;
+}
+/**
  * @generated from protobuf message auth.LogoutRequest
  */
 export interface LogoutRequest {
@@ -537,6 +567,122 @@ class LoginResponse$Type extends MessageType<LoginResponse> {
  * @generated MessageType for protobuf message auth.LoginResponse
  */
 export const LoginResponse = new LoginResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class LoginWithGoogleRequest$Type extends MessageType<LoginWithGoogleRequest> {
+    constructor() {
+        super("auth.LoginWithGoogleRequest", [
+            { no: 1, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255", email: true } } } },
+            { no: 2, name: "full_name", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { minLen: "1", maxLen: "255" } } } },
+            { no: 3, name: "avatar", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/, options: { "buf.validate.field": { string: { maxLen: "255" } } } }
+        ]);
+    }
+    create(value?: PartialMessage<LoginWithGoogleRequest>): LoginWithGoogleRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.email = "";
+        message.fullName = "";
+        if (value !== undefined)
+            reflectionMergePartial<LoginWithGoogleRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: LoginWithGoogleRequest): LoginWithGoogleRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string email */ 1:
+                    message.email = reader.string();
+                    break;
+                case /* string full_name */ 2:
+                    message.fullName = reader.string();
+                    break;
+                case /* optional string avatar */ 3:
+                    message.avatar = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: LoginWithGoogleRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string email = 1; */
+        if (message.email !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.email);
+        /* string full_name = 2; */
+        if (message.fullName !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.fullName);
+        /* optional string avatar = 3; */
+        if (message.avatar !== undefined)
+            writer.tag(3, WireType.LengthDelimited).string(message.avatar);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message auth.LoginWithGoogleRequest
+ */
+export const LoginWithGoogleRequest = new LoginWithGoogleRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class LoginWithGoogleResponse$Type extends MessageType<LoginWithGoogleResponse> {
+    constructor() {
+        super("auth.LoginWithGoogleResponse", [
+            { no: 1, name: "base", kind: "message", T: () => BaseResponse },
+            { no: 2, name: "access_token", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<LoginWithGoogleResponse>): LoginWithGoogleResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.accessToken = "";
+        if (value !== undefined)
+            reflectionMergePartial<LoginWithGoogleResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: LoginWithGoogleResponse): LoginWithGoogleResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* common.BaseResponse base */ 1:
+                    message.base = BaseResponse.internalBinaryRead(reader, reader.uint32(), options, message.base);
+                    break;
+                case /* string access_token */ 2:
+                    message.accessToken = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: LoginWithGoogleResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* common.BaseResponse base = 1; */
+        if (message.base)
+            BaseResponse.internalBinaryWrite(message.base, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* string access_token = 2; */
+        if (message.accessToken !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.accessToken);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message auth.LoginWithGoogleResponse
+ */
+export const LoginWithGoogleResponse = new LoginWithGoogleResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class LogoutRequest$Type extends MessageType<LogoutRequest> {
     constructor() {
@@ -1577,6 +1723,7 @@ export const ChangePasswordPublicResponse = new ChangePasswordPublicResponse$Typ
 export const AuthService = new ServiceType("auth.AuthService", [
     { name: "Register", options: {}, I: RegisterRequest, O: RegisterResponse },
     { name: "Login", options: {}, I: LoginRequest, O: LoginResponse },
+    { name: "LoginWithGoogle", options: {}, I: LoginWithGoogleRequest, O: LoginWithGoogleResponse },
     { name: "Logout", options: {}, I: LogoutRequest, O: LogoutResponse },
     { name: "ChangePassword", options: {}, I: ChangePasswordRequest, O: ChangePasswordResponse },
     { name: "GetProfile", options: {}, I: GetProfileRequest, O: GetProfileResponse },

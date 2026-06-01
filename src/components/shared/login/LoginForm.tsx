@@ -78,6 +78,30 @@ const LoginForm = ({ email }) => {
     }
   };
 
+  // HANDLER LOGIN GOOGLE (GMAIL)
+  const handleGoogleLogin = async () => {
+    const loadingToast = toast.loading("Menghubungkan ke Google...");
+
+    // Langsung redirect ke /dashboards karena Google otomatis terverifikasi (verifiedAt = true dari backend)
+    const result = await signIn("google", {
+      callbackUrl: "/dashboards",
+      redirect: false
+    });
+    console.log(result);
+
+
+    toast.dismiss(loadingToast);
+
+    if (result?.error) {
+
+      toast.error("Gagal login menggunakan akun Google.");
+    } else if (result?.ok) {
+      toast.success("Berhasil Masuk dengan Google!");
+      router.push("/dashboards");
+      router.refresh();
+    }
+  };
+
 
   return (
     <div className="opacity-100 transition-opacity duration-150 ease-linear">
@@ -146,27 +170,29 @@ const LoginForm = ({ email }) => {
             {isSubmitting ? 'Sedang Memproses...' : 'Log in'}
           </button>
         </div>
-        {/* other login */}
-        {/* <div>
-          <p className="text-contentColor dark:text-contentColor-dark text-center relative mb-15px before:w-2/5 before:h-1px before:bg-borderColor4 dark:before:bg-borderColor2-dark before:absolute before:left-0 before:top-4 after:w-2/5 after:h-1px after:bg-borderColor4 dark:after:bg-borderColor2-dark after:absolute after:right-0 after:top-4">
-            or Log-in with
-          </p>
-        </div>
-        <div className="text-center flex gap-x-1 md:gap-x-15px lg:gap-x-25px gap-y-5 items-center justify-center flex-wrap">
-          <button
-            type="submit"
-            className="text-size-15 text-whiteColor bg-primaryColor px-11 py-10px border border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark"
-          >
-            <i className="icofont-facebook"></i> Facebook
-          </button>
-          <button
-            type="submit"
-            className="text-size-15 text-whiteColor bg-primaryColor px-11 py-10px border border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark"
-          >
-            <i className="icofont-google-plus"></i> Google
-          </button>
-        </div> */}
       </form>
+
+      {/* other login */}
+      <div>
+        <p className="text-contentColor dark:text-contentColor-dark text-center relative mb-15px before:w-2/5 before:h-1px before:bg-borderColor4 dark:before:bg-borderColor2-dark before:absolute before:left-0 before:top-4 after:w-2/5 after:h-1px after:bg-borderColor4 dark:after:bg-borderColor2-dark after:absolute after:right-0 after:top-4">
+          or Log-in with
+        </p>
+      </div>
+      <div className="text-center flex gap-x-1 md:gap-x-15px lg:gap-x-25px gap-y-5 items-center justify-center flex-wrap">
+        {/* <button
+          type="submit"
+          className="text-size-15 text-whiteColor bg-primaryColor px-11 py-10px border border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark"
+        >
+          <i className="icofont-facebook"></i> Facebook
+        </button> */}
+        <button
+          onClick={handleGoogleLogin}
+          type="button"
+          className="text-size-15 text-whiteColor bg-primaryColor px-11 py-10px w-full border border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark"
+        >
+          <i className="icofont-google-plus"></i> Google
+        </button>
+      </div>
     </div>
   );
 };

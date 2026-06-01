@@ -7,6 +7,7 @@ import { RpcError } from "@protobuf-ts/runtime-rpc";
 import { jwtDecode } from "jwt-decode"; // Import decoder
 import toast from "react-hot-toast";
 import { getAuthClient } from "@/api/grpc/client";
+import GoogleProvider from "next-auth/providers/google";
 
 
 
@@ -24,6 +25,13 @@ interface MyJwtPayload {
 //* login / sign 
 export const authOptions: NextAuthOptions = {
     providers: [
+        //! PROVIDER GOOGLE (TAMBAHKAN DI SINI)
+        GoogleProvider({
+            clientId: process.env.AUTH_GOOGLE_ID || "",
+            clientSecret: process.env.AUTH_GOOGLE_SECRET || "",
+        }),
+
+        //! PROVIDER credentials
         CredentialsProvider({
             name: "Go-gRPC",
             credentials: {
@@ -32,8 +40,6 @@ export const authOptions: NextAuthOptions = {
             },
             async authorize(credentials) {
                 if (!credentials) return null;
-
-
 
                 try {
                     // 1. Ambil client gRPC
@@ -87,13 +93,59 @@ export const authOptions: NextAuthOptions = {
     },
 
     callbacks: {
+        async signIn({ user, account, profile }) {
+
+            // Jika login menggunakan Google
+            if (account?.provider === "google") {
+                try {
+                    const client = getAuthClient();
+
+                    // Pastikan Anda sudah membuat method 'loginWithGoogle' di proto & gRPC server Go Anda
+                    const res = await client.loginWithGoogle({
+                        email: user.email || "",
+                        fullName: user.name || "",
+                        avatar: user.image || "",
+                    });
+
+
+                    if (res.response.base?.isError || !res.response.accessToken) {
+                        return false; // Tolak login jika backend Go bermasalah
+                    }
+
+                    // Tempelkan accessToken dari Go ke object user NextAuth sementara
+                    // agar bisa dibaca di callback jwt() di bawah
+                    (user as any).accessToken = res.response.accessToken;
+                    return true;
+                } catch (error) {
+                    console.error("Gagal sinkronisasi gRPC Google Login:", error);
+                    return false;
+                }
+            }
+            return true; // Untuk login credentials biasa langsung lolos
+        },
+
         async jwt({ token, user, trigger, session }) {
             if (user) {
-                token.id = (user as any).id;
-                token.email = (user as any).email;
-                token.role = (user as any).role;
-                token.verifiedAt = (user as any).verifiedAt;
-                token.accessToken = (user as any).accessToken;
+                console.log("ini rest nyass : ", user);
+
+                // JIKA USER LOGIN LEWAT GOOGLE
+                if ((user as any).accessToken && !(user as any).role) {
+                    // Decode token dari Go untuk mengambil data asli database PostgreSQL Anda
+                    const decoded = jwtDecode<MyJwtPayload>((user as any).accessToken);
+
+                    token.id = decoded.sub;
+                    token.email = decoded.email;
+                    token.role = decoded.role;
+                    token.verifiedAt = decoded.verified_at; // Mengambil true dari Go
+                    token.accessToken = (user as any).accessToken;
+                } else {
+                    // JIKA USER LOGIN LEWAT CREDENTIALS BISA (EMAIL & PASSWORD)
+                    token.id = (user as any).id;
+                    token.email = (user as any).email;
+                    token.role = (user as any).role;
+                    token.verifiedAt = (user as any).verifiedAt;
+                    token.accessToken = (user as any).accessToken;
+                }
             }
             return token;
         },

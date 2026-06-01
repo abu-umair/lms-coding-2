@@ -13,6 +13,7 @@ option go_package = "github.com/abu-umair/resto-microservice/pb/auth";
 service AuthService {
   rpc Register(RegisterRequest) returns (RegisterResponse);
   rpc Login(LoginRequest) returns (LoginResponse);
+  rpc LoginWithGoogle(LoginWithGoogleRequest) returns (LoginWithGoogleResponse);
   rpc Logout(LogoutRequest) returns (LogoutResponse);
   rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse);
   rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
@@ -45,6 +46,18 @@ message LoginRequest {
 }
 
 message LoginResponse { 
+  common.BaseResponse base = 1;
+  string access_token = 2;
+}
+
+message LoginWithGoogleRequest { 
+  string email = 1 [(buf.validate.field).string = { email: true, min_len: 1, max_len: 255 }];
+  string full_name = 2 [(buf.validate.field).string = { min_len: 1, max_len: 255 }];
+  optional string avatar = 3 [(buf.validate.field).string = { max_len: 255}];
+
+}
+
+message LoginWithGoogleResponse { 
   common.BaseResponse base = 1;
   string access_token = 2;
 } 

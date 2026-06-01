@@ -24,6 +24,8 @@ import type { ChangePasswordResponse } from "./auth";
 import type { ChangePasswordRequest } from "./auth";
 import type { LogoutResponse } from "./auth";
 import type { LogoutRequest } from "./auth";
+import type { LoginWithGoogleResponse } from "./auth";
+import type { LoginWithGoogleRequest } from "./auth";
 import type { LoginResponse } from "./auth";
 import type { LoginRequest } from "./auth";
 import { stackIntercept } from "@protobuf-ts/runtime-rpc";
@@ -43,6 +45,10 @@ export interface IAuthServiceClient {
      * @generated from protobuf rpc: Login
      */
     login(input: LoginRequest, options?: RpcOptions): UnaryCall<LoginRequest, LoginResponse>;
+    /**
+     * @generated from protobuf rpc: LoginWithGoogle
+     */
+    loginWithGoogle(input: LoginWithGoogleRequest, options?: RpcOptions): UnaryCall<LoginWithGoogleRequest, LoginWithGoogleResponse>;
     /**
      * @generated from protobuf rpc: Logout
      */
@@ -112,38 +118,45 @@ export class AuthServiceClient implements IAuthServiceClient, ServiceInfo {
         return stackIntercept<LoginRequest, LoginResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * @generated from protobuf rpc: LoginWithGoogle
+     */
+    loginWithGoogle(input: LoginWithGoogleRequest, options?: RpcOptions): UnaryCall<LoginWithGoogleRequest, LoginWithGoogleResponse> {
+        const method = this.methods[2], opt = this._transport.mergeOptions(options);
+        return stackIntercept<LoginWithGoogleRequest, LoginWithGoogleResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * @generated from protobuf rpc: Logout
      */
     logout(input: LogoutRequest, options?: RpcOptions): UnaryCall<LogoutRequest, LogoutResponse> {
-        const method = this.methods[2], opt = this._transport.mergeOptions(options);
+        const method = this.methods[3], opt = this._transport.mergeOptions(options);
         return stackIntercept<LogoutRequest, LogoutResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ChangePassword
      */
     changePassword(input: ChangePasswordRequest, options?: RpcOptions): UnaryCall<ChangePasswordRequest, ChangePasswordResponse> {
-        const method = this.methods[3], opt = this._transport.mergeOptions(options);
+        const method = this.methods[4], opt = this._transport.mergeOptions(options);
         return stackIntercept<ChangePasswordRequest, ChangePasswordResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetProfile
      */
     getProfile(input: GetProfileRequest, options?: RpcOptions): UnaryCall<GetProfileRequest, GetProfileResponse> {
-        const method = this.methods[4], opt = this._transport.mergeOptions(options);
+        const method = this.methods[5], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetProfileRequest, GetProfileResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: Verify
      */
     verify(input: VerifyRequest, options?: RpcOptions): UnaryCall<VerifyRequest, VerifyResponse> {
-        const method = this.methods[5], opt = this._transport.mergeOptions(options);
+        const method = this.methods[6], opt = this._transport.mergeOptions(options);
         return stackIntercept<VerifyRequest, VerifyResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: RequestOTP
      */
     requestOTP(input: RequestOTPRequest, options?: RpcOptions): UnaryCall<RequestOTPRequest, RequestOTPResponse> {
-        const method = this.methods[6], opt = this._transport.mergeOptions(options);
+        const method = this.methods[7], opt = this._transport.mergeOptions(options);
         return stackIntercept<RequestOTPRequest, RequestOTPResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -152,28 +165,28 @@ export class AuthServiceClient implements IAuthServiceClient, ServiceInfo {
      * @generated from protobuf rpc: VerifyEmail
      */
     verifyEmail(input: VerifyEmailRequest, options?: RpcOptions): UnaryCall<VerifyEmailRequest, VerifyEmailResponse> {
-        const method = this.methods[7], opt = this._transport.mergeOptions(options);
+        const method = this.methods[8], opt = this._transport.mergeOptions(options);
         return stackIntercept<VerifyEmailRequest, VerifyEmailResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: RequestVerify
      */
     requestVerify(input: RequestVerifyRequest, options?: RpcOptions): UnaryCall<RequestVerifyRequest, RequestVerifyResponse> {
-        const method = this.methods[8], opt = this._transport.mergeOptions(options);
+        const method = this.methods[9], opt = this._transport.mergeOptions(options);
         return stackIntercept<RequestVerifyRequest, RequestVerifyResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ForgotPassword
      */
     forgotPassword(input: ForgotPasswordRequest, options?: RpcOptions): UnaryCall<ForgotPasswordRequest, ForgotPasswordResponse> {
-        const method = this.methods[9], opt = this._transport.mergeOptions(options);
+        const method = this.methods[10], opt = this._transport.mergeOptions(options);
         return stackIntercept<ForgotPasswordRequest, ForgotPasswordResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ChangePasswordPublic
      */
     changePasswordPublic(input: ChangePasswordPublicRequest, options?: RpcOptions): UnaryCall<ChangePasswordPublicRequest, ChangePasswordPublicResponse> {
-        const method = this.methods[10], opt = this._transport.mergeOptions(options);
+        const method = this.methods[11], opt = this._transport.mergeOptions(options);
         return stackIntercept<ChangePasswordPublicRequest, ChangePasswordPublicResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -182,7 +195,7 @@ export class AuthServiceClient implements IAuthServiceClient, ServiceInfo {
      * @generated from protobuf rpc: GetProfileUser
      */
     getProfileUser(input: GetProfileUserRequest, options?: RpcOptions): UnaryCall<GetProfileUserRequest, GetProfileUserResponse> {
-        const method = this.methods[11], opt = this._transport.mergeOptions(options);
+        const method = this.methods[12], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetProfileUserRequest, GetProfileUserResponse>("unary", this._transport, method, opt, input);
     }
 }
