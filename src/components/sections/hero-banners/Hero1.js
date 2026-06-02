@@ -16,33 +16,32 @@ const Hero1 = () => {
   return (
     <section data-aos="fade-up">
       {/* banner section  */}
-      <div className="container2-xl bg-darkdeep1 pt-50px md:pt-20 pb-205px md:pb-35 rounded-2xl relative overflow-hidden shadow-brand">
+      <div className="container2-xl bg-primaryColor pt-50px md:pt-20 pb-205px md:pb-35 rounded-2xl relative overflow-hidden shadow-brand">
         <div className="container grid grid-cols-1 lg:grid-cols-2 items-center">
           {/* banner Left  */}
           <div data-aos="fade-up">
-            <HreoName>EDUCATION SOLUTION</HreoName>
+            <HreoName>DIBIMBING OLEH AHLI</HreoName>
             <HeadingLg color={"white"}>
               Cloud-based LMS <br className="hidden md:block" />
-              Trusted by 1000+
+              Sempurnakan Belajarmu
             </HeadingLg>
             <PagragraphHero color="white">
-              Lorem Ipsum is simply dummy text of the printing typesetting
-              industry. Lorem Ipsum has been
+              Hadirkan standar baru dalam pendidikan digital dengan kurikulum adaptif otomatis, mengkurasi kepakaran instruktur elit langsung ke ruang belajar Anda. Ekosistem pendidikan masa depan dengan kinerja tinggi.
             </PagragraphHero>
 
             <div className="mt-30px md:mt-45px">
               <Link
-                href="/courses"
+                href="#courses"
                 className="text-sm md:text-size-15 font-semibold text-darkdeep2 bg-whiteColor border border-whiteColor px-5 md:px-30px py-3 md:py-4 hover:text-whiteColor hover:bg-darkblack rounded inline-block mr-6px md:mr-30px shadow-hero-action dark:bg-whiteColor-dark dark:hover:bg-whiteColor dark:text-whiteColor dark:hover:text-whiteColor-dark dark:border-none"
               >
-                View Courses
+                Lihat Kursus
               </Link>
-              <Link
+              {/* <Link
                 href="/courses"
                 className="text-sm md:text-size-15 font-semibold text-whiteColor py-3 md:py-4 hover:text-secondaryColor inline-block"
               >
                 Find out more <i className="icofont-long-arrow-right"></i>
-              </Link>
+              </Link> */}
             </div>
           </div>
           {/* banner right  */}
