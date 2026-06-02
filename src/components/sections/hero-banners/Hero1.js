@@ -20,10 +20,10 @@ const Hero1 = () => {
         <div className="container grid grid-cols-1 lg:grid-cols-2 items-center">
           {/* banner Left  */}
           <div data-aos="fade-up">
-            <HreoName>DIBIMBING OLEH AHLI</HreoName>
+            <HreoName>Kursus Online & Private</HreoName>
             <HeadingLg color={"white"}>
-              Cloud-based LMS <br className="hidden md:block" />
-              Sempurnakan Belajarmu
+              Dibimbing Oleh Ahli <br className="hidden md:block" />
+              Disempurnakan Dengan Teknologi
             </HeadingLg>
             <PagragraphHero color="white">
               Hadirkan standar baru dalam pendidikan digital dengan kurikulum adaptif otomatis, mengkurasi kepakaran instruktur elit langsung ke ruang belajar Anda. Ekosistem pendidikan masa depan dengan kinerja tinggi.
