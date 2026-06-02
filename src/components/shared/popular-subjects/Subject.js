@@ -5,16 +5,14 @@ import React from "react";
 const Subject = ({ subject, type }) => {
   const { title, desc, navButton, svg, translate, image, id, category } =
     subject;
-  const path = `/courses?category=${
-    category ? category.split(" ").join("_").toLowerCase() : "#"
-  }`;
+  const path = `/courses?category=${category ? category.split(" ").join("_").toLowerCase() : "#"
+    }`;
   return (
     <div data-aos="fade-up">
       <div className={translate ? "md:translate-y-[30px]" : ""}>
         <div
-          className={`${
-            type === "primary" ? "p-30px" : "p-35px"
-          } group bg-whiteColor rounded-xl transition-all duration-300 shadow-dropdown-secodary hover:bg-primaryColor hover:-translate-y-5px hover:text-whiteColor dark:bg-whiteColor-dark dark:hover:bg-primaryColor`}
+          className={`${type === "primary" ? "p-30px" : "p-35px"
+            } group bg-whiteColor rounded-xl transition-all duration-300 shadow-dropdown-secodary hover:bg-primaryColor hover:-translate-y-5px hover:text-whiteColor dark:bg-whiteColor-dark dark:hover:bg-primaryColor`}
         >
           {/* card svg */}
           <div className="-translate-y-2 flex justify-between overflow-hidden mb-0 md:mb-1 lg:mb-3">
@@ -53,22 +51,20 @@ const Subject = ({ subject, type }) => {
             <h3>
               <Link
                 href={path}
-                className={`${
-                  type === "primary"
+                className={`${type === "primary"
                     ? "text-size-22 sm:text-size-17 md:text-size-22 lg:text-size-17 2xl:text-size-22 leading-29px sm:leading-15px md:leading-29px lg:leading-15px 2xl:leading-29px font-semibold mb-5px "
                     : "text-size-23 lg:text-lg 2xl:text-size-23 mb-2 md:-mb-1 2xl:mb-10px"
-                } font-semibold  hover:text-secondaryColor  dark:text-whiteColor dark:hover:text-secondaryColor `}
+                  } font-semibold  hover:text-secondaryColor  dark:text-whiteColor dark:hover:text-secondaryColor `}
               >
                 {title}
               </Link>
             </h3>
 
             <p
-              className={`${
-                type === "primary"
+              className={`${type === "primary"
                   ? "leading-29px"
                   : "text-sm lg:text-xs 2xl:text-sm mb-15px lg:mb-2 2xl:mb-15px"
-              }  text-contentColor group-hover:text-whiteColor  transition-all duration-300`}
+                }  text-contentColor group-hover:text-whiteColor  transition-all duration-300`}
             >
               {desc}
             </p>
