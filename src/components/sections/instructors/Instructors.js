@@ -48,16 +48,15 @@ const Instructors = () => {
             data-aos="fade-up"
           >
             <div className="relative">
-              <SectionName>Course List</SectionName>
-              <HeadingPrimary>What They Say About us</HeadingPrimary>
+              <SectionName>Testimoni</SectionName>
+              <HeadingPrimary>Apa Kata Mereka Tentang Kami</HeadingPrimary>
               <p className="text-sm md:text-base text-contentColor mt-5 mb-5 2xl:mb-45px dark:text-contentColor-dark">
-                Construction is a general term meaning the art and science to
-                form systems organizations and comes from Latin Construction is
+                Ribuan pelajar dan calon pekerja telah meningkatkan keahlian mereka dan berhasil membangun karier impian melalui kelas yang terarah dan dipandu langsung oleh mentor ahli.
               </p>
 
               <div>
-                <ButtonPrimary path="#" color="secondary" arrow={true} href="#">
-                  Explore More
+                <ButtonPrimary path="#courses" color="secondary" arrow={true} type="link">
+                  Lihat Semua Kelas
                 </ButtonPrimary>
               </div>
             </div>
@@ -65,12 +64,12 @@ const Instructors = () => {
 
           {instructors.map(({ name, image, desc, desig, id }, idx) => (
             <div key={idx} data-aos="fade-up">
-              <div className="bg-whiteColor px-25px py-50px mb-22px relative dark:bg-whiteColor-dark">
+              <div className="bg-whiteColor px-25px py-50px mb-22px relative dark:bg-whiteColor-dark shadow-brand dark:shadow-brand-dark">
                 <p className="text-base lg:text-sm 2xl:text-base text-contentColor dark:text-contentColor-dark">
                   {desc}
                 </p>
 
-                <div className="text-xl lg:text-3xl text-whiteColor bg-primaryColor w-10 h-10 lg:w-15 lg:h-15 flex items-center justify-center absolute top-0 left-0 md:-translate-y-1/2 md:-translate-x-1/2 z-20">
+                <div className="text-xl lg:text-3xl text-whiteColor bg-primaryColor w-10 h-10 lg:w-15 lg:h-15 flex items-center justify-center absolute top-0 left-0 md:-translate-y-1/2 md:-translate-x-1/2 z-20 shadow-md">
                   <i className="icofont-quote-left"></i>
                 </div>
                 <span className="w-0 h-0 border-l-12 border-r-12 border-t-15 border-l-transparent border-r-transparent border-t-whiteColor absolute bottom-[-14px] left-[27px] dark:border-t-whiteColor-dark"></span>
