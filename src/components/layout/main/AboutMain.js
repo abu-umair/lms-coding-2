@@ -1,4 +1,4 @@
-import About11 from "@/components/sections/abouts/About11";
+import About4 from "@/components/sections/abouts/About4";
 import Brands from "@/components/sections/brands/Brands";
 import FeatureCourses from "@/components/sections/featured-courses/FeatureCourses";
 import HeroPrimary from "@/components/sections/hero-banners/HeroPrimary";
@@ -8,18 +8,18 @@ import Testimonials from "@/components/sections/testimonials/Testimonials";
 const AboutMain = () => {
   return (
     <>
-      <HeroPrimary title="About Page" path={"About Page"} />
-      <About11 />
+      <HeroPrimary title="Tentang Kami" path={"Tentang Kami"} />
+      <About4 />
       <Overview />
       <FeatureCourses
         title={
           <>
-            Choose The Best Package <br />
-            For your Learning
+            Pilih Paket Terbaik <br />
+            Untuk Akselerasi Belajarmu
           </>
         }
         course="2"
-        subTitle="Popular Courses"
+        subTitle="Kelas Populer"
       />
       <Testimonials />
       <Brands />
