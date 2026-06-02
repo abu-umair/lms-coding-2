@@ -14,35 +14,39 @@ import counter3 from "@/assets/images/counter/counter__3.png";
 import counter4 from "@/assets/images/counter/counter__4.png";
 import TiltWrapper from "@/components/shared/wrappers/TiltWrapper";
 import useIsTrue from "@/hooks/useIsTrue";
+
 const About1 = ({ children, image, hideCounter }) => {
   const isHome9 = useIsTrue("/home-9");
   const isHome9Dark = useIsTrue("/home-9-dark");
+
+  // Data kounter bawah disesuaikan agar impresif namun realistis untuk platform baru
   const counterItems = [
     {
-      name: "Total Acheivment",
+      name: "KURIKULUM ADAPTIF",
       image: counter1,
-      data: 27,
-      symbol: "+",
+      data: 100,
+      symbol: "%",
     },
     {
-      name: "TOTAL STUDENTS",
-      image: counter2,
-      data: 145,
-      symbol: "+",
+      name: "AKSES SISTEM GLOBAL",
+      image: counter4,
+      data: 24,
+      symbol: "/7",
     },
     {
-      name: "tOTAL INSTRUCTOR",
+      name: "INSTRUKTUR PILIHAN",
       image: counter3,
       data: 10,
-      symbol: "k",
+      symbol: "+",
     },
     {
-      name: "OVER THE WORLD",
-      image: counter4,
-      data: 214,
+      name: "PEMBELAJAR AKTIF",
+      image: counter2,
+      data: 150,
       symbol: "+",
     },
   ];
+
   return (
     <section>
       <div className={`container ${hideCounter ? "pt-70px pb-100px" : ""}`}>
@@ -58,80 +62,86 @@ const About1 = ({ children, image, hideCounter }) => {
                 <Image
                   className="md:ml-[70px]"
                   src={image ? image : about2}
-                  alt=""
+                  alt="Platform Edukasi"
                 />
                 <Image
                   className="absolute right-0 sm:right-[-17px] md:right-36 lg:right-4 bottom-[91px] md:bottom-0"
                   src={isHome9 || isHome9Dark ? about19 : about3}
-                  alt=""
+                  alt="Sistem Cerdas"
                 />
                 <Image
                   className="absolute top-[-18px] left-[30px] animate-move-hor z-[-1]"
                   src={about4}
-                  alt=""
+                  alt="Dekorasi"
                 />
                 <Image
                   className="absolute top-[30%] left-0 z-[-1]"
                   src={about11}
-                  alt=""
+                  alt="Dekorasi"
                 />
               </div>
             </TiltWrapper>
-            {/* experience  */}
+
+            {/* Kotak kecil pengalaman diubah menjadi indikator efisiensi sistem otomatis */}
             <div className="px-10px py-3 md:py-25px border-l-4 border-primaryColor shadow-experience absolute bottom-0 left-0 bg-white dark:bg-whiteColor-dark animate-move-var w-[290px]">
               <div className="counter flex items-center">
-                <p className="text-[40px] text-primaryColor font-bold uppercase pr-10px leading-1">
-                  <span data-countup-number="25">25</span>+
+                <p className="text-[35px] text-primaryColor font-bold uppercase pr-10px leading-1">
+                  <span data-countup-number="100">100</span>%
                 </p>
-                <p className="text-blackColor dark:text-blackColor-dark font-bold leading-26px">
-                  YEARS EXPERIENCE JUST ACHIVED
+                <p className="text-blackColor dark:text-blackColor-dark font-bold leading-22px text-xs uppercase">
+                  Sistem Belajar Personal & Otomatis
                 </p>
               </div>
             </div>
           </div>
+
           {/* about right  */}
           <div data-aos="fade-up">
-            <SectionName>About Us</SectionName>
+            <SectionName>Tentang Kami</SectionName>
             <h3 className="text-3xl md:text-size-45 leading-10 md:leading-2xl font-bold text-blackColor dark:text-blackColor-dark pb-25px">
               {children ? (
                 children
               ) : (
                 <>
-                  Welcome to the{" "}
+                  Selamat Datang di Pusat{" "}
                   <span className="relative after:w-full after:h-[7px] after:bg-secondaryColor after:absolute after:left-0 after:bottom-3 md:after:bottom-5">
-                    {isHome9 || isHome9Dark ? "Kids" : "Online"}
+                    {isHome9 || isHome9Dark ? "Edukasi Anak" : "Kursus Online"}
                   </span>{" "}
-                  Learning Center
+                  Masa Kini
                 </>
               )}
             </h3>
+
+            {/* Teks deskripsi pengenalan platform yang elegan */}
             <p className="text-sm md:text-base leading-7 text-contentColor dark:text-contentColor-dark mb-6 pl-3 border-l-2 border-primaryColor">
-              25+Contrary to popular belief, Lorem Ipsum is not simply random
-              text roots in a piece of classical Latin literature from 45 BC
+              Kami percaya pendidikan terbaik lahir dari kombinasi keahlian praktisi hebat dan ekosistem teknologi cerdas yang mampu menyesuaikan diri dengan kecepatan belajar unik setiap individu.
             </p>
+
+            {/* 3 Keunggulan Utama Ekosistem */}
             <ul className="space-y-[14px]">
               <li className="flex items-center group">
                 <i className="icofont-check px-2 py-2 text-primaryColor bg-whitegrey3 bg-opacity-40 group-hover:bg-primaryColor group-hover:text-white group-hover:opacity-100 mr-15px dark:bg-whitegrey1-dark"></i>
                 <p className="text-sm md:text-base font-medium text-blackColor dark:text-blackColor-dark">
-                  Lorem Ipsum is simply dummy
+                  Mentor Pilihan: Langsung belajar dari praktisi kompeten di bidangnya.
                 </p>
               </li>
               <li className="flex items-center group">
                 <i className="icofont-check px-2 py-2 text-primaryColor bg-whitegrey3 bg-opacity-40 group-hover:bg-primaryColor group-hover:text-white group-hover:opacity-100 mr-15px dark:bg-whitegrey1-dark"></i>
                 <p className="text-sm md:text-base font-medium text-blackColor dark:text-blackColor-dark">
-                  Explore a variety of fresh educational teach
+                  Alur Adaptif Otomatis: Materi menyesuaikan kapasitas pemahamanmu.
                 </p>
               </li>
               <li className="flex items-center group">
                 <i className="icofont-check px-2 py-2 text-primaryColor bg-whitegrey3 bg-opacity-40 group-hover:bg-primaryColor group-hover:text-white group-hover:opacity-100 mr-15px dark:bg-whitegrey1-dark"></i>
                 <p className="text-sm md:text-base font-medium text-blackColor dark:text-blackColor-dark">
-                  Lorem Ipsum is simply dummy text of
+                  Laporan Transparan: Evaluasi capaian belajar riil berbasis data presisi.
                 </p>
               </li>
             </ul>
           </div>
         </div>
-        {/* about counter  */}
+
+        {/* about counter   */}
         {isHome9 || isHome9Dark || hideCounter || (
           <Counter items={counterItems} />
         )}
