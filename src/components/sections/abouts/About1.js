@@ -48,7 +48,9 @@ const About1 = ({ children, image, hideCounter }) => {
   ];
 
   return (
-    <section>
+    <section
+      id="about"
+    >
       <div className={`container ${hideCounter ? "pt-70px pb-100px" : ""}`}>
         {/* about section   */}
         <div className="grid grid-cols-1 lg:grid-cols-2 pt-30px gap-x-30px">

@@ -9,20 +9,24 @@ const FooterNavList = () => {
       heading: "Usefull Links",
       items: [
         {
-          name: "Categories",
-          path: "#categories",
-        },
-        {
-          name: "Coureses",
-          path: "#courses",
+          name: "Home",
+          path: "/#home",
         },
         {
           name: "About Us",
-          path: "/about",
+          path: "/#about",
+        },
+        {
+          name: "Categories",
+          path: "/#categories",
+        },
+        {
+          name: "Coureses",
+          path: "/#courses",
         },
         {
           name: "Testimoni",
-          path: "#testimoni",
+          path: "/#testimoni",
         },
       ],
     },

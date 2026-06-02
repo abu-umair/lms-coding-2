@@ -14,7 +14,10 @@ import TiltWrapper from "@/components/shared/wrappers/TiltWrapper";
 
 const Hero1 = () => {
   return (
-    <section data-aos="fade-up">
+    <section
+      data-aos="fade-up"
+      id="home"
+    >
       {/* banner section  */}
       <div className="container2-xl bg-primaryColor pt-50px md:pt-20 pb-205px md:pb-35 rounded-2xl relative overflow-hidden shadow-brand">
         <div className="container grid grid-cols-1 lg:grid-cols-2 items-center">

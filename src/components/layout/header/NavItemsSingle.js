@@ -9,39 +9,39 @@ import DropdownEcommerce from "./DropdownEcommerce";
 
 const NavItemsSingle = () => {
   const navItems = [
-    // {
-    //   id: 1,
-    //   name: "Demos",
-    //   path: "/",
-    //   // dropdown: <DropdownDemoes />,
-    //   isRelative: false,
-    // },
-    // {
-    //   id: 2,
-    //   name: "Pages",
-    //   path: "/about",
-    //   // dropdown: <DropdownPages />,
-    //   isRelative: false,
-    // },
+    {
+      id: 1,
+      name: "Home",
+      path: "/",
+      // dropdown: <DropdownDemoes />,
+      isRelative: false,
+    },
+    {
+      id: 2,
+      name: "About",
+      path: "/#about",
+      // dropdown: <DropdownPages />,
+      isRelative: false,
+    },
     {
       id: 3,
-      name: "Courses",
-      path: "/#courses",
+      name: "Categories",
+      path: "/#categories",
       // dropdown: <DropdownCourses />,
       isRelative: false,
     },
-    // {
-    //   id: 4,
-    //   name: "Dashboard",
-    //   path: "/dashboards/instructor-dashboard",
-    //   // dropdown: <DropdownDashboard />,
-    //   isRelative: true,
-    // },
+    {
+      id: 4,
+      name: "Courses",
+      path: "/#courses",
+      // dropdown: <DropdownEcommerce />,
+      isRelative: false,
+    },
     {
       id: 5,
-      name: "About",
-      path: "/about",
-      // dropdown: <DropdownEcommerce />,
+      name: "Testimoni",
+      path: "/#testimoni",
+      // dropdown: <DropdownDashboard />,
       isRelative: false,
     },
   ];

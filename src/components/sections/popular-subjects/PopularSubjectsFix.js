@@ -150,6 +150,7 @@ const PopularSubjectsFix = () => {
         ? "bg-[url(../assets/images/about/about_bg_1.jpg)] bg-cover"
         : "bg-lightGrey10 dark:bg-lightGrey10-dark"
         } pt-50px pb-110px`}
+      id="categories"
     >
       <div className="container">
         <div className="grid grid-cols-1 lg:grid-cols-2 pt-30px gap-x-30px items-center">

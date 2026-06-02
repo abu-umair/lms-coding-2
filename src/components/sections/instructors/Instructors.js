@@ -23,7 +23,9 @@ const Instructors = () => {
     },
   ];
   return (
-    <section className="bg-lightGrey10 dark:dark:bg-lightGrey10-dark relative">
+    <section className="bg-lightGrey10 dark:dark:bg-lightGrey10-dark relative"
+      id="testimoni"
+    >
       <div>
         <Image
           src={aboutImage6}
