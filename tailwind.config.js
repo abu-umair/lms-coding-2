@@ -144,7 +144,7 @@ module.exports = {
 				skycolor: '#03A9F4',
 				yellow: '#FF912C',
 				yellow1: '#F0B410',
-				blueDark: '#260094EE',
+				blueDark: '#023047',
 				naveBlue: '#17093e',
 				placeholder: 'rgb(98, 96, 93)',
 				'bodyColor-dark': '#fff',

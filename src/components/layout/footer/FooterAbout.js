@@ -9,9 +9,7 @@ const FooterAbout = () => {
     >
       <h4 className="text-size-22 font-bold text-whiteColor mb-3">About us</h4>
       <p className="text-base lg:text-sm 2xl:text-base text-darkgray mb-30px leading-1.8 2xl:leading-1.8">
-        orporate clients and leisure travelers has been relying on Groundlink
-        for dependable safe, and professional chauffeured car end service in
-        major cities across World.
+        Nusavia Academy adalah platform Cloud-based LMS terpercaya yang dirancang untuk membantu pelajar, mahasiswa, dan calon pekerja dalam menguasai keahlian digital siap kerja demi meraih karier impian mereka.
       </p>
       {isSecondary ? (
         <ul className="flex gap-3 lg:gap-2 2xl:gap-3" data-aos="fade-up">
@@ -63,13 +61,14 @@ const FooterAbout = () => {
           </div>
           <div>
             <h6 className="text-lg text-whiteColor font-medium leading-29px">
-              OPENING HOURES
+
+              AKSES BELAJAR
             </h6>
             <p className="text-sm text-whiteColor text-opacity-60 mb-1">
-              Mon - Sat(8.00 - 6.00)
+              Fleksibel & Online 24/7
             </p>
             <p className="text-sm text-whiteColor text-opacity-60">
-              Sunday - Closed
+              Konsultasi Admin: Senin - Sabtu
             </p>
           </div>
         </div>

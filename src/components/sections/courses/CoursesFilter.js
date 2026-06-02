@@ -20,10 +20,9 @@ const CoursesFilter = () => {
                 Carrer
               </HeadingPrimaryXl>
             </div>
-            {/* courses right */}
-            <FilterControllerWrapper>
+            {/* <FilterControllerWrapper>
               <FilterController />
-            </FilterControllerWrapper>
+            </FilterControllerWrapper> */}
           </div>
 
           {/* course cards */}

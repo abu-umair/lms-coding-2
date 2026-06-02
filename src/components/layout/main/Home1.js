@@ -19,7 +19,7 @@ const Home1 = () => {
       {/* <Registration /> */}
       {/* <PricingPlans /> */}
       <Instructors />
-      <Blogs />
+      {/* <Blogs /> */}
     </>
   );
 };

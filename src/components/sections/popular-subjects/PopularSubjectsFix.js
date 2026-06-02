@@ -180,7 +180,7 @@ const PopularSubjectsFix = () => {
                     Fleksibel, adaptif, dan menyeluruh. Setiap materi disusun secara modular agar dapat dipelajari kapan saja, di mana saja, oleh siapa saja yang berkomitmen meningkatkan keahliannya.
                   </p>
                   <div>
-                    <ButtonPrimary color="secondary" path="/courses">
+                    <ButtonPrimary color="secondary" path="#courses" type="link">
                       Lihat Semua Kelas <i className="icofont-long-arrow-right"></i>
                     </ButtonPrimary>
                   </div>

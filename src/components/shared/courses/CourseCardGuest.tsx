@@ -4,81 +4,58 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import teacherImage2 from "@/assets/images/teacher/teacher__2.png";
-import { saveCourseId, setModeEdit } from "@/libs/courseStorage";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { formatDuration } from "@/utils/formatDuration";
-import useGrpcApi from "@/components/shared/others/useGrpcApi";
-import { getCourseClient } from "@/api/grpc/client";
-import { useSession } from "next-auth/react";
-
-
-
 
 const CourseCardGuest = ({ course, type }) => {
-  console.log(course);
   const router = useRouter();
-  const { callApi, isLoading } = useGrpcApi();
-
-  const isFree = true;
-
-
   const { addProductToWishlist } = useWishlistContext();
 
-  //* DESTRUCTURING & MAPPING API
-  //* Di sini kita memetakan field dari API Anda ke variabel lokal.
-  //* Jika API Anda menggunakan 'course_name', ganti 'title' menjadi 'course_title'.
+  // Destructuring field dari API
   const {
     id,
-    name,            //* Judul kursus
+    name,
     slug,
-    imageFileName,            //* URL Thumbnail kursus
-    price,            //* Harga (number)
-    is_free,          //* Status gratis (API gRPC biasanya snake_case)
-    instructor,       //* Objek instruktur dari API
-    categories: cat,  //* Array atau string kategori
-    lessons_count,    //* Jumlah lesson
-    duration,   //* Total durasi (string: "12h 30m")
-    progress,         //* Persentase progres (0-100)
-    status,           //* Status kursus
-    sold,           //* total sold kursus
+    imageFileName,
+    price,
+    instructor,
+    categories: cat,
+    duration,
+    sold,
   } = course;
 
-  console.log(sold);
+  // Logika dinamis untuk status gratis berdasarkan nominal harga dari API
+  const isFree = price === 0;
 
-
-  //* menuju edit course
-  const handleEditClick = (e: React.MouseEvent) => {
+  // Handlers untuk interaksi siswa di Halaman Home
+  const handleBuyNow = (e: React.MouseEvent) => {
     e.preventDefault();
-    //* 1. Simpan ID ke LocalStorage
-    saveCourseId(id);
-
-    //* 2. seting mode edit
-    setModeEdit();
-
-    //* 2. Arahkan ke URL edit-course (hasil rewrite tadi)
-    router.push("/dashboards/instructor/edit-course");
+    // Jalankan logika checkout / langsung arahkan ke halaman detail pembayaran jika ada
+    toast.success(`Melanjutkan pembelian untuk kelas: ${name}`);
+    router.push(`/course/details/${slug}`);
   };
 
-  //* Daftar warna kategori (Tetap di sini atau pindahkan ke file konstanta)
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // Di sini Anda bisa mengintegrasikan fungsi context keranjang belanja (CartContext) Anda
+    toast.success(`Berhasil menambahkan "${name}" ke keranjang belanja!`);
+  };
+
+  // Daftar warna badge kategori adaptif
   const depBgs = [
-    { category: "Development", bg: "bg-blue" },
-    { category: "Web Design", bg: "bg-greencolor2" },
-    { category: "Business", bg: "bg-orange" },
-    { category: "Art & Design", bg: "bg-secondaryColor" },
+    { category: "Teknologi", bg: "bg-blue" },
+    { category: "Sains", bg: "bg-greencolor2" },
+    { category: "Kreatif", bg: "bg-orange" },
+    { category: "Karir", bg: "bg-secondaryColor" },
   ];
 
-  //* Mencari background berdasarkan kategori pertama jika 'cat' adalah array
   const categoryName = Array.isArray(cat) ? cat[0]?.name : cat;
   const cardBg = depBgs?.find((c) => c.category === categoryName)?.bg || "bg-primaryColor";
 
-  //* Logika Dinamis untuk ID Instruktur agar Link tidak mati
   const instructorId = instructor?.id || "unknown";
   const instructorImg = teacherImage2;
-  const instructorName = instructor?.name || "Instructor";
-
-
-
+  const instructorName = instructor?.name || "Pengajar Ahli";
 
   return (
     <div
@@ -88,144 +65,122 @@ const CourseCardGuest = ({ course, type }) => {
         } ${course.filter_option || ""}`}
     >
       <div className={`${type === "primaryMd" ? "" : "sm:px-15px mb-30px"}`}>
-        <div className="p-15px bg-whiteColor shadow-brand dark:bg-darkdeep3-dark dark:shadow-brand-dark rounded-md">
+        <div className="p-15px bg-whiteColor shadow-brand dark:bg-darkdeep3-dark dark:shadow-brand-dark rounded-md border border-borderColor/10 hover:border-primaryColor/30 transition-all duration-300">
 
           {/* IMAGE SECTION */}
-          <div className="relative mb-2">
-            <Link href={`/course/details/${slug}`} className="w-full overflow-hidden rounded block">
+          <div className="relative mb-4 overflow-hidden rounded">
+            <Link href={`/course/details/${slug}`} className="w-full block">
               <Image
-                src={imageFileName || teacherImage2} //* Fallback image jika API null
+                src={imageFileName || teacherImage2}
                 alt={name}
                 width={500}
                 height={300}
                 priority={true}
-                className="w-full transition-all duration-300 group-hover:scale-110 object-cover h-[180px]"
+                className="w-full transition-all duration-500 group-hover:scale-105 object-cover h-[180px]"
               />
             </Link>
-            <div className="absolute left-0 top-1 flex justify-between w-full items-center px-2">
-              <p className={`mt-1 text-xs text-whiteColor px-4 py-[3px] rounded font-semibold ${cardBg}`}>
-                {categoryName || "General"}
+            <div className="absolute left-2 top-2 flex justify-between w-[92%] items-center">
+              <p className={`text-xs text-whiteColor px-3 py-[4px] rounded-full font-semibold shadow-sm ${cardBg}`}>
+                {categoryName || "Umum"}
               </p>
+
+              {/* Tombol Wishlist aktifkan jika context sudah siap */}
               {/* <button
-                onClick={() => addProductToWishlist({ ...course, quantity: 1 })}
-                className="text-white bg-black bg-opacity-15 rounded hover:bg-primaryColor transition-all"
+                onClick={() => {
+                  addProductToWishlist({ ...course, quantity: 1 });
+                  toast.success("Ditambahkan ke Wishlist");
+                }}
+                className="text-whiteColor bg-blackColor/40 backdrop-blur-sm p-1 rounded-full hover:bg-secondaryColor transition-all shadow"
               >
-                <i className="icofont-heart-alt text-base py-1 px-2"></i>
+                <i className="icofont-heart text-base px-1"></i>
               </button> */}
             </div>
           </div>
 
           {/* CONTENT SECTION */}
           <div>
-            <div className="grid grid-cols-2 mb-3">
+            <div className="flex justify-between items-center mb-3 text-contentColor dark:text-contentColor-dark">
               <div className="flex items-center">
-                <i className="icofont-users pr-5px text-primaryColor text-lg"></i>
-                <span className="text-sm text-black dark:text-blackColor-dark">
-                  {sold} Students
+                <i className="icofont-users pr-5px text-primaryColor text-base"></i>
+                <span className="text-xs font-medium">
+                  {sold || 0} Siswa
                 </span>
               </div>
               <div className="flex items-center">
-                <i className="icofont-clock-time pr-5px text-primaryColor text-lg"></i>
-                <span className="capitalize text-sm text-black dark:text-blackColor-dark">
+                <i className="icofont-clock-time pr-5px text-primaryColor text-base"></i>
+                <span className="text-xs font-medium">
                   {formatDuration(duration)}
                 </span>
               </div>
             </div>
 
-            <h5 className={`${type === "primaryMd" ? "text-lg " : "text-xl "}`}>
+            <h5 className={`${type === "primaryMd" ? "text-base" : "text-lg"} mb-2 min-h-[54px] line-clamp-2`}>
               <Link
-                href={`/courses/${id}`}
-                className={`capitalize font-semibold text-blackColor mb-10px dark:text-blackColor-dark hover:text-primaryColor block ${type === "primaryMd" ? "leading-25px" : "leading-27px"} `}
+                href={`/course/details/${slug}`}
+                className="font-bold text-blackColor dark:text-blackColor-dark hover:text-primaryColor transition-colors duration-200 block leading-normal"
               >
                 {name}
               </Link>
             </h5>
 
             {/* PRICE SECTION */}
-            <div className="text-lg font-semibold text-primaryColor  mb-4">
-              ${price.toFixed(2)}
-              <del className="text-sm text-lightGrey4 font-semibold ml-1">
-                / $67.00
-              </del>
-              <span
-                className={`ml-6 text-base font-semibold ${isFree ? " text-greencolor" : " text-secondaryColor3"
-                  }`}
-              >
-                {isFree ? "Free" : <del>Free</del>}
-              </span>
+            <div className="flex items-center gap-2 text-xl font-extrabold text-primaryColor mb-4">
+              {isFree ? (
+                <span className="text-greencolor bg-greencolor/10 text-sm px-2 py-0.5 rounded">
+                  Gratis
+                </span>
+              ) : (
+                <>
+                  <span>Rp {price.toLocaleString("id-ID")}</span>
+                  {/* Simulasi Coretan Diskon Agar Menarik (Opsional) */}
+                  <del className="text-xs text-lightGrey4 font-normal">
+                    Rp {(price * 1.5).toLocaleString("id-ID")}
+                  </del>
+                </>
+              )}
             </div>
-            <div className=" gap-2 text-lg flex font-semibold text-primaryColor mb-4">
+
+            {/* ACTION BUTTONS */}
+            <div className="flex gap-2 mb-4">
               <button
-                onClick={handleEditClick}
-                className="flex items-center gap-1 text-sm font-bold text-whiteColor hover:text-primaryColor bg-primaryColor hover:bg-whiteColor dark:hover:bg-whiteColor-dark border border-primaryColor h-30px w-full px-14px leading-30px justify-center rounded-md my-5px"
-              // href={`/dashboards/edit-course`}
+                onClick={handleBuyNow}
+                className="flex items-center gap-1.5 text-xs font-bold text-whiteColor bg-primaryColor hover:bg-primaryColor/90 transition-all h-35px w-full justify-center rounded-md"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="feather feather-edit"
-                >
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                </svg>Buy
+                <i className="icofont-flash"></i> Beli Sekarang
               </button>
               <button
-                // onClick={() => handleDeleteCourse(id)}
-                className="flex items-center gap-1 text-sm font-bold text-whiteColor hover:text-secondaryColor bg-secondaryColor hover:bg-whiteColor dark:hover:bg-whiteColor-dark border border-secondaryColor h-30px w-full px-14px leading-30px justify-center rounded-md my-5px"
+                onClick={handleAddToCart}
+                className="flex items-center gap-1.5 text-xs font-bold text-secondaryColor bg-secondaryColor/10 hover:bg-secondaryColor hover:text-whiteColor transition-all h-35px w-full justify-center rounded-md"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="feather feather-trash-2"
-                >
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                  <line x1="10" y1="11" x2="10" y2="17"></line>
-                  <line x1="14" y1="11" x2="14" y2="17"></line>
-                </svg>Cart
+                <i className="icofont-shopping-cart"></i> + Keranjang
               </button>
             </div>
 
             {/* AUTHOR SECTION */}
-            <div className="grid grid-cols-1 md:grid-cols-2 pt-15px border-t border-borderColor items-center">
-              <Link href={`/instructors/${instructorId}`} className="flex items-center hover:text-primaryColor">
+            <div className="flex justify-between pt-3 border-t border-borderColor dark:border-borderColor-dark items-center">
+              <Link href={`/instructors/${instructorId}`} className="flex items-center hover:text-primaryColor transition-colors max-w-[65%]">
                 <Image
-                  className="w-[30px] h-[30px] rounded-full mr-10px object-cover"
+                  className="w-[26px] h-[26px] rounded-full mr-2 object-cover ring-1 ring-primaryColor/20"
                   src={instructorImg}
                   alt={instructorName}
-                  width={30}
-                  height={30}
+                  width={26}
+                  height={26}
                 />
-                <span className="text-base font-bold dark:text-blackColor-dark truncate">
+                <span className="text-xs font-semibold dark:text-blackColor-dark truncate">
                   {instructorName}
                 </span>
               </Link>
-              <div className="text-start md:text-end text-yellow text-size-15">
+              <div className="text-yellow text-xs flex items-center gap-0.5">
                 <i className="icofont-star"></i>
-                <i className="icofont-star"></i>
-                <i className="icofont-star"></i>
-                <i className="icofont-star"></i>
-                <span className="text-xs text-lightGrey6 ml-1">(44)</span>
+                <span className="font-bold text-blackColor dark:text-blackColor-dark ml-0.5">4.8</span>
+                <span className="text-[10px] text-lightGrey6 dark:text-lightGrey4">(44)</span>
               </div>
             </div>
           </div>
+
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

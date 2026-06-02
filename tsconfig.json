@@ -48,7 +48,7 @@
     "src/app/auth/verify-email/page.js",
     "src/app/auth/verify-email-required/page.js",
     "src/app/auth/verified-success/page.js"
-, "src/app/dashboards/page.js"  ],
+, "src/app/dashboards/page.js", "src/components/sections/registrations/Registration.jsx"  ],
   "exclude": [
     "node_modules"
   ]

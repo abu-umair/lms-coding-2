@@ -25,7 +25,7 @@ const ButtonPrimary = ({
   onClick,
   disabled = false,
 }: ButtonPrimaryProps) => {
-  
+
   // Render sebagai Button (untuk form atau aksi)
   if (type === "button" || type === "submit") {
     return (
@@ -33,15 +33,12 @@ const ButtonPrimary = ({
         type={type}
         disabled={disabled}
         onClick={onClick}
-        className={`text-size-15 text-whiteColor px-25px py-10px border inline-block rounded transition-all duration-300 ${
-          disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-whiteColor"
-        } ${
-          width === "full" ? "w-full" : ""
-        } ${
-          color === "secondary"
+        className={`text-size-15 text-whiteColor px-25px py-10px border inline-block rounded transition-all duration-300 ${disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-whiteColor"
+          } ${width === "full" ? "w-full" : ""
+          } ${color === "secondary"
             ? "bg-secondaryColor border-secondaryColor hover:text-secondaryColor dark:hover:text-whiteColor"
             : "bg-primaryColor border-primaryColor hover:text-primaryColor dark:hover:text-whiteColor"
-        }`}
+          }`}
       >
         {children} {arrow && <i className="icofont-long-arrow-right"></i>}
       </button>
@@ -52,11 +49,10 @@ const ButtonPrimary = ({
   return (
     <Link
       href={path}
-      className={`text-size-15 text-whiteColor px-25px py-10px border hover:bg-whiteColor inline-block rounded transition-all duration-300 ${
-        color === "secondary"
+      className={`text-size-15 text-whiteColor px-25px py-10px border hover:bg-whiteColor inline-block rounded transition-all duration-300 ${color === "secondary"
           ? "bg-secondaryColor border-secondaryColor hover:text-secondaryColor dark:hover:text-whiteColor"
           : "bg-primaryColor border-primaryColor hover:text-primaryColor dark:hover:text-whiteColor"
-      }`}
+        }`}
     >
       {children} {arrow && <i className="icofont-long-arrow-right"></i>}
     </Link>
