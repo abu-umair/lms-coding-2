@@ -5,11 +5,11 @@ export const metadata = {
   title: "Create Course | Edurock - Education LMS Template",
   description: "Create Course | Edurock - Education LMS Template",
 };
-const Create_Course = () => {
+const Create_Course = ({ searchParams }) => {
   return (
     <PageWrapper>
       <main>
-        <CreateCourseMain />
+        <CreateCourseMain searchParams={searchParams} />
         <ThemeController />
       </main>
     </PageWrapper>

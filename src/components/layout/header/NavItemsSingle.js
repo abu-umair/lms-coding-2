@@ -37,13 +37,13 @@ const NavItemsSingle = () => {
     //   // dropdown: <DropdownDashboard />,
     //   isRelative: true,
     // },
-    // {
-    //   id: 5,
-    //   name: "eCommerce",
-    //   path: "/ecommerce/shop",
-    //   // dropdown: <DropdownEcommerce />,
-    //   isRelative: true,
-    // },
+    {
+      id: 5,
+      name: "About",
+      path: "/about",
+      // dropdown: <DropdownEcommerce />,
+      isRelative: false,
+    },
   ];
   return (
     <div className="hidden lg:block lg:col-start-3 lg:col-span-7">

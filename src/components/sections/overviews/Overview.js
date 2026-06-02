@@ -20,63 +20,65 @@ const Overview = () => {
   const isHome9Dark = useIsTrue("/home-9-dark");
   const isAbout = useIsTrue("/about");
   const isAboutDark = useIsTrue("/about-dark");
+
+  // Rombak struktur Tab agar relevan dengan platform modern milikmu
   const tabButtons = [
-    { name: "About", content: <AboutContent /> },
+    { name: "Tentang Platform", content: <AboutContent /> },
+    // {
+    //   name: isAbout || isAboutDark ? "Sistem Kelas" : "Misi Kami",
+    //   content:
+    //     isAbout || isAboutDark ? (
+    //       <CourseContent isNotSidebar={true} />
+    //     ) : (
+    //       <OurMissionContent />
+    //     ),
+    // },
     {
-      name: isAbout || isAboutDark ? "COURSE" : "OUR MISSION",
+      name: isAbout || isAboutDark ? "Visi Masa Depan" : "Visi Kami",
       content:
-        isAbout || isAboutDark ? (
-          <CourseContent isNotSidebar={true} />
-        ) : (
-          <OurMissionContent />
-        ),
+        isAbout || isAboutDark ? <OurVissionContent /> : <OurVissionContent />, // Mengganti Award dengan Visi agar lebih fokus pada masa depan
     },
     {
-      name: isAbout || isAboutDark ? "AWARDS" : "OUR VISION",
-      content:
-        isAbout || isAboutDark ? <AwardContent /> : <OurVissionContent />,
-    },
-    {
-      name: isAbout || isAboutDark ? "EDUCATION" : "AWARD",
-      content: isAbout || isAboutDark ? <EducationContent /> : <AwardContent />,
+      name: isAbout || isAboutDark ? "Metode Belajar" : "Keunggulan",
+      content: isAbout || isAboutDark ? <EducationContent /> : <AboutContent />, // Mengganti Education dengan Metode Belajar
     },
   ];
+
   return (
     <section>
       <div
-        className={`container ${
-          isHome9 || isHome9Dark
+        className={`container ${isHome9 || isHome9Dark
             ? "pt-100px"
             : isAbout || isAboutDark
-            ? "pb-5 md:pb-10 lg:pb-50px 2xl:pb-10"
-            : ""
-        }`}
+              ? "pb-5 md:pb-10 lg:pb-50px 2xl:pb-10"
+              : ""
+          }`}
       >
-        {/* overview  Heading */}
+        {/* overview Heading */}
         {isAbout || isAboutDark ? (
           ""
         ) : (
           <div className="mb-5 md:mb-10 " data-aos="fade-up">
             <div className="text-center">
-              <SectionName>Overview</SectionName>
+              <SectionName>Ikhtisar Platform</SectionName>
             </div>
 
             <HeadingPrimary text="center">
-              Perfect University{" "}
+              Ekosistem Belajar{" "}
               <span className="relative after:w-full after:h-[7px] z-0 after:bg-secondaryColor after:absolute after:left-0 after:bottom-3 md:after:bottom-5 after:z-[-1]">
-                Overview
+                Terbaik
               </span>{" "}
               <br />
-              For Your Carrer
+              Untuk Masa Depan Karirmu
             </HeadingPrimary>
           </div>
         )}
+
         {/* overview tabs */}
         <div data-aos="fade-up" className="tab">
           <div
-            className={`flex flex-wrap md:flex-nowrap  ${
-              isAbout || isAboutDark ? "justify-start" : "justify-center"
-            } mb-10px lg:mb-50px rounded gap-10px lg:gap-35px`}
+            className={`flex flex-wrap md:flex-nowrap  ${isAbout || isAboutDark ? "justify-start" : "justify-center"
+              } mb-10px lg:mb-50px rounded gap-10px lg:gap-35px`}
           >
             {tabButtons.map(({ name }, idx) => (
               <TabButtonSecondary

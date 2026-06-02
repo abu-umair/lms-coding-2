@@ -5,19 +5,8 @@ import BookImage from "@/components/shared/animaited-images/BookImage";
 import GlobImage from "@/components/shared/animaited-images/GlobImage";
 import BalbImage from "@/components/shared/animaited-images/BalbImage";
 import TriangleImage from "@/components/shared/animaited-images/TriangleImage";
-import { getMode } from "@/libs/courseStorage";
 
 const HeroPrimary = ({ title, path }) => {
-  const [modeEdit, setModeEdit] = useState<string | null>('false');
-
-
-  useEffect(() => {
-    const modeEdit = getMode();
-
-    if (modeEdit) {
-      setModeEdit(modeEdit);
-    }
-  }, []);
   return (
     <section data-aos="fade-up">
       {/* banner section  */}
@@ -32,7 +21,8 @@ const HeroPrimary = ({ title, path }) => {
         <div className="container">
           <div className="text-center">
             <h1 className="text-3xl md:text-size-40 2xl:text-size-55 font-bold text-blackColor2 dark:text-blackColor2-dark  leading-18 md:leading-15 lg:leading-18">
-              {modeEdit === 'true' ? "Edit Course" : title}
+              {title}
+
             </h1>
             <ul className="flex gap-1 justify-center  ">
               <li>
@@ -45,7 +35,7 @@ const HeroPrimary = ({ title, path }) => {
               </li>
               <li>
                 <span className="text-lg text-blackColor2 dark:text-blackColor2-dark mr-1.5">
-                  {modeEdit === 'true' ? "Edit Course" : path}
+                  {path}
                 </span>
               </li>
             </ul>

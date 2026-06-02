@@ -8,10 +8,10 @@ import Testimonials from "@/components/sections/testimonials/Testimonials";
 const AboutMain = () => {
   return (
     <>
-      <HeroPrimary title="Tentang Kami" path={"Tentang Kami"} />
+      <HeroPrimary title="Tentang Kami" path={"About"} />
       <About4 />
       <Overview />
-      <FeatureCourses
+      {/* <FeatureCourses
         title={
           <>
             Pilih Paket Terbaik <br />
@@ -20,7 +20,7 @@ const AboutMain = () => {
         }
         course="2"
         subTitle="Kelas Populer"
-      />
+      /> */}
       <Testimonials />
       <Brands />
     </>

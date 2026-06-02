@@ -55,7 +55,7 @@ const CourseCard = ({ course, type }) => {
     setModeEdit();
 
     //* 2. Arahkan ke URL edit-course (hasil rewrite tadi)
-    router.push("/dashboards/instructor/edit-course");
+    router.push(`/dashboards/instructor/edit-course/?mode=edit`);
   };
 
   //* Daftar warna kategori (Tetap di sini atau pindahkan ke file konstanta)

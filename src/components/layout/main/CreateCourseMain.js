@@ -2,10 +2,15 @@ import CreateCoursePrimary from "@/components/sections/create-course/CreateCours
 import HeroPrimary from "@/components/sections/hero-banners/HeroPrimary";
 import React from "react";
 
-const CreateCourseMain = () => {
+const CreateCourseMain = ({ searchParams }) => {
+  const modeEdit = searchParams.mode === "edit";
+
   return (
     <>
-      <HeroPrimary path={"Create Course"} title={"Create Course"} />
+      <HeroPrimary
+        title={modeEdit ? "Edit Course" : "Create Course"}
+        path={modeEdit ? "Edit Course" : "Create Course"}
+      />
       <CreateCoursePrimary />
     </>
   );

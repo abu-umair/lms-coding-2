@@ -4,68 +4,68 @@ import vissionImage from "@/assets/images/about/vision.jpg";
 const OurVissionContent = () => {
   return (
     <div>
-      <p className="text-contentColor dark:text-contentColor-dark mb-25px">
-        There are many variations of passages of Lorem Ipsum available, but the
-        majority have suffered alteration in some form, by injected humour, or
-        randomised words look even slightly believable. If you are going to use
-        a passage of Lorem Ipsum, you need to be sure there {" isn't "} anything
-        embarrassing hidden in the middle of text. Ipsum generators on the
-        Internet tend to repeat predefined chunks as necessary. Lorem ipsum
-        dolor sit amet consectetur adipisicing elit. Possimus quae rerum dolore
-        itaque tenetur. Natus illum nostrum, deleniti ipsa animi accusantium
-        quos placeat eaque.
+      <p className="text-sm md:text-base leading-7 text-contentColor dark:text-contentColor-dark mb-25px">
+        Visi kami adalah menyediakan wadah dan standar baru dalam dunia pendidikan digital. Sebuah ekosistem elit yang mandiri, tepercaya, dan berkinerja tinggi, di mana teknologi bekerja di balik layar untuk menyempurnakan setiap proses transfer ilmu pengetahuan dari sang ahli langsung ke ruang belajar Anda.
       </p>
+
+      {/* 8 Poin Keunggulan Utama Ekosistem Premium */}
       <ul className="space-y-3 grid grid-cols-1 lg:grid-cols-2 mb-25px">
         <li className="flex items-center group">
           <i className="icofont-check px-2 py-2 text-primaryColor bg-whitegrey3 bg-opacity-40 group-hover:bg-primaryColor group-hover:text-white group-hover:opacity-100 mr-15px dark:bg-whitegrey1-dark"></i>
           <p className="text-sm md:text-base font-medium text-blackColor dark:text-blackColor-dark">
-            Lorem Ipsum is simply dummy
+            Kurasi Instruktur yang Sangat Ketat
           </p>
         </li>
         <li className="flex items-center group">
           <i className="icofont-check px-2 py-2 text-primaryColor bg-whitegrey3 bg-opacity-40 group-hover:bg-primaryColor group-hover:text-white group-hover:opacity-100 mr-15px dark:bg-whitegrey1-dark"></i>
           <p className="text-sm md:text-base font-medium text-blackColor dark:text-blackColor-dark">
-            Explore a variety of fresh educational teach
+            Sistem Jalur Belajar Adaptif Otomatis
           </p>
         </li>
         <li className="flex items-center group">
           <i className="icofont-check px-2 py-2 text-primaryColor bg-whitegrey3 bg-opacity-40 group-hover:bg-primaryColor group-hover:text-white group-hover:opacity-100 mr-15px dark:bg-whitegrey1-dark"></i>
           <p className="text-sm md:text-base font-medium text-blackColor dark:text-blackColor-dark">
-            Lorem Ipsum is simply dummy text of
+            Otomatisasi Beban Administrasi Guru
           </p>
         </li>
         <li className="flex items-center group">
           <i className="icofont-check px-2 py-2 text-primaryColor bg-whitegrey3 bg-opacity-40 group-hover:bg-primaryColor group-hover:text-white group-hover:opacity-100 mr-15px dark:bg-whitegrey1-dark"></i>
           <p className="text-sm md:text-base font-medium text-blackColor dark:text-blackColor-dark">
-            Lorem Ipsum is simply dummy text of
+            Analisis Capaian Berbasis Data Riil
           </p>
         </li>
         <li className="flex items-center group">
           <i className="icofont-check px-2 py-2 text-primaryColor bg-whitegrey3 bg-opacity-40 group-hover:bg-primaryColor group-hover:text-white group-hover:opacity-100 mr-15px dark:bg-whitegrey1-dark"></i>
           <p className="text-sm md:text-base font-medium text-blackColor dark:text-blackColor-dark">
-            Lorem Ipsum is simply dummy
+            Lingkungan Belajar Bersih & Bebas Iklan
           </p>
         </li>
         <li className="flex items-center group">
           <i className="icofont-check px-2 py-2 text-primaryColor bg-whitegrey3 bg-opacity-40 group-hover:bg-primaryColor group-hover:text-white group-hover:opacity-100 mr-15px dark:bg-whitegrey1-dark"></i>
           <p className="text-sm md:text-base font-medium text-blackColor dark:text-blackColor-dark">
-            Explore a variety of fresh educational teach
+            Akses Infrastruktur Server Global 24/7
           </p>
         </li>
         <li className="flex items-center group">
           <i className="icofont-check px-2 py-2 text-primaryColor bg-whitegrey3 bg-opacity-40 group-hover:bg-primaryColor group-hover:text-white group-hover:opacity-100 mr-15px dark:bg-whitegrey1-dark"></i>
           <p className="text-sm md:text-base font-medium text-blackColor dark:text-blackColor-dark">
-            Lorem Ipsum is simply dummy text of
+            Laporan Kinerja Informatif untuk Orang Tua
           </p>
         </li>
         <li className="flex items-center group">
           <i className="icofont-check px-2 py-2 text-primaryColor bg-whitegrey3 bg-opacity-40 group-hover:bg-primaryColor group-hover:text-white group-hover:opacity-100 mr-15px dark:bg-whitegrey1-dark"></i>
           <p className="text-sm md:text-base font-medium text-blackColor dark:text-blackColor-dark">
-            Lorem Ipsum is simply dummy text of
+            Sertifikasi Profesional yang Diakui
           </p>
         </li>
       </ul>
-      <Image src={vissionImage} alt="" className="w-full" placeholder="blur" />
+
+      <Image
+        src={vissionImage}
+        alt="Visi Masa Depan Platform"
+        className="w-full rounded-lg shadow-md"
+        placeholder="blur"
+      />
     </div>
   );
 };
