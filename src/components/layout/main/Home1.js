@@ -16,8 +16,8 @@ const Home1 = () => {
       <About1 />
       <PopularSubjectsFix />
       <CoursesFilter />
-      <Registration />
-      <PricingPlans />
+      {/* <Registration /> */}
+      {/* <PricingPlans /> */}
       <Instructors />
       <Blogs />
     </>
