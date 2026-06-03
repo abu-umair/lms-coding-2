@@ -11,6 +11,8 @@ import herobanner6 from "@/assets/images/herobanner/herobanner__6.png";
 import herobanner7 from "@/assets/images/herobanner/herobanner__7.png";
 import Link from "next/link";
 import TiltWrapper from "@/components/shared/wrappers/TiltWrapper";
+import logoImage from "@/assets/images/logo/nusavia-academy-white.webp";
+
 
 const Hero1 = () => {
   return (
@@ -23,19 +25,23 @@ const Hero1 = () => {
         <div className="container grid grid-cols-1 lg:grid-cols-2 items-center">
           {/* banner Left  */}
           <div data-aos="fade-up">
-            <HreoName>Kursus Online & Private</HreoName>
+
+            {/* <HreoName>Kursus Online & Private</HreoName> */}
             <HeadingLg color={"white"}>
-              Dibimbing Oleh Ahli <br className="hidden md:block" />
-              Disempurnakan Dengan Teknologi
+              Dibimbing Para Ahli <br className="hidden md:block" />
+              Didukung Teknologi
             </HeadingLg>
+
             <PagragraphHero color="white">
               Hadirkan standar baru dalam pendidikan digital dengan kurikulum adaptif otomatis, mengkurasi kepakaran instruktur elit langsung ke ruang belajar Anda. Ekosistem pendidikan masa depan dengan kinerja tinggi.
             </PagragraphHero>
 
-            <div className="mt-30px md:mt-45px">
+            <div className="mt-30px md:mt-0px flex items-center gap-10">
+              <Image width={300} src={logoImage} alt="" placeholder="blur" />
+
               <Link
                 href="#courses"
-                className="text-sm md:text-size-15 font-semibold text-darkdeep2 bg-whiteColor border border-whiteColor px-5 md:px-30px py-3 md:py-4 hover:text-whiteColor hover:bg-darkblack rounded inline-block mr-6px md:mr-30px shadow-hero-action dark:bg-whiteColor-dark dark:hover:bg-whiteColor dark:text-whiteColor dark:hover:text-whiteColor-dark dark:border-none"
+                className="mt-7 text-sm md:text-size-15 font-semibold text-darkdeep2 bg-whiteColor border border-whiteColor px-5 md:px-30px py-3 md:py-4 hover:text-whiteColor hover:bg-darkblack rounded inline-block mr-6px md:mr-30px shadow-hero-action dark:bg-whiteColor-dark dark:hover:bg-whiteColor dark:text-whiteColor dark:hover:text-whiteColor-dark dark:border-none"
               >
                 Lihat Kursus
               </Link>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import logoImage from "@/assets/images/logo/nusavia-academy.webp";
+import logoImage from "@/assets/images/logo/nusavia-academy-white.webp";
 import useIsSecondary from "@/hooks/useIsSecondary";
 const CopyRight = () => {
   const { isSecondary } = useIsSecondary();
