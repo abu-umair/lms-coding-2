@@ -7,39 +7,86 @@ import teacherImage2 from "@/assets/images/teacher/teacher__2.png";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { formatDuration } from "@/utils/formatDuration";
+import useGrpcApi from "@/components/shared/others/useGrpcApi";
+import { getCartClient } from "@/api/grpc/client";
+import { CartFormData, getCartSchema } from "@/libs/validationSchemaCart";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const CourseCardGuest = ({ course, type }) => {
+
+
+const CourseCardGuest = ({ course, type, userId }) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { addProductToWishlist } = useWishlistContext();
 
   // Destructuring field dari API
   const {
-    id,
     name,
     slug,
     imageFileName,
+    categoryName,
     price,
-    instructor,
-    categories: cat,
+    discount,
+    capacity,
     duration,
-    sold,
+    instructorName,
+    categories: cat,
+    totalSold,
   } = course;
 
-  // Logika dinamis untuk status gratis berdasarkan nominal harga dari API
   const isFree = price === 0;
+  // hitung jumlah final price setelah diskon  
+  const discountAmount = price * (discount / 100);
+  const finalPrice = price - discountAmount;
+
+  const { callApi, isLoading } = useGrpcApi();
 
   // Handlers untuk interaksi siswa di Halaman Home
   const handleBuyNow = (e: React.MouseEvent) => {
-    e.preventDefault();
+    if (!userId) {
+      toast.success("Silakan login terlebih dahulu untuk membeli.");
+      router.push("/login"); // Arahkan ke halaman login
+      return;
+    }
     // Jalankan logika checkout / langsung arahkan ke halaman detail pembayaran jika ada
-    toast.success(`Melanjutkan pembelian untuk kelas: ${name}`);
-    router.push(`/course/details/${slug}`);
+    router.push("/checkout");
   };
 
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    // Di sini Anda bisa mengintegrasikan fungsi context keranjang belanja (CartContext) Anda
-    toast.success(`Berhasil menambahkan "${name}" ke keranjang belanja!`);
+  const addProductToCart = async (values: CartFormData) => {
+    if (!userId) {
+      toast.success("Silakan login terlebih dahulu untuk menambah ke keranjang.");
+      router.push("/login"); // Arahkan ke halaman login
+      return;
+    }
+
+    const cartPayload = {
+      courseId: values.course_id,
+    };
+
+    // const apiCall = isEditMode
+    //   ? (getCartClient().addCourseToCart(cartPayload) as any)
+    //   : getCartClient().updateCartQuantity(cartPayload);
+    const apiCall = getCartClient().addCourseToCart(cartPayload);
+
+    await callApi(
+      apiCall,
+      {
+        loadingMessage: "Memperbarui cart...",
+        successMessage: "Cart berhasil diperbarui!",
+        onSuccess: () => {
+          // Memberitahu TanStack Query bahwa data dengan key 'cart-count' sudah basi
+          // Ini akan memicu Navbar untuk fetch ulang secara otomatis
+          queryClient.invalidateQueries({ queryKey: ["cart-count"] });
+        },
+        useDefaultError: false,
+        defaultError: (res) => {
+          console.log(res);
+
+          toast.error("Gagal memperbarui cart.");
+        }
+      }
+    );
+
   };
 
   // Daftar warna badge kategori adaptif
@@ -48,14 +95,12 @@ const CourseCardGuest = ({ course, type }) => {
     { category: "Sains", bg: "bg-greencolor2" },
     { category: "Kreatif", bg: "bg-orange" },
     { category: "Karir", bg: "bg-secondaryColor" },
+    { category: "Web Development", bg: "bg-primaryColor" },
   ];
 
-  const categoryName = Array.isArray(cat) ? cat[0]?.name : cat;
-  const cardBg = depBgs?.find((c) => c.category === categoryName)?.bg || "bg-primaryColor";
+  const cardBg = depBgs?.find((c) => c.category === categoryName)?.bg || "bg-red-500";
 
-  const instructorId = instructor?.id || "unknown";
   const instructorImg = teacherImage2;
-  const instructorName = instructor?.name || "Pengajar Ahli";
 
   return (
     <div
@@ -103,7 +148,7 @@ const CourseCardGuest = ({ course, type }) => {
               <div className="flex items-center">
                 <i className="icofont-users pr-5px text-primaryColor text-base"></i>
                 <span className="text-xs font-medium">
-                  {sold || 0} Siswa
+                  {capacity || 0} Siswa
                 </span>
               </div>
               <div className="flex items-center">
@@ -131,10 +176,9 @@ const CourseCardGuest = ({ course, type }) => {
                 </span>
               ) : (
                 <>
-                  <span>Rp {price.toLocaleString("id-ID")}</span>
-                  {/* Simulasi Coretan Diskon Agar Menarik (Opsional) */}
+                  <span>Rp {finalPrice.toLocaleString("id-ID")}</span>
                   <del className="text-xs text-lightGrey4 font-normal">
-                    Rp {(price * 1.5).toLocaleString("id-ID")}
+                    Rp {price.toLocaleString("id-ID")}
                   </del>
                 </>
               )}
@@ -149,16 +193,25 @@ const CourseCardGuest = ({ course, type }) => {
                 <i className="icofont-flash"></i> Beli Sekarang
               </button>
               <button
-                onClick={handleAddToCart}
+                disabled={isLoading}
+                onClick={() =>
+                  addProductToCart({
+                    course_id: course.id,
+                    // cart_id: "1", // Tambahkan ini
+                    // new_quantity: 1, // Tambahkan ini
+                  })
+                }
                 className="flex items-center gap-1.5 text-xs font-bold text-secondaryColor bg-secondaryColor/10 hover:bg-secondaryColor hover:text-whiteColor transition-all h-35px w-full justify-center rounded-md"
               >
-                <i className="icofont-shopping-cart"></i> + Keranjang
+                <i className="icofont-shopping-cart"></i>
+                {isLoading ? "Processing..." : "+ Keranjang"}
               </button>
             </div>
 
             {/* AUTHOR SECTION */}
             <div className="flex justify-between pt-3 border-t border-borderColor dark:border-borderColor-dark items-center">
-              <Link href={`/instructors/${instructorId}`} className="flex items-center hover:text-primaryColor transition-colors max-w-[65%]">
+              {/* <Link href={`/instructors`} className="flex items-center hover:text-primaryColor transition-colors max-w-[65%]"> */}
+              <div className="flex items-center hover:text-primaryColor transition-colors max-w-[65%]">
                 <Image
                   className="w-[26px] h-[26px] rounded-full mr-2 object-cover ring-1 ring-primaryColor/20"
                   src={instructorImg}
@@ -169,12 +222,13 @@ const CourseCardGuest = ({ course, type }) => {
                 <span className="text-xs font-semibold dark:text-blackColor-dark truncate">
                   {instructorName}
                 </span>
-              </Link>
-              <div className="text-yellow text-xs flex items-center gap-0.5">
+              </div>
+              {/* </Link> */}
+              {/* <div className="text-yellow text-xs flex items-center gap-0.5">
                 <i className="icofont-star"></i>
                 <span className="font-bold text-blackColor dark:text-blackColor-dark ml-0.5">4.8</span>
                 <span className="text-[10px] text-lightGrey6 dark:text-lightGrey4">(44)</span>
-              </div>
+              </div> */}
             </div>
           </div>
 

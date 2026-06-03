@@ -1,9 +1,13 @@
+import { getServerSession } from "next-auth";
 import CourseCardGuest from "./CourseCardGuest";
 import { getCourseClient } from "@/api/grpc/client";
+import { authOptions } from "@/libs/authOptions";
 
 const FilterCards = async ({ type }) => {
 
   const client = getCourseClient();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
 
   const res = await client.listCourse({
     // 1. Tambahkan bagian Pagination & Sort
@@ -41,23 +45,24 @@ const FilterCards = async ({ type }) => {
         "message_for_reviewer",
         "is_approved",
         "status",
-        "total_sold" // Pastikan kolom ini sudah dihandle di Repository
+        "total_sold",
+        "total_lesson",
+        "chapters"
       ]
     }
   });
 
+
   // 2. Transformasi Data (Sesuai dengan logika yang kamu pakai di Instructor)
   const formattedCourses = res.response.courses?.map((course) => ({
     ...course,
-    title: course.name,             // Template butuh 'title'
-    price: parseFloat(course.price || "0"), // Konversi string ke number
-    sold: typeof course.totalSold === 'bigint'
+    title: course.name,
+    price: parseFloat(course.price || "0"),
+    totalSold: typeof course.totalSold === 'bigint'
       ? Number(course.totalSold)
-      : (course.totalSold || 0),   // Ambil data total_sold dari gRPC
-    lesson: "0 Lessons",            // Placeholder jika belum ada data lesson
-    // Jika ada logika image URL seperti di Instructor, tambahkan di sini:
-    // img: course.imageFileName ? `${process.env.NEXT_PUBLIC_STORAGE_URL}/${course.id}/${course.imageFileName}` : "/placeholder.png"
+      : (course.totalSold || 0)
   })) || [];
+  console.log("detail formattedCourses : ", formattedCourses);
 
   return (
     <div
@@ -69,7 +74,8 @@ const FilterCards = async ({ type }) => {
           <CourseCardGuest
             key={idx}
             type={type}
-            course={course} // Kirim data yang sudah di-format
+            course={course}
+            userId={userId}
           />
         ))
       ) : (

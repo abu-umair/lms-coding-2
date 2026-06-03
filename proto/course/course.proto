@@ -245,6 +245,12 @@ message CourseInfoUser {
   optional string deleted_at = 32;
   optional double progress = 33;
   optional int64 total_sold = 34;
+  repeated Chapter chapters = 35;
+  optional int64 total_lesson = 36;
+  optional string category_name = 37;
+  optional string level_name = 38;
+  optional string language_name = 39;
+  optional string instructor_name = 40;
 }
 
 message DetailCourseUserRequest {

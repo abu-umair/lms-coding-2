@@ -758,6 +758,30 @@ export interface CourseInfoUser {
      * @generated from protobuf field: optional int64 total_sold = 34
      */
     totalSold?: bigint;
+    /**
+     * @generated from protobuf field: repeated course.Chapter chapters = 35
+     */
+    chapters: Chapter[];
+    /**
+     * @generated from protobuf field: optional int64 total_lesson = 36
+     */
+    totalLesson?: bigint;
+    /**
+     * @generated from protobuf field: optional string category_name = 37
+     */
+    categoryName?: string;
+    /**
+     * @generated from protobuf field: optional string level_name = 38
+     */
+    levelName?: string;
+    /**
+     * @generated from protobuf field: optional string language_name = 39
+     */
+    languageName?: string;
+    /**
+     * @generated from protobuf field: optional string instructor_name = 40
+     */
+    instructorName?: string;
 }
 /**
  * @generated from protobuf message course.DetailCourseUserRequest
@@ -2750,12 +2774,19 @@ class CourseInfoUser$Type extends MessageType<CourseInfoUser> {
             { no: 31, name: "updated_by", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 32, name: "deleted_at", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 33, name: "progress", kind: "scalar", opt: true, T: 1 /*ScalarType.DOUBLE*/ },
-            { no: 34, name: "total_sold", kind: "scalar", opt: true, T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+            { no: 34, name: "total_sold", kind: "scalar", opt: true, T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 35, name: "chapters", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Chapter },
+            { no: 36, name: "total_lesson", kind: "scalar", opt: true, T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 37, name: "category_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 38, name: "level_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 39, name: "language_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 40, name: "instructor_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<CourseInfoUser>): CourseInfoUser {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.id = "";
+        message.chapters = [];
         if (value !== undefined)
             reflectionMergePartial<CourseInfoUser>(this, message, value);
         return message;
@@ -2866,6 +2897,24 @@ class CourseInfoUser$Type extends MessageType<CourseInfoUser> {
                     break;
                 case /* optional int64 total_sold */ 34:
                     message.totalSold = reader.int64().toBigInt();
+                    break;
+                case /* repeated course.Chapter chapters */ 35:
+                    message.chapters.push(Chapter.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* optional int64 total_lesson */ 36:
+                    message.totalLesson = reader.int64().toBigInt();
+                    break;
+                case /* optional string category_name */ 37:
+                    message.categoryName = reader.string();
+                    break;
+                case /* optional string level_name */ 38:
+                    message.levelName = reader.string();
+                    break;
+                case /* optional string language_name */ 39:
+                    message.languageName = reader.string();
+                    break;
+                case /* optional string instructor_name */ 40:
+                    message.instructorName = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -2981,6 +3030,24 @@ class CourseInfoUser$Type extends MessageType<CourseInfoUser> {
         /* optional int64 total_sold = 34; */
         if (message.totalSold !== undefined)
             writer.tag(34, WireType.Varint).int64(message.totalSold);
+        /* repeated course.Chapter chapters = 35; */
+        for (let i = 0; i < message.chapters.length; i++)
+            Chapter.internalBinaryWrite(message.chapters[i], writer.tag(35, WireType.LengthDelimited).fork(), options).join();
+        /* optional int64 total_lesson = 36; */
+        if (message.totalLesson !== undefined)
+            writer.tag(36, WireType.Varint).int64(message.totalLesson);
+        /* optional string category_name = 37; */
+        if (message.categoryName !== undefined)
+            writer.tag(37, WireType.LengthDelimited).string(message.categoryName);
+        /* optional string level_name = 38; */
+        if (message.levelName !== undefined)
+            writer.tag(38, WireType.LengthDelimited).string(message.levelName);
+        /* optional string language_name = 39; */
+        if (message.languageName !== undefined)
+            writer.tag(39, WireType.LengthDelimited).string(message.languageName);
+        /* optional string instructor_name = 40; */
+        if (message.instructorName !== undefined)
+            writer.tag(40, WireType.LengthDelimited).string(message.instructorName);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

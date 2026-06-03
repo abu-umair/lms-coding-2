@@ -16,8 +16,7 @@ const CoursesFilter = () => {
             <div className="basis-full lg:basis-[500px]" data-aos="fade-up">
               <SectionName> Course List</SectionName>
               <HeadingPrimaryXl>
-                Perfect Online <br className="hidden lg:block" /> Course Your
-                Carrer
+                Akselerasi Karier Kamu <br className="hidden lg:block" />
               </HeadingPrimaryXl>
             </div>
             {/* <FilterControllerWrapper>
