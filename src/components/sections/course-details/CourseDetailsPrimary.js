@@ -216,7 +216,8 @@ const CourseDetailsPrimary = ({ type, course, userId }) => {
                 )}
                 {/* course tab  */}
                 <CourseDetailsTab id={cid} type={type} course={course} />
-                <div className="md:col-start-5 md:col-span-8 mb-5">
+                {/* penjelasan lebih lanjut */}
+                {/* <div className="md:col-start-5 md:col-span-8 mb-5">
                   <h4
                     className="text-2xl font-bold text-blackColor dark:text-blackColor-dark mb-15px !leading-38px"
                     data-aos="fade-up"
@@ -253,16 +254,16 @@ const CourseDetailsPrimary = ({ type, course, userId }) => {
                       </p>
                     </li>
                   </ul>
-                </div>
-                {/* tag and share   */}
+                </div> */}
 
-                <BlogTagsAndSocila />
+                {/* tag and share   */}
+                {/* <BlogTagsAndSocila /> */}
                 {/* other courses  */}
-                <InstrutorOtherCourses />
+                {/* <InstrutorOtherCourses /> */}
                 {/* previous comment area  */}
-                <ClientComment />
+                {/* <ClientComment /> */}
                 {/* write comment area  */}
-                <CommentFome />
+                {/* <CommentFome /> */}
               </div>
             </div>
           </div>

@@ -14,13 +14,13 @@ const CourseDetailsSidebar = ({ type, course, userId }) => {
       <BlogSocials />
 
       {/* popular course  */}
-      <PopularCoursesMini />
+      {/* <PopularCoursesMini /> */}
 
       {/* contact form  */}
-      <BlogContactForm />
+      {/* <BlogContactForm /> */}
 
       {/* tags */}
-      <BlogTags />
+      {/* <BlogTags /> */}
     </div>
   );
 };
