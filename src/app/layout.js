@@ -46,6 +46,7 @@ export default function RootLayout({ children }) {
                 <Toaster
                   position="top-center"
                   reverseOrder={false}
+                  gutter={8}
                   toastOptions={{
                     style: { zIndex: 10000000 },
                   }}

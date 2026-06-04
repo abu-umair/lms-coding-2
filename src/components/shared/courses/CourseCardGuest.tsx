@@ -5,12 +5,12 @@ import Link from "next/link";
 import React from "react";
 import teacherImage2 from "@/assets/images/teacher/teacher__2.png";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 import { formatDuration } from "@/utils/formatDuration";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
 import { getCartClient } from "@/api/grpc/client";
 import { CartFormData, getCartSchema } from "@/libs/validationSchemaCart";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { premiumToast } from "@/utils/toastCustom";
 
 
 
@@ -44,7 +44,7 @@ const CourseCardGuest = ({ course, type, userId }) => {
   // Handlers untuk interaksi siswa di Halaman Home
   const handleBuyNow = (e: React.MouseEvent) => {
     if (!userId) {
-      toast.success("Silakan login terlebih dahulu untuk membeli.");
+      premiumToast.success("Silakan login terlebih dahulu untuk membeli.");
       router.push("/login"); // Arahkan ke halaman login
       return;
     }
@@ -54,7 +54,7 @@ const CourseCardGuest = ({ course, type, userId }) => {
 
   const addProductToCart = async (values: CartFormData) => {
     if (!userId) {
-      toast.success("Silakan login terlebih dahulu untuk menambah ke keranjang.");
+      premiumToast.info("Silakan login terlebih dahulu untuk menambah ke keranjang.");
       router.push("/login"); // Arahkan ke halaman login
       return;
     }
@@ -82,7 +82,7 @@ const CourseCardGuest = ({ course, type, userId }) => {
         defaultError: (res) => {
           console.log(res);
 
-          toast.error("Gagal memperbarui cart.");
+          premiumToast.error("Terjadi kesalahan saat memperbarui cart.");
         }
       }
     );
