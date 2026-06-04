@@ -12,7 +12,7 @@ import useGrpcApi from "@/components/shared/others/useGrpcApi";
 
 
 
-const SignUpForm = () => {
+const SignUpForm = ({ switchToLogin }) => {
   const router = useRouter();
   const { callApi, isLoading } = useGrpcApi();
 
@@ -83,13 +83,14 @@ const SignUpForm = () => {
           Sing Up
         </h3>
         <p className="text-contentColor dark:text-contentColor-dark mb-15px">
-          Already have an account?
-          <a
-            href="login.html"
+          Sudah menjadi bagian dari kami?&nbsp;
+          <button
+            type="button"
+            onClick={switchToLogin}
             className="hover:text-primaryColor relative after:absolute after:left-0 after:bottom-0.5 after:w-0 after:h-0.5 after:bg-primaryColor after:transition-all after:duration-300 hover:after:w-full"
           >
-            Log In
-          </a>
+            Masuk di sini
+          </button>
         </p>
       </div>
 

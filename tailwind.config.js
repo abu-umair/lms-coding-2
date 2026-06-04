@@ -100,7 +100,7 @@ module.exports = {
 				secondaryColor3: '#fb8500',
 				blackColor: '#000000',
 				lightBlack: 'rgba(0,0,0,.5)',
-				blackColor2: '#191B1E',
+				blackColor2: '#023047',
 				darkblack: '#0C0E2B',
 				darkcolor: '#263546',
 				darkgray: '#9FA2CE',

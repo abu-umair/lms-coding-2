@@ -26,13 +26,13 @@ const HeaderTop = () => {
       >
         <div className="flex justify-between items-center">
           <div>
-            <p>Call Us: +1 800 123 456 789 - Mail Us: Itcroc@mail.com</p>
+            <p>Whatsapp: +62 89654- 238373 - Mail: ruangqurra@mail.com</p>
           </div>
           <div className="flex gap-37px items-center">
             <div>
               <p>
                 <i className="icofont-location-pin text-primaryColor text-size-15 mr-5px"></i>
-                <span>684 West College St. Sun City, USA</span>
+                <span>Jl. Raya Mekarsari, Desa Mekarsari, Kec. Rumpin, Kabupaten Bogor, Jawa Barat 16350</span>
               </p>
             </div>
             <div>

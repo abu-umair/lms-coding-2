@@ -50,10 +50,10 @@ const DropdownCart = ({ isHeaderTop, cartCount, isAuthenticated, userVerified, u
             : "block"
           }`}
       >
-        <i className="icofont-cart-alt text-2xl text-blackColor group-hover:text-secondaryColor transition-all duration-300 dark:text-blackColor-dark"></i>
+        <i className="icofont-cart-alt text-2xl text-blackColor group-hover:text-primaryColor transition-all duration-300 dark:text-blackColor-dark"></i>
         <span
           className={`${totalProduct < 10 ? "px-1 py-[2px]" : "px-3px pb-1 pt-3px"
-            } absolute -top-1 2xl:-top-[5px] -right-[10px] lg:right-3/4 2xl:-right-[10px] text-[10px] font-medium text-white dark:text-whiteColor-dark bg-secondaryColor leading-1 rounded-full z-50 block`}
+            } absolute -top-1 2xl:-top-[5px] -right-[10px] lg:right-3/4 2xl:-right-[10px] text-[10px] font-medium text-white dark:text-whiteColor-dark bg-secondaryColor2 leading-1 rounded-full z-50 block`}
         >
           {liveCartCount}
         </span>

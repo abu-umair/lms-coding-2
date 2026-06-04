@@ -15,10 +15,10 @@ import { useEffect } from "react";
 const LoginTab = ({ message, email }) => {
   const { currentIdx, handleTabClick } = useTab();
   const tabButtons = [
-    { name: "Login", content: <LoginForm email={email} /> },
+    { name: "Login", content: <LoginForm email={email} switchToSignUp={() => handleTabClick(1)} /> },
     {
       name: " Sing up",
-      content: <SignUpForm />,
+      content: <SignUpForm switchToLogin={() => handleTabClick(0)} />,
     },
   ];
 
