@@ -97,7 +97,7 @@ module.exports = {
 				primaryColor: '#219ebc',
 				secondaryColor: '#ffb703',
 				secondaryColor2: '#FF275A',
-				secondaryColor3: '#FF2828',
+				secondaryColor3: '#fb8500',
 				blackColor: '#000000',
 				lightBlack: 'rgba(0,0,0,.5)',
 				blackColor2: '#191B1E',

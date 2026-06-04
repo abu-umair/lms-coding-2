@@ -16,6 +16,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { formatToIDR } from "@/utils/number";
 import { formatDuration } from "@/utils/formatDuration";
 import Link from "next/link";
+import { premiumToast } from "@/utils/toastCustom";
 
 
 const CourseEnroll = ({ type, course, userId }) => {
@@ -74,7 +75,7 @@ const CourseEnroll = ({ type, course, userId }) => {
 
   const addProductToCart = async (values: CartFormData) => {
     if (!userId) {
-      toast.success("Silakan login terlebih dahulu untuk menambah ke keranjang.");
+      premiumToast.success("Silakan login terlebih dahulu untuk menambah ke keranjang.");
       router.push("/login"); // Arahkan ke halaman login
       return;
     }
@@ -103,11 +104,21 @@ const CourseEnroll = ({ type, course, userId }) => {
         defaultError: (res) => {
           console.log(res);
 
-          toast.error("Gagal memperbarui cart.");
+          premiumToast.error("Gagal memperbarui cart.");
         }
       }
     );
 
+  };
+
+  const handleBuyNow = (e: React.MouseEvent) => {
+    if (!userId) {
+      premiumToast.success("Silakan login terlebih dahulu untuk membeli.");
+      router.push("/login"); // Arahkan ke halaman login
+      return;
+    }
+    // Jalankan logika checkout / langsung arahkan ke halaman detail pembayaran jika ada
+    router.push("/checkout");
   };
 
   return (
@@ -145,6 +156,12 @@ const CourseEnroll = ({ type, course, userId }) => {
       </div>
       <div className="mb-5" data-aos="fade-up">
         <button
+          onClick={handleBuyNow}
+          className="w-full text-size-15 text-whiteColor bg-primaryColor px-25px py-10px mb-10px leading-1.8 border border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-secondaryColor dark:hover:bg-whiteColor-dark">
+          <i className="icofont-flash"></i>
+          Beli Sekarang
+        </button>
+        <button
           disabled={isLoading}
           onClick={() =>
             addProductToCart({
@@ -153,14 +170,13 @@ const CourseEnroll = ({ type, course, userId }) => {
               // new_quantity: 1, // Tambahkan ini
             })
           }
-          className={`w-full text-size-15 text-whiteColor bg-primaryColor px-25px py-10px border mb-10px leading-1.8 border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark 
+          className={`w-full text-size-15 text-whiteColor bg-secondaryColor px-25px py-10px border mb-10px leading-1.8 border-secondaryColor hover:text-secondaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark 
             ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          {isLoading ? "Processing..." : "Add To Cart"}
+          <i className="icofont-shopping-cart"></i>
+          {isLoading ? "Processing..." : " Keranjang"}
         </button>
-        <button className="w-full text-size-15 text-whiteColor bg-secondaryColor px-25px py-10px mb-10px leading-1.8 border border-secondaryColor hover:text-secondaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-secondaryColor dark:hover:bg-whiteColor-dark">
-          Buy Now
-        </button>
+
 
         {/* <span className="text-size-13 text-contentColor dark:text-contentColor-dark leading-1.8">
           <i className="icofont-ui-rotation"></i> 45-Days Money-Back Guarantee
