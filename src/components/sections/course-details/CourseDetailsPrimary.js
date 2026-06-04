@@ -6,21 +6,12 @@ import ClientComment from "@/components/shared/blog-details/ClientComment";
 import CommentFome from "@/components/shared/forms/CommentFome";
 import CourseDetailsTab from "@/components/shared/course-details/CourseDetailsTab";
 import InstrutorOtherCourses from "@/components/shared/course-details/InstrutorOtherCourses";
-import getAllCourses from "@/libs/getAllCourses";
+
 let cid = 0;
 const CourseDetailsPrimary = ({ type, course, userId }) => {
 
-  // const allCourses = getAllCourses();
-  // const course = allCourses?.find(({ id }) => parseInt(currentId) === id);
-  // const { title, price, lesson, insName, categories, id } = course || {};
-  // cid = id;
   cid = cid % 6 ? cid % 6 : 6;
 
-  const lesson = course?.lesson || "333";
-  const insName = course?.categories || "test";
-  const categories = course?.categories || "test";
-  // Ambil ID untuk keperluan Tab (jika diperlukan)
-  // const cid = course?.id || 0;
 
   return (
     <section>
@@ -57,7 +48,7 @@ const CourseDetailsPrimary = ({ type, course, userId }) => {
                           Featured
                         </button>
                         <button className="text-sm text-whiteColor bg-indigo border border-indigo px-22px py-0.5 leading-23px font-semibold hover:text-indigo hover:bg-whiteColor rounded inline-block dark:hover:bg-whiteColor-dark dark:hover:text-indigo">
-                          {categories}
+                          asdf
                         </button>
                       </div>
                       <div>
@@ -94,7 +85,7 @@ const CourseDetailsPrimary = ({ type, course, userId }) => {
                         </div>
                         <div>
                           <span className=" text-black dark:text-blackColor-dark">
-                            {lesson || "23 Lesson"}
+                            23 Lesson
                           </span>
                         </div>
                       </div>
@@ -140,7 +131,7 @@ const CourseDetailsPrimary = ({ type, course, userId }) => {
                             <p className="text-contentColor2 dark:text-contentColor2-dark flex justify-between items-center">
                               Instructor :
                               <span className="text-base lg:text-sm 2xl:text-base text-blackColor dark:text-deepgreen-dark font-medium text-opacity-100">
-                                {insName || "Mirnsdo.H"}
+                                Mirnsdo.H
                               </span>
                             </p>
                           </li>

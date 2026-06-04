@@ -15,12 +15,18 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { formatToIDR } from "@/utils/number";
 import { formatDuration } from "@/utils/formatDuration";
+import Link from "next/link";
 
 
 const CourseEnroll = ({ type, course, userId }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   console.log(course);
+
+  // Link WhatsApp
+  const message = "Halo Nusavia Academy, saya ingin berkonsultasi mengenai program kelas-kelas onlinenya";
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappLink = `https://wa.me/6289654238373?text=${encodedMessage}`;
 
 
 
@@ -40,14 +46,16 @@ const CourseEnroll = ({ type, course, userId }) => {
     instructorName,
     title,
     name,
-    demoVideoSource
+    demoVideoSource,
+    totalSold
+
   } = currentCourse;
-  const basePrice = Number(price) + Number(discount);
-  // 2. Hitung Persentase Diskon
-  // Gunakan Math.round agar tidak muncul banyak angka di belakang koma (misal 68.123%)
-  const discountPercentage = basePrice > 0
-    ? Math.round((Number(discount) / basePrice) * 100)
-    : 0;
+
+  const isFree = price === 0;
+  // hitung jumlah final price setelah diskon  
+  const discountAmount = price * (discount / 100);
+  const finalPrice = price - discountAmount;
+
   console.log('price:', course);
 
 
@@ -124,14 +132,14 @@ const CourseEnroll = ({ type, course, userId }) => {
           }`}
       >
         <div className="text-size-21 font-bold text-primaryColor font-inter leading-25px">
-          {price ? formatToIDR(price) : "-"}{" "}
-          <del className="text-sm text-lightGrey4 font-semibold">/ {basePrice ? formatToIDR(basePrice) : "-"}</del>
+          {finalPrice ? formatToIDR(finalPrice) : "Gratis"}{" "}
+          <del className="text-sm text-lightGrey4 font-semibold">{price ? ` / ${formatToIDR(price)}` : ""}</del>
         </div>
         <div>
           <a
             className="uppercase text-sm font-semibold text-secondaryColor2 leading-27px px-2 bg-whitegrey1 dark:bg-whitegrey1-dark"
           >
-            {discountPercentage}% OFF
+            {discount}% OFF
           </a>
         </div>
       </div>
@@ -172,7 +180,7 @@ const CourseEnroll = ({ type, course, userId }) => {
             Tanggal Mulai
           </p>
           <p className="text-xs text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
-            05 Dec 2024 (belum)
+            Segera
           </p>
         </li>
         <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
@@ -185,10 +193,10 @@ const CourseEnroll = ({ type, course, userId }) => {
         </li>
         <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
           <p className="text-sm font-medium text-contentColor dark:text-contentColor-dark leading-1.8">
-            Peserta Terdaftar
+            Telah Bergabung
           </p>
           <p className="text-xs text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
-            100+ (belum)
+            {Number(totalSold)} Pelajar
           </p>
         </li>
         <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
@@ -196,7 +204,7 @@ const CourseEnroll = ({ type, course, userId }) => {
             Total Materi
           </p>
           <p className="text-xs text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
-            {Number(totalLesson)}
+            {Number(totalLesson)} Lesson
           </p>
         </li>
         <li className="flex items-center justify-between py-10px border-b border-borderColor dark:border-borderColor-dark">
@@ -227,8 +235,8 @@ const CourseEnroll = ({ type, course, userId }) => {
           <p className="text-sm font-medium text-contentColor dark:text-contentColor-dark leading-1.8">
             Sertifikat Resmi
           </p>
-          <p className="text-xs capitalize text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
-            {certificate}
+          <p className="text-xs text-contentColor dark:text-contentColor-dark px-10px py-6px bg-borderColor dark:bg-borderColor-dark rounded-full leading-13px">
+            {certificate == "no" ? "Tidak" : "Ya"}
           </p>
         </li>
       </ul>
@@ -236,12 +244,18 @@ const CourseEnroll = ({ type, course, userId }) => {
         <p className="text-sm text-contentColor dark:text-contentColor-dark leading-1.8 text-center mb-5px">
           Ada Pertanyaan? Kami Siap Membantu!
         </p>
-        <button
-          type="submit"
-          className="w-full text-xl text-primaryColor bg-whiteColor px-25px py-10px mb-10px font-bold leading-1.8 border border-primaryColor hover:text-whiteColor hover:bg-primaryColor inline-block rounded group dark:bg-whiteColor-dark dark:text-whiteColor dark:hover:bg-primaryColor"
-        >
-          <i className="icofont-phone"></i> +62 801-2345 (belum)
-        </button>
+        <Link
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full">
+          <button
+            type="button"
+            className="w-full text-xl text-primaryColor bg-whiteColor px-25px py-10px mb-10px font-bold leading-1.8 border border-primaryColor hover:text-whiteColor hover:bg-primaryColor inline-block rounded group dark:bg-whiteColor-dark dark:text-whiteColor dark:hover:bg-primaryColor"
+          >
+            <i className="icofont-whatsapp"></i> +62 896-54238373
+          </button>
+        </Link>
       </div>
     </div>
   );

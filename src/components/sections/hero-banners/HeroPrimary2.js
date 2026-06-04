@@ -7,8 +7,9 @@ import Image from "next/image";
 import blogImage7 from "@/assets/images/blog/blog_7.png";
 import { log } from "node:console";
 import { convertStringToTime } from "@/utils/date";
+import Link from "next/link";
 
-const HeroPrimary2 = ({ type, course }) => {
+const HeroPrimary2 = ({ type, course, slug }) => {
   const {
     imageFileName,
     demoVideoSource,
@@ -19,7 +20,16 @@ const HeroPrimary2 = ({ type, course }) => {
   console.log(course);
   const updateCourse = convertStringToTime(updatedAt);
 
+  // Daftar warna badge kategori adaptif
+  const depBgs = [
+    { category: "Teknologi", bg: "bg-blue" },
+    { category: "Sains", bg: "bg-greencolor2" },
+    { category: "Kreatif", bg: "bg-orange" },
+    { category: "Karir", bg: "bg-secondaryColor" },
+    { category: "Web Development", bg: "bg-primaryColor" },
 
+  ];
+  const cardBg = depBgs?.find((c) => c.category === categoryName)?.bg || "bg-red-500";
 
   return (
     <section data-aos="fade-up">
@@ -39,16 +49,21 @@ const HeroPrimary2 = ({ type, course }) => {
           <div>
             <ul className="flex gap-1">
               <li>
-                <a
-                  href="index.html"
+                <Link
+                  href="/"
                   className="text-lg text-blackColor2 dark:text-blackColor2-dark"
                 >
                   Home <i className="icofont-simple-right"></i>
-                </a>
+                </Link>
               </li>
               <li>
                 <span className="text-lg text-blackColor2 dark:text-blackColor2-dark">
-                  Course-Details
+                  Details <i className="icofont-simple-right"></i>
+                </span>
+              </li>
+              <li>
+                <span className="capitalize text-lg text-blackColor2 dark:text-blackColor2-dark">
+                  {slug}
                 </span>
               </li>
             </ul>
@@ -57,13 +72,13 @@ const HeroPrimary2 = ({ type, course }) => {
                 className="flex items center gap-6 mb-30px"
                 data-aos="fade-up"
               >
-                <button className="text-sm text-whiteColor bg-primaryColor border border-primaryColor px-26px py-0.5 leading-23px font-semibold hover:text-primaryColor hover:bg-whiteColor rounded inline-block dark:hover:bg-whiteColor-dark dark:hover:text-whiteColor">
+                <button className={`text-sm text-whiteColor border ${cardBg} px-26px py-0.5 leading-23px font-semibold rounded inline-block dark:hover:bg-whiteColor-dark dark:hover:text-whiteColor`}>
                   {categoryName}
                 </button>
               </div>
               {/* titile */}
               <h4
-                className="text-size-32 md:text-4xl font-bold text-blackColor dark:text-blackColor-dark mb-15px leading-43px md:leading-14.5"
+                className="capitalize text-size-32 md:text-4xl font-bold text-blackColor dark:text-blackColor-dark mb-15px leading-43px md:leading-14.5"
                 data-aos="fade-up"
               >
                 {course.name}

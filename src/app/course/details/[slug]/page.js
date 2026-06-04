@@ -13,14 +13,33 @@ const getCourseData = cache(async (slug) => {
   return await client.detailCourseGuest({
     fieldMask: {
       paths: [
-        "name", "image_file_name", "slug", "description",
-        "category_id", "course_level_id", "course_language_id",
-        "duration", "timezone", "thumbnail", "demo_video_storage",
-        "demo_video_source", "instructor_id", "price", "discount",
-        "capacity", "address", "seo_description", "certificate",
-        "message_for_reviewer", "is_approved", "status",
-        "total_sold", "total_lesson", "chapters",
-        "updated_at", "pages"
+        "name",
+        "image_file_name",
+        "slug",
+        "description",
+        "category_id",
+        "course_level_id",
+        "course_language_id",
+        "duration",
+        "timezone",
+        "thumbnail",
+        "demo_video_storage",
+        "demo_video_source",
+        "instructor_id",
+        "price",
+        "discount",
+        "capacity",
+        "address",
+        "seo_description",
+        "certificate",
+        "message_for_reviewer",
+        "is_approved",
+        "status",
+        "total_sold",
+        "total_lesson",
+        "chapters",
+        "updated_at",
+        "pages"
       ]
     },
     slug: slug
@@ -54,7 +73,7 @@ const Course_Details_3 = async ({ params }) => {
   return (
     <PageWrapper>
       <main>
-        <CourseDetails3Main course={res.response} userId={userId} />
+        <CourseDetails3Main course={res.response} userId={userId} slug={res.response.name} />
         <ThemeController />
       </main>
     </PageWrapper>

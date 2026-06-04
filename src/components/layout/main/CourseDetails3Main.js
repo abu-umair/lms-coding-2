@@ -2,11 +2,11 @@ import CourseDetailsPrimary from "@/components/sections/course-details/CourseDet
 import HeroPrimary2 from "@/components/sections/hero-banners/HeroPrimary2";
 import React from "react";
 
-const CourseDetails3Main = ({ course, userId }) => {
+const CourseDetails3Main = ({ course, userId, slug }) => {
 
   return (
     <>
-      <HeroPrimary2 type={3} course={course} />
+      <HeroPrimary2 type={3} course={course} slug={slug} />
       <CourseDetailsPrimary type={3} course={course} userId={userId} />
     </>
   );
