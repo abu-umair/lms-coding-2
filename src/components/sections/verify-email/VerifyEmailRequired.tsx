@@ -119,7 +119,7 @@ export default function VerifyEmailRequired({ searchParams }) {
                                     Apa yang harus dilakukan?
                                 </h3>
                                 <ul className="space-y-3">
-                                    {["Buka inbox email Anda", "Cari email dari Edurock", "Klik tombol 'Verifikasi Akun'"].map((step, i) => (
+                                    {["Buka inbox email Anda", "Cari email dari 'no-reply@nusavia.id'", "Klik tombol 'Verifikasi Akun'"].map((step, i) => (
                                         <li key={i} className="flex items-center gap-3 text-sm text-slate-600">
                                             <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-[10px] font-bold">
                                                 {i + 1}
@@ -155,7 +155,7 @@ export default function VerifyEmailRequired({ searchParams }) {
                             </div>
 
                             <p className="mt-8 text-xs text-slate-400">
-                                Tidak menerima email? Periksa folder <strong>Spam</strong> atau <strong>Promosi</strong> Anda.
+                                Tidak menerima email? Periksa folder <strong>Spam</strong> atau <strong>Sampah</strong> Anda.
                             </p>
                         </div>
                     </div>

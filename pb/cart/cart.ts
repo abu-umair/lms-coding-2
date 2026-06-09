@@ -67,6 +67,10 @@ export interface ListCartResponseItem {
      * @generated from protobuf field: int64 quantity = 6
      */
     quantity: bigint;
+    /**
+     * @generated from protobuf field: double course_discount = 7
+     */
+    courseDiscount: number;
 }
 /**
  * @generated from protobuf message cart.ListCartResponse
@@ -287,7 +291,8 @@ class ListCartResponseItem$Type extends MessageType<ListCartResponseItem> {
             { no: 3, name: "course_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "course_image_url", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "course_price", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
-            { no: 6, name: "quantity", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+            { no: 6, name: "quantity", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 7, name: "course_discount", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
         ]);
     }
     create(value?: PartialMessage<ListCartResponseItem>): ListCartResponseItem {
@@ -298,6 +303,7 @@ class ListCartResponseItem$Type extends MessageType<ListCartResponseItem> {
         message.courseImageUrl = "";
         message.coursePrice = 0;
         message.quantity = 0n;
+        message.courseDiscount = 0;
         if (value !== undefined)
             reflectionMergePartial<ListCartResponseItem>(this, message, value);
         return message;
@@ -324,6 +330,9 @@ class ListCartResponseItem$Type extends MessageType<ListCartResponseItem> {
                     break;
                 case /* int64 quantity */ 6:
                     message.quantity = reader.int64().toBigInt();
+                    break;
+                case /* double course_discount */ 7:
+                    message.courseDiscount = reader.double();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -355,6 +364,9 @@ class ListCartResponseItem$Type extends MessageType<ListCartResponseItem> {
         /* int64 quantity = 6; */
         if (message.quantity !== 0n)
             writer.tag(6, WireType.Varint).int64(message.quantity);
+        /* double course_discount = 7; */
+        if (message.courseDiscount !== 0)
+            writer.tag(7, WireType.Bit64).double(message.courseDiscount);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

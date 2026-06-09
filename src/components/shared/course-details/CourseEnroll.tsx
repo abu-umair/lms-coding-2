@@ -52,10 +52,12 @@ const CourseEnroll = ({ type, course, userId }) => {
 
   } = currentCourse;
 
-  const isFree = price === 0;
   // hitung jumlah final price setelah diskon  
-  const discountAmount = price * (discount / 100);
-  const finalPrice = price - discountAmount;
+  const convPrice = Number(price) || 0;
+  const convDiscount = Number(discount) || 0;
+  const discountAmount = convPrice * (convDiscount / 100);
+  const finalPrice = convPrice - discountAmount;
+  const isFree = finalPrice === 0;
 
   console.log('price:', course);
 
@@ -111,14 +113,39 @@ const CourseEnroll = ({ type, course, userId }) => {
 
   };
 
-  const handleBuyNow = (e: React.MouseEvent) => {
+  const handleBuyNow = async (values: CartFormData) => {
     if (!userId) {
       premiumToast.success("Silakan login terlebih dahulu untuk membeli.");
       router.push("/login"); // Arahkan ke halaman login
       return;
     }
-    // Jalankan logika checkout / langsung arahkan ke halaman detail pembayaran jika ada
-    router.push("/checkout");
+
+    const cartPayload = {
+      courseId: values.course_id,
+    };
+    //   ? (getCartClient().addCourseToCart(cartPayload) as any)
+    //   : getCartClient().updateCartQuantity(cartPayload);
+    const apiCall = getCartClient().addCourseToCart(cartPayload);
+
+    await callApi(
+      apiCall,
+      {
+        loadingMessage: "Memperbarui cart...",
+        // successMessage: "Cart berhasil diperbarui!",
+        onSuccess: () => {
+          // Memberitahu TanStack Query bahwa data dengan key 'cart-count' sudah basi
+          // Ini akan memicu Navbar untuk fetch ulang secara otomatis
+          queryClient.invalidateQueries({ queryKey: ["cart-count"] });
+          router.push("/checkout");
+        },
+        useDefaultError: false,
+        defaultError: (res) => {
+          console.log(res);
+
+          premiumToast.error("Terjadi kesalahan saat memperbarui cart.");
+        }
+      }
+    );
   };
 
   return (
@@ -143,20 +170,30 @@ const CourseEnroll = ({ type, course, userId }) => {
           }`}
       >
         <div className="text-size-21 font-bold text-primaryColor font-inter leading-25px">
-          {finalPrice ? formatToIDR(finalPrice) : "Gratis"}{" "}
-          <del className="text-sm text-lightGrey4 font-semibold">{price ? ` / ${formatToIDR(price)}` : ""}</del>
+          {finalPrice <= 0 ? "Gratis" : formatToIDR(finalPrice)}{" "}
+          {convDiscount > 0 &&
+            <del className="text-sm text-lightGrey4 font-semibold">
+              {convPrice ? ` / ${formatToIDR(convPrice)}` : ""}
+            </del>
+          }
         </div>
-        <div>
+        {convDiscount > 0 && <div>
           <a
             className="uppercase text-sm font-semibold text-secondaryColor2 leading-27px px-2 bg-whitegrey1 dark:bg-whitegrey1-dark"
           >
-            {discount}% OFF
+            {convDiscount}% OFF
           </a>
         </div>
+        }
       </div>
       <div className="mb-5" data-aos="fade-up">
         <button
-          onClick={handleBuyNow}
+          disabled={isLoading}
+          onClick={() =>
+            handleBuyNow({
+              course_id: course.id,
+            })
+          }
           className="w-full text-size-15 text-whiteColor bg-primaryColor px-25px py-10px mb-10px leading-1.8 border border-primaryColor hover:text-primaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-secondaryColor dark:hover:bg-whiteColor-dark">
           <i className="icofont-flash"></i>
           Beli Sekarang
@@ -166,8 +203,6 @@ const CourseEnroll = ({ type, course, userId }) => {
           onClick={() =>
             addProductToCart({
               course_id: course.id,
-              // cart_id: "1", // Tambahkan ini
-              // new_quantity: 1, // Tambahkan ini
             })
           }
           className={`w-full text-size-15 text-whiteColor bg-secondaryColor px-25px py-10px border mb-10px leading-1.8 border-secondaryColor hover:text-secondaryColor hover:bg-whiteColor inline-block rounded group dark:hover:text-whiteColor dark:hover:bg-whiteColor-dark 

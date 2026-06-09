@@ -235,7 +235,7 @@ export default function VerifyError({ searchParams }: { searchParams: { type?: s
                                 <div className="mt-8 pt-8 border-t border-slate-100 w-full">
                                     <div className="flex items-center justify-center gap-2 text-slate-400 text-xs">
                                         <MailWarning className="w-4 h-4" />
-                                        <span>Cek folder Spam jika email tidak ditemukan</span>
+                                        <span>Cek folder Spam atau Sampah jika email tidak ditemukan</span>
                                     </div>
                                 </div>
                             )}

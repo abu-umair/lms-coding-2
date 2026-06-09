@@ -50,6 +50,7 @@ const PageWrapper = async ({ children }) => {
       <CartContextProvider>
         {/* header */}
         <Header
+          accessToken={accessToken}
           cartCount={cartCount}
           isAuthenticated={isAuthenticated}
           userVerified={userVerified}

@@ -109,7 +109,7 @@ function FormInput<T extends Record<string, any>>({
                     disabled={disabled}
                     className={`
                         w-full py-10px px-5 text-sm text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 border-borderColor dark:border-borderColor-dark placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md
-                        ${errorField ? 'border-secondaryColor' : 'border-borderColor dark:border-borderColor-dark'} 
+                        ${errorField ? 'border-secondaryColor2' : 'border-borderColor dark:border-borderColor-dark'} 
                     `}
                     {...register(name)}
                 />
@@ -176,7 +176,7 @@ function FormInput<T extends Record<string, any>>({
                     disabled={disabled}
                     className={`
                     w-full py-10px px-5 text-sm focus:outline-none text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 placeholder:text-placeholder placeholder:opacity-80 leading-23px rounded-md font-no
-                    ${errorField ? 'border-secondaryColor' : 'border-borderColor dark:border-borderColor-dark'} 
+                    ${errorField ? 'border-secondaryColor2' : 'border-borderColor dark:border-borderColor-dark'} 
                     `}
                     {...register(name)}
                 />
@@ -190,7 +190,7 @@ function FormInput<T extends Record<string, any>>({
                     disabled={disabled}
                     className={`
                 w-full py-10px px-5 text-sm text-contentColor dark:text-contentColor-dark bg-whiteColor dark:bg-whiteColor-dark border-2 focus:outline-none leading-23px rounded-md appearance-none cursor-pointer
-                ${errorField ? 'border-secondaryColor' : 'border-borderColor dark:border-borderColor-dark'} 
+                ${errorField ? 'border-secondaryColor2' : 'border-borderColor dark:border-borderColor-dark'} 
             `}
                     style={{
                         backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23666%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E")',
@@ -216,7 +216,7 @@ function FormInput<T extends Record<string, any>>({
                 disabled={disabled}
                 className={`
                     w-full leading-52px pl-5 bg-transparent text-sm focus:outline-none text-contentColor dark:text-contentColor-dark border 
-                    ${errorField ? 'border-secondaryColor' : 'border-borderColor dark:border-borderColor-dark'} placeholder:text-placeholder placeholder:opacity-80 font-medium rounded
+                    ${errorField ? 'border-secondaryColor2' : 'border-borderColor dark:border-borderColor-dark'} placeholder:text-placeholder placeholder:opacity-80 font-medium rounded
                     `}
                 {...register(name)}
             />
@@ -230,9 +230,9 @@ function FormInput<T extends Record<string, any>>({
                     {/* Label hanya muncul di atas jika BUKAN checkbox */}
                     {isInputCourse ?
                         <label className="mb-3 block font-semibold">
-                            {label} {lableRequired && <span className="text-secondaryColor">*</span>}
+                            {label} {lableRequired && <span className="text-secondaryColor2">*</span>}
                         </label> : <label className="text-contentColor dark:text-contentColor-dark mb-10px block">
-                            {label} {lableRequired && <span className="text-secondaryColor">*</span>}
+                            {label} {lableRequired && <span className="text-secondaryColor2">*</span>}
                         </label>
                     }
 
@@ -240,7 +240,7 @@ function FormInput<T extends Record<string, any>>({
                     {RenderInput()}
 
                     {/* Area Error yang Konsisten */}
-                    <div className={`text-sm text-secondaryColor h-2 mt-1 ${errorField ? 'visible' : 'invisible'}`}>
+                    <div className={`text-sm text-secondaryColor2 h-2 mt-1 ${errorField ? 'visible' : 'invisible'}`}>
                         <small>{errorField?.message as string}</small>
                     </div>
                 </div>
@@ -250,7 +250,7 @@ function FormInput<T extends Record<string, any>>({
                 <>
                     {RenderInput()}
 
-                    <div className={`text-sm text-secondaryColor h-2 ${errorField ? 'visible' : 'invisible'}`}>
+                    <div className={`text-sm text-secondaryColor2 h-2 ${errorField ? 'visible' : 'invisible'}`}>
                         <small>{errorField?.message as string}</small>
                     </div>
                 </>

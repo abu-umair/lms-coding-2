@@ -8,14 +8,17 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCartClient } from "@/api/grpc/client";
 import useGrpcApi from "@/components/shared/others/useGrpcApi";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { formatToIDR } from "@/utils/number";
 
 const CartProduct = ({ product }) => {
+  const router = useRouter();
   console.log("product course", product);
 
   const { callApi } = useGrpcApi();
   const queryClient = useQueryClient();
 
-  const { id, title, price, quantity, image, isCourse, cartId } = product;
+  const { id, title, price, discount, quantity, image, isCourse, cartId } = product;
 
 
   //*1. Deklarasi Mutation untuk hapus item
@@ -68,7 +71,10 @@ const CartProduct = ({ product }) => {
     ), { duration: 5000 });
   };
 
-  const rowTotal = price * quantity;
+  const hasDiscount = Number(discount) > 0; //* Cek apakah item memiliki diskon
+  const finalPricePerItem = hasDiscount ? price - (price * (Number(discount) / 100)) : price; //* Harga per item setelah dipotong diskon
+  const rowOriginalTotal = price * quantity; //* Total harga kotor (sebelum diskon) untuk row ini
+  const rowFinalTotal = finalPricePerItem * quantity; //* Total harga bersih (setelah diskon) untuk row ini
 
   return product ? (
     <tr className="border-b border-borderColor dark:border-borderColor-dark">
@@ -86,15 +92,23 @@ const CartProduct = ({ product }) => {
       </td>
       <td className="py-15px md:py-5 border-r border-borderColor dark:border-borderColor-dark w-300px">
         <Link
-          className="hover:text-primaryColor"
+          className="hover:text-primaryColor block font-medium"
           href={`/${isCourse ? "courses" : "ecommerce/products"}/${id}`}
         >
           {title}
           {/* {title.length > 30 ? title.slice(0, 30) : title} */}
         </Link>
+        {hasDiscount && (
+          <span className="inline-block mt-1 text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.5 rounded font-bold">
+            Hemat {Number(discount)}%
+          </span>
+        )}
       </td>
       <td className="py-15px md:py-5 border-r border-borderColor dark:border-borderColor-dark">
-        <span className="amount">Rp {price}</span>
+        {hasDiscount && (
+          <span className="block text-xs text-gray-400 line-through">{formatToIDR(price)}</span>
+        )}
+        <span className="amount font-medium">{formatToIDR(finalPricePerItem)}</span>
       </td>
       <td className="py-15px md:py-5 border-r border-borderColor dark:border-borderColor-dark w-300px">
         <QuantityInput
@@ -105,8 +119,10 @@ const CartProduct = ({ product }) => {
         />
       </td>
       <td className="py-15px md:py-5 border-r border-borderColor dark:border-borderColor-dark">
-        {/* Rp {totalPrice <= 0 ? "0" : totalPrice} */}
-        {rowTotal}
+        {hasDiscount && (
+          <span className="block text-xs text-gray-400 line-through font-normal">{formatToIDR(rowOriginalTotal)}</span>
+        )}
+        {formatToIDR(rowFinalTotal)}
       </td>
       <td className="py-15px md:py-5">
         <button

@@ -116,7 +116,7 @@ const Registration = () => {
                   placeholder="Ceritakan singkat kebutuhan belajar atau kendala karier Anda saat ini..." value={formData.note}
                   onChange={(e) => setFormData({ ...formData, note: e.target.value })}
                   className="w-full px-15px pb-3 pt-5 bg-lightGrey8 dark:bg-lightGrey8-dark text-base mb-25px h-[130px] placeholder:text-blackColor/50 focus:outline-none rounded border border-transparent focus:border-primaryColor"
-                  cols="30" rows="10"
+                  cols={30} rows={10}
                 />
 
                 {/* 3. Komponen Turnstile Widget diletakkan sebelum tombol submit */}

@@ -34,22 +34,51 @@ const CourseCardGuest = ({ course, type, userId }) => {
     totalSold,
   } = course;
 
-  const isFree = price === 0;
   // hitung jumlah final price setelah diskon  
-  const discountAmount = price * (discount / 100);
-  const finalPrice = price - discountAmount;
+  const convPrice = Number(price) || 0;
+  const convDiscount = Number(discount) || 0;
+  const discountAmount = convPrice * (convDiscount / 100);
+  const finalPrice = convPrice - discountAmount;
+  const isFree = finalPrice === 0;
 
   const { callApi, isLoading } = useGrpcApi();
 
   // Handlers untuk interaksi siswa di Halaman Home
-  const handleBuyNow = (e: React.MouseEvent) => {
+  const handleBuyNow = async (values: CartFormData) => {
     if (!userId) {
       premiumToast.success("Silakan login terlebih dahulu untuk membeli.");
       router.push("/login"); // Arahkan ke halaman login
       return;
     }
-    // Jalankan logika checkout / langsung arahkan ke halaman detail pembayaran jika ada
-    router.push("/checkout");
+
+    const cartPayload = {
+      courseId: values.course_id,
+    };
+
+    // const apiCall = isEditMode
+    //   ? (getCartClient().addCourseToCart(cartPayload) as any)
+    //   : getCartClient().updateCartQuantity(cartPayload);
+    const apiCall = getCartClient().addCourseToCart(cartPayload);
+
+    await callApi(
+      apiCall,
+      {
+        loadingMessage: "Memperbarui cart...",
+        successMessage: "Cart berhasil diperbarui!",
+        onSuccess: () => {
+          // Memberitahu TanStack Query bahwa data dengan key 'cart-count' sudah basi
+          // Ini akan memicu Navbar untuk fetch ulang secara otomatis
+          queryClient.invalidateQueries({ queryKey: ["cart-count"] });
+          router.push("/checkout");
+        },
+        useDefaultError: false,
+        defaultError: (res) => {
+          console.log(res);
+
+          premiumToast.error("Terjadi kesalahan saat memperbarui cart.");
+        }
+      }
+    );
   };
 
   const addProductToCart = async (values: CartFormData) => {
@@ -77,6 +106,8 @@ const CourseCardGuest = ({ course, type, userId }) => {
           // Memberitahu TanStack Query bahwa data dengan key 'cart-count' sudah basi
           // Ini akan memicu Navbar untuk fetch ulang secara otomatis
           queryClient.invalidateQueries({ queryKey: ["cart-count"] });
+          queryClient.invalidateQueries({ queryKey: ["cart-data"] });
+
         },
         useDefaultError: false,
         defaultError: (res) => {
@@ -170,16 +201,17 @@ const CourseCardGuest = ({ course, type, userId }) => {
 
             {/* PRICE SECTION */}
             <div className="flex items-center gap-2 text-xl font-extrabold text-primaryColor mb-4">
-              {isFree ? (
+              {finalPrice <= 0 ? (
                 <span className="text-greencolor bg-greencolor/10 text-sm px-2 py-0.5 rounded">
                   Gratis
                 </span>
               ) : (
                 <>
                   <span>Rp {finalPrice.toLocaleString("id-ID")}</span>
-                  <del className="text-xs text-lightGrey4 font-normal">
-                    Rp {price.toLocaleString("id-ID")}
+                  {convDiscount > 0 && <del className="text-xs text-lightGrey4 font-normal">
+                    Rp {convPrice.toLocaleString("id-ID")}
                   </del>
+                  }
                 </>
               )}
             </div>
@@ -187,7 +219,12 @@ const CourseCardGuest = ({ course, type, userId }) => {
             {/* ACTION BUTTONS */}
             <div className="flex gap-2 mb-4">
               <button
-                onClick={handleBuyNow}
+                disabled={isLoading}
+                onClick={() =>
+                  handleBuyNow({
+                    course_id: course.id,
+                  })
+                }
                 className="flex items-center gap-1.5 text-xs font-bold text-whiteColor bg-primaryColor hover:bg-primaryColor/90 transition-all h-35px w-full justify-center rounded-md"
               >
                 <i className="icofont-flash"></i> Beli Sekarang
@@ -197,8 +234,6 @@ const CourseCardGuest = ({ course, type, userId }) => {
                 onClick={() =>
                   addProductToCart({
                     course_id: course.id,
-                    // cart_id: "1", // Tambahkan ini
-                    // new_quantity: 1, // Tambahkan ini
                   })
                 }
                 className="flex items-center gap-1.5 text-xs font-bold text-secondaryColor bg-secondaryColor/10 hover:bg-secondaryColor hover:text-whiteColor transition-all h-35px w-full justify-center rounded-md"

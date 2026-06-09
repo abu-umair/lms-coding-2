@@ -2,11 +2,11 @@ import CheckoutPrimary from "@/components/sections/checkout/CheckoutPrimary";
 import HeroPrimary from "@/components/sections/hero-banners/HeroPrimary";
 import React from "react";
 
-const CheckoutMain = ({ cartData, userData }) => {
+const CheckoutMain = ({ accessToken }) => {
   return (
     <>
       <HeroPrimary path={"Checkout"} title={"Checkout"} />
-      <CheckoutPrimary cartData={cartData} userData={userData} />
+      <CheckoutPrimary accessToken={accessToken} />
     </>
   );
 };

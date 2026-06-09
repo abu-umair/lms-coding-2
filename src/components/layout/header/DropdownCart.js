@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getCartClient } from "@/api/grpc/client";
 
 
-const DropdownCart = ({ isHeaderTop, cartCount, isAuthenticated, userVerified, userNotVerified, verifyUrl }) => {
+const DropdownCart = ({ isHeaderTop, cartCount, isAuthenticated, userVerified, userNotVerified, verifyUrl, accessToken }) => {
   const { cartProducts, deleteProductFromCart } = useCartContext();
 
   // calculate total price
@@ -29,15 +29,18 @@ const DropdownCart = ({ isHeaderTop, cartCount, isAuthenticated, userVerified, u
 
 
   const { data: liveCartCount } = useQuery({
-    queryKey: ["cart-count"],
+    queryKey: ["cart-count", accessToken],
     queryFn: async () => {
+      if (!accessToken || accessToken === "undefined") {
+        console.warn("useQuery dibatalkan karena accessToken belum siap.");
+        return cartCount; // Kembalikan nilai initial dari server
+      }
       const res = await getCartClient().cartCount({});
       return res.response.count || 0;
     },
     // INI KUNCINYA: Gunakan data dari server sebagai nilai awal
     initialData: cartCount,
-    enabled: !!userVerified //?(true) 
-    //? hanya hit API jika user login dan sudah terverifikasi
+    enabled: !!userVerified && !!accessToken && accessToken !== "undefined"
   });
   return (
     <>

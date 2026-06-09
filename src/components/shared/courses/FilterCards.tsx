@@ -7,7 +7,7 @@ const FilterCards = async ({ type }) => {
 
   const client = getCourseClient();
   const session = await getServerSession(authOptions);
-  const userId = session?.user?.id;
+  const userId = (session?.user as any)?.id;
 
   const res = await client.listCourse({
     // 1. Tambahkan bagian Pagination & Sort

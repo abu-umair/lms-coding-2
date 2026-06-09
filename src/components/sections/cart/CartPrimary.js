@@ -4,6 +4,8 @@ import CartProduct from "@/components/shared/cart/CartProduct";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getCartClient } from "@/api/grpc/client";
+import { formatToIDR } from "@/utils/number";
+
 const CartPrimary = ({ cartData }) => {
   //* Gunakan useQuery agar TanStack "memegang" kendali data ini
   const { data: productsFromApi } = useQuery({
@@ -15,16 +17,24 @@ const CartPrimary = ({ cartData }) => {
     initialData: cartData, //* Data awal dari server component
   });
 
-  // Hitung total harga berdasarkan data API
-  // Karena 'quantity' di API Anda berupa string ("17"), pastikan di-parse saat kalkulasi
-  //* Sinkronisasi Cart Totals: Menghitung total dari semua produk di cache TanStack
-  const totalPrice = productsFromApi.reduce((acc, item) => {
-    //* Pastikan menggunakan nama field yang benar dari gRPC (coursePrice / course_price)
-    const price = item.coursePrice || item.course_price || 0;
-    const qty = parseInt(item.quantity) || 0;
-    return acc + (price * qty);
-  }, 0);
+  //* 1. HITUNG SUB-TOTAL (Sebelum Diskon) & TOTAL AKHIR (Setelah Diskon) SEKALIGUS
+  const { totalGrossPrice, totalFinalPrice, totalDiscountNominal } = productsFromApi.reduce(
+    (acc, item) => {
+      const price = Number(item.coursePrice || item.course_price || 0);
+      const qty = parseInt(item.quantity) || 0;
+      const discountPercent = Number(item.courseDiscount || item.course_discount || 0);
 
+      const originalItemTotal = price * qty;
+      const discountItemAmount = originalItemTotal * (discountPercent / 100);
+      const finalItemTotal = originalItemTotal - discountItemAmount;
+
+      acc.totalGrossPrice += originalItemTotal;
+      acc.totalFinalPrice += finalItemTotal;
+      acc.totalDiscountNominal += discountItemAmount;
+      return acc;
+    },
+    { totalGrossPrice: 0, totalFinalPrice: 0, totalDiscountNominal: 0 }
+  );
   const isCartProduct = productsFromApi.length > 0;
 
   return (
@@ -36,22 +46,22 @@ const CartPrimary = ({ cartData }) => {
             <thead>
               <tr className="md:text-sm text-blackColor dark:text-blackColor-dark uppercase font-medium border-b border-borderColor dark:border-borderColor-dark">
                 <th className="pt-13px pb-9px md:py-22px px-5 md:px-25px leading-1.8 max-w-25 whitespace-nowrap">
-                  Image
+                  Gambar
                 </th>
                 <th className="pt-13px pb-9px md:py-22px px-5 md:px-25px leading-1.8 max-w-25 whitespace-nowrap">
-                  Product
+                  Produk
                 </th>
                 <th className="pt-13px pb-9px md:py-22px px-5 md:px-25px leading-1.8 max-w-25 whitespace-nowrap">
-                  Price
+                  Harga
                 </th>
                 <th className="pt-13px pb-9px md:py-22px px-5 md:px-25px leading-1.8 max-w-25 whitespace-nowrap">
-                  Quantity
+                  Jumlah
                 </th>
                 <th className="pt-13px pb-9px md:py-22px px-5 md:px-25px leading-1.8 max-w-25 whitespace-nowrap">
                   Total
                 </th>
                 <th className="pt-13px pb-9px md:py-22px px-5 md:px-25px leading-1.8 max-w-25 whitespace-nowrap">
-                  Remove
+                  Aksi
                 </th>
               </tr>
             </thead>
@@ -60,7 +70,7 @@ const CartPrimary = ({ cartData }) => {
                 <tr className="relative">
                   <td className="p-5 md:p-10 ">
                     <p className="absolute left-0 top-0 w-full h-full flex items-center justify-center  md:text-xl font-bold capitalize opacity-70 ">
-                      empty
+                      Keranjang belanja Anda masih kosong
                     </p>
                   </td>
                 </tr>
@@ -74,6 +84,7 @@ const CartPrimary = ({ cartData }) => {
                       title: product.courseName,
                       image: product.courseImageUrl,
                       price: product.coursePrice,
+                      discount: product.courseDiscount || 0,
                       quantity: parseInt(product.quantity),
                       cartId: product.cartId,
                       isCourse: true
@@ -88,41 +99,66 @@ const CartPrimary = ({ cartData }) => {
         <div className="flex flex-wrap sm:flex-nowrap justify-between items-center gap-x-5 gap-y-10px pt-22px pb-9 md:pt-30px md:pb-55px">
           <div>
             <Link
-              href={"/courses"}
+              href={"/#courses"}
               className="text-size-13 text-whiteColor dark:text-whiteColor-dark dark:hover:text-whiteColor leading-1 px-5 py-18px md:px-10 bg-blackColor dark:bg-blackColor-dark hover:bg-primaryColor dark:hover:bg-primaryColor"
             >
-              CONTINUE SHOPPING
+              LANJUTKAN BELANJA
             </Link>
           </div>
 
         </div>
 
         {/* cart input */}
-        <div className="lg:flex lg:justify-end ">
-          <div className="lg:w-1/3 grid grid-cols-1 lg:grid-cols-1 flex-col-reverse gap-30px ">
-            <div className="px-30px pt-45px pb-50px leading-1.8 border border-borderColor dark:border-borderColor-dark rounded-5px">
-              {/* heading */}
-              <div className="flex gap-x-4">
-                <h3 className="text-lg whitespace-nowrap font-medium text-blackColor dark:text-blackColor-dark mb-9">
-                  <span className="leading-1.2">Cart Total</span>
+        <div className="lg:flex lg:justify-end">
+          <div className="lg:w-1/3 w-full">
+            <div className="p-6 md:p-8 bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 rounded-2xl shadow-sm space-y-4">
+
+              {/* Judul Komponen */}
+              <div className="flex items-center justify-between pb-4 border-b border-zinc-100 dark:border-zinc-800">
+                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
+                  Ringkasan Keranjang
                 </h3>
-                <div className="h-1px w-full bg-borderColor2 dark:bg-borderColor2-dark mt-2"></div>
-              </div>
-              <h4 className="text-sm font-bold text-blackColor dark:text-blackColor-dark mb-5 flex justify-between items-center">
-                <span className="leading-1.2">Cart Totals</span>
-                <span className="leading-1.2 text-lg font-medium">
-                  Rp {totalPrice ? totalPrice : 0}
+                <span className="text-xs font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-2.5 py-1 rounded-full">
+                  {productsFromApi.length} Jenis Produk
                 </span>
-              </h4>
-              <div>
+              </div>
+
+              {/* Rincian Harga */}
+              <div className="space-y-3 text-sm pt-2">
+                <div className="flex justify-between items-center text-zinc-500 dark:text-zinc-400">
+                  <span>Subtotal Produk</span>
+                  <span className="font-medium">{formatToIDR(totalGrossPrice)}</span>
+                </div>
+
+                {/* Baris potongan diskon hanya muncul jika nominal diskon > 0 */}
+                {totalDiscountNominal > 0 && (
+                  <div className="flex justify-between items-center text-emerald-600 dark:text-emerald-400 font-medium">
+                    <span>Potongan Diskon</span>
+                    <span>-{formatToIDR(totalDiscountNominal)}</span>
+                  </div>
+                )}
+
+                <div className="h-1px w-full bg-zinc-100 dark:bg-zinc-800 my-2"></div>
+
+                <div className="flex justify-between items-center pt-2">
+                  <span className="font-bold text-zinc-900 dark:text-zinc-100">Total Pembayaran</span>
+                  <span className="text-xl font-black text-primaryColor tracking-tight">
+                    {formatToIDR(totalFinalPrice)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Tombol Checkout */}
+              <div className="pt-4">
                 <Link
                   href="/checkout"
-                  className={`text-size-13 text-whiteColor dark:text-whiteColor-dark dark:hover:text-whiteColor leading-1 w-full px-10px py-18px bg-blackColor dark:bg-blackColor-dark hover:bg-primaryColor dark:hover:bg-primaryColor : text-center  ${totalPrice ? "" : "pointer-events-none opacity-85"
+                  className={`block text-center text-sm font-semibold tracking-wide text-white bg-blackColor dark:bg-blackColor-dark hover:bg-primaryColor dark:hover:bg-primaryColor px-5 py-4 rounded-xl shadow-md transition-all duration-300 active:scale-[0.99] ${totalFinalPrice ? "" : "pointer-events-none bg-zinc-300 dark:bg-zinc-800 text-zinc-400 opacity-60 shadow-none"
                     }`}
                 >
-                  PROCEED TO CHECKOUT
+                  LANJUT KE PEMBAYARAN
                 </Link>
               </div>
+
             </div>
           </div>
         </div>

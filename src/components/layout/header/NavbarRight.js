@@ -6,7 +6,7 @@ import useIsTrue from "@/hooks/useIsTrue";
 import LoginButton from "./LoginButton";
 
 
-const NavbarRight = ({ cartCount, isAuthenticated, userVerified, userNotVerified, role, verifyUrl }) => {
+const NavbarRight = ({ accessToken, cartCount, isAuthenticated, userVerified, userNotVerified, role, verifyUrl }) => {
   const isHome4 = useIsTrue("/home-4");
   const isHome4Dark = useIsTrue("/home-4-dark");
   const isHome5 = useIsTrue("/home-5");
@@ -28,6 +28,7 @@ const NavbarRight = ({ cartCount, isAuthenticated, userVerified, userNotVerified
               userVerified={userVerified}
               userNotVerified={userNotVerified}
               verifyUrl={verifyUrl}
+              accessToken={accessToken}
             />
           </li>
         )}

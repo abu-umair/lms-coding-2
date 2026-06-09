@@ -99,6 +99,7 @@ export const config = {
     matcher: [
         "/dashboards/:path*",
         "/order/:path*",
+        "/checkout",
         "/login",
         "/register",
         "/auth/verify-error",

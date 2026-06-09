@@ -34,6 +34,7 @@ message ListCartResponseItem {
   string course_image_url = 4;
   double course_price = 5; 
   int64 quantity = 6;
+  double course_discount = 7; 
 }
 
 message ListCartResponse {
